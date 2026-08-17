@@ -1,0 +1,2453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Commodities — NewsHub Africa</title>
+  <meta name="description" content="Real-time commodity prices, charts, and analysis for Africa's key exports: gold, oil, cocoa, coffee, copper, and more.">
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+
+:root {
+  --nh-blue: #0033cc;
+  --nh-blue-light: #1a53ff;
+  --nh-blue-dark: #002080;
+  --nh-black: #0a0a0a;
+  --nh-white: #ffffff;
+  --nh-surface: #ffffff;
+  --nh-surface-raised: #f8f9fa;
+  --nh-text-primary: #0a0a0a;
+  --nh-text-secondary: #495057;
+  --nh-text-muted: #adb5bd;
+  --nh-border: #dee2e6;
+  --nh-shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --nh-shadow-md: 0 4px 12px rgba(0,0,0,0.10);
+  --nh-shadow-lg: 0 10px 40px rgba(0,0,0,0.15);
+  --nh-radius-sm: 6px;
+  --nh-radius-md: 10px;
+  --nh-radius-lg: 12px;
+  --nh-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --nh-green: #2a9d8f;
+  --nh-red: #e94560;
+  --nh-yellow: #e9c46a;
+}
+
+[data-theme="dark"] {
+  --nh-surface: #0f1115;
+  --nh-surface-raised: #1a1d23;
+  --nh-text-primary: #f0f0f5;
+  --nh-text-secondary: #8a8b97;
+  --nh-text-muted: #5a5a6b;
+  --nh-border: #2a2d35;
+  --nh-shadow-sm: 0 1px 3px rgba(0,0,0,0.30);
+  --nh-shadow-md: 0 4px 12px rgba(0,0,0,0.40);
+  --nh-shadow-lg: 0 10px 40px rgba(0,0,0,0.50);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--nh-surface);
+  color: var(--nh-text-primary);
+  transition: var(--nh-transition);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+.nh-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--nh-surface);
+  border-bottom: 1px solid var(--nh-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.nh-header-inner { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+
+.nh-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--nh-border);
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.nh-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+
+.nh-brand-icon {
+  width: 32px; height: 32px;
+  background: var(--nh-blue);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: 700; font-size: 14px;
+  flex-shrink: 0;
+}
+
+.nh-brand-text {
+  font-size: 20px; font-weight: 500;
+  letter-spacing: -0.3px;
+  color: var(--nh-text-primary);
+}
+
+.nh-brand-text span { color: var(--nh-blue); font-weight: 500; }
+
+.nh-brand-tagline {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--nh-text-muted);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-top: -2px;
+  line-height: 1.2;
+}
+[data-theme="dark"] .nh-brand-tagline { color: var(--nh-text-secondary); }
+
+.nh-actions { display: flex; align-items: center; gap: 10px; }
+
+.nh-search { position: relative; }
+
+.nh-search input {
+  width: 220px;
+  padding: 9px 14px 9px 36px;
+  border: 1px solid var(--nh-border);
+  border-radius: 100px;
+  background: var(--nh-surface-raised);
+  color: var(--nh-text-primary);
+  font-size: 13px; outline: none;
+  font-family: inherit;
+}
+
+.nh-search input:focus {
+  border-color: var(--nh-blue);
+  box-shadow: 0 0 0 3px rgba(0,51,204,0.1);
+}
+
+.nh-search svg {
+  position: absolute; left: 12px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--nh-text-muted);
+  width: 14px; height: 14px;
+}
+
+.nh-btn {
+  padding: 9px 20px;
+  background: var(--nh-blue); color: white;
+  border: none; border-radius: 100px;
+  font-weight: 500; font-size: 13px;
+  cursor: pointer; transition: var(--nh-transition);
+  font-family: inherit;
+}
+
+.nh-btn:hover { background: var(--nh-blue-dark); transform: translateY(-2px); }
+
+.nh-nav {
+  display: flex; align-items: center;
+  gap: 4px; padding: 10px 0;
+  overflow-x: auto;
+}
+
+.nh-nav-item {
+  padding: 7px 16px;
+  border-radius: 100px;
+  font-size: 13px; font-weight: 500;
+  color: var(--nh-text-secondary);
+  cursor: pointer; white-space: nowrap;
+  transition: var(--nh-transition);
+  border: none; background: transparent;
+  font-family: inherit;
+  text-decoration: none;
+}
+
+.nh-nav-item.active, .nh-nav-item:hover { color: white; background: var(--nh-blue); }
+
+.nh-live {
+  display: flex; align-items: center;
+  gap: 5px; padding: 5px 12px;
+  background: rgba(0,51,204,0.08);
+  color: var(--nh-blue);
+  border-radius: 100px;
+  font-size: 11px; font-weight: 500;
+  margin-left: auto; cursor: pointer;
+  animation: pulse 2s infinite;
+  white-space: nowrap;
+}
+
+.nh-live .dot {
+  width: 7px; height: 7px;
+  background: var(--nh-blue);
+  border-radius: 50%;
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.7; }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.nh-main { padding: 24px; max-width: 1400px; margin: 0 auto; }
+
+.nh-section-header {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.nh-section-title {
+  font-size: 24px; font-weight: 500;
+  position: relative; display: inline-block;
+  color: var(--nh-text-primary);
+}
+
+.nh-section-title::after {
+  content: '';
+  position: absolute; bottom: -6px; left: 0;
+  width: 40px; height: 3px;
+  background: var(--nh-blue); border-radius: 2px;
+}
+
+.nh-view-all {
+  color: var(--nh-blue); font-weight: 500;
+  font-size: 13px; cursor: pointer;
+  display: flex; align-items: center; gap: 4px;
+  transition: var(--nh-transition);
+  text-decoration: none; background: none; border: none;
+  font-family: inherit;
+}
+
+.nh-view-all:hover { gap: 6px; }
+
+.nh-footer {
+  background: var(--nh-black); color: white;
+  padding: 48px 24px 24px;
+}
+
+.nh-footer-inner { max-width: 1400px; margin: 0 auto; }
+
+.nh-footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 36px; margin-bottom: 36px;
+}
+
+.nh-footer-brand { max-width: 260px; }
+
+.nh-footer-brand .nh-brand-text {
+  color: white; margin-bottom: 12px;
+  font-size: 20px; font-weight: 500;
+}
+
+.nh-footer-brand .nh-brand-text span { color: var(--nh-blue-light); }
+
+.nh-footer-brand p {
+  color: rgba(255,255,255,0.6);
+  font-size: 13px; line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.nh-social { display: flex; gap: 8px; }
+
+.nh-social a {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  color: white; text-decoration: none;
+  transition: var(--nh-transition); font-size: 12px;
+}
+
+.nh-social a:hover { background: var(--nh-blue); transform: translateY(-2px); }
+
+.nh-footer-col h4 {
+  font-size: 12px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 1px;
+  margin-bottom: 16px; color: var(--nh-blue-light);
+}
+
+.nh-footer-col ul { list-style: none; }
+.nh-footer-col li { margin-bottom: 8px; }
+
+.nh-footer-col a {
+  color: rgba(255,255,255,0.6); text-decoration: none;
+  font-size: 13px; transition: var(--nh-transition);
+}
+
+.nh-footer-col a:hover { color: white; padding-left: 3px; }
+
+.nh-footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 24px;
+  display: flex; justify-content: space-between;
+  align-items: center; font-size: 12px;
+  color: rgba(255,255,255,0.4);
+}
+
+.nh-footer-bottom a {
+  color: rgba(255,255,255,0.4);
+  text-decoration: none; transition: var(--nh-transition);
+}
+
+.nh-footer-bottom a:hover { color: white; }
+
+.nh-newsletter { max-width: 1400px; margin: 0 auto 48px; padding: 0 24px; }
+
+.nh-newsletter-box {
+  background: linear-gradient(135deg, var(--nh-blue-dark), var(--nh-blue));
+  border-radius: var(--nh-radius-lg); padding: 36px;
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 36px;
+  position: relative; overflow: hidden;
+}
+
+.nh-newsletter-box::before {
+  content: '';
+  position: absolute; top: -50%; right: -10%;
+  width: 350px; height: 350px;
+  background: radial-gradient(circle, var(--nh-blue-light) 0%, transparent 70%);
+  opacity: 0.15;
+}
+
+.nh-newsletter-content { position: relative; z-index: 1; max-width: 420px; }
+
+.nh-newsletter-content h2 {
+  font-size: 24px; color: white;
+  margin-bottom: 8px; font-weight: 500;
+}
+
+.nh-newsletter-content p {
+  color: rgba(255,255,255,0.7);
+  font-size: 14px; line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.nh-newsletter-form { display: flex; gap: 8px; }
+
+.nh-newsletter-form input {
+  flex: 1; padding: 11px 16px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.1);
+  color: white; font-size: 13px; outline: none;
+  font-family: inherit;
+}
+
+.nh-newsletter-form input::placeholder { color: rgba(255,255,255,0.5); }
+.nh-newsletter-form input:focus { border-color: white; background: rgba(255,255,255,0.15); }
+
+.nh-newsletter-form button {
+  padding: 11px 22px; background: white;
+  color: var(--nh-blue); border: none;
+  border-radius: 10px; font-weight: 500;
+  font-size: 13px; cursor: pointer;
+  transition: var(--nh-transition);
+  white-space: nowrap; font-family: inherit;
+}
+
+.nh-newsletter-form button:hover { background: var(--nh-gray-100); transform: translateY(-2px); }
+
+.nh-stats { display: flex; gap: 24px; position: relative; z-index: 1; }
+
+.nh-stat { text-align: center; }
+
+.nh-stat-num { font-size: 28px; font-weight: 500; color: white; }
+
+.nh-stat-label { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+
+.nh-ad-slot { position: relative; }
+.nh-ad-label {
+  font-size: 10px;
+  color: var(--nh-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: absolute;
+  top: 4px;
+  left: 8px;
+  z-index: 1;
+  background: var(--nh-surface-raised);
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+.nh-ad-slot img {
+  display: block;
+  margin: 0 auto;
+  border-radius: 6px;
+  transition: transform 0.3s ease;
+}
+.nh-ad-slot a:hover img { transform: scale(1.02); }
+
+/* Mobile Navigation */
+.nh-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  gap: 5px;
+  padding: 8px;
+  border-radius: 8px;
+  transition: var(--nh-transition);
+}
+
+.nh-hamburger:hover { background: var(--nh-surface-raised); }
+
+.nh-hamburger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--nh-text-primary);
+  border-radius: 2px;
+  transition: var(--nh-transition);
+  transform-origin: center;
+}
+
+.nh-hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nh-hamburger.active span:nth-child(2) { opacity: 0; }
+.nh-hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.nh-mobile-nav {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--nh-surface);
+  z-index: 999;
+  padding: 80px 24px 24px;
+  overflow-y: auto;
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nh-mobile-nav.open { transform: translateX(0); }
+
+.nh-mobile-nav-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--nh-border);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--nh-surface);
+  z-index: 1001;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.nh-mobile-nav-close {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  color: var(--nh-text-primary);
+}
+
+.nh-mobile-nav-close:hover { background: var(--nh-surface-raised); }
+
+.nh-mobile-nav-list { list-style: none; padding: 0; }
+.nh-mobile-nav-list li { border-bottom: 1px solid var(--nh-border); }
+
+.nh-mobile-nav-list a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  color: var(--nh-text-primary);
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: var(--nh-transition);
+}
+
+.nh-mobile-nav-list a:hover { color: var(--nh-blue); padding-left: 8px; }
+
+.nh-mobile-nav-list a svg {
+  width: 20px;
+  height: 20px;
+  color: var(--nh-text-muted);
+}
+
+.nh-mobile-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--nh-text-muted);
+  margin: 24px 0 12px;
+}
+
+.nh-mobile-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 998;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.nh-mobile-overlay.open { opacity: 1; }
+
+/* Category Hero */
+.nh-category-hero {
+  background: linear-gradient(135deg, var(--nh-blue-dark), var(--nh-blue));
+  border-radius: var(--nh-radius-lg);
+  padding: 48px 36px;
+  margin-bottom: 36px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.nh-category-hero::before {
+  content: '';
+  position: absolute; top: -50%; right: -10%;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, var(--nh-blue-light) 0%, transparent 70%);
+  opacity: 0.2;
+}
+.nh-category-hero h1 { font-size: 36px; font-weight: 500; margin-bottom: 8px; position: relative; z-index: 1; }
+.nh-category-hero p { color: rgba(255,255,255,0.7); font-size: 15px; position: relative; z-index: 1; }
+
+/* Commodity Page Specific */
+.nh-commodity-hero-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 36px;
+}
+
+.nh-commodity-hero-stat {
+  background: var(--nh-surface);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg);
+  padding: 24px;
+  text-align: center;
+  transition: var(--nh-transition);
+}
+.nh-commodity-hero-stat:hover {
+  box-shadow: var(--nh-shadow-md);
+  border-color: transparent;
+}
+.nh-commodity-hero-stat .icon {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+.nh-commodity-hero-stat .label {
+  font-size: 12px;
+  color: var(--nh-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+.nh-commodity-hero-stat .value {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--nh-text-primary);
+}
+.nh-commodity-hero-stat .sub {
+  font-size: 12px;
+  color: var(--nh-text-secondary);
+  margin-top: 2px;
+}
+
+.nh-commodity-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.nh-commodity-tab {
+  padding: 8px 18px;
+  border: 1px solid var(--nh-border);
+  background: var(--nh-surface);
+  color: var(--nh-text-secondary);
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--nh-transition);
+  font-family: inherit;
+}
+.nh-commodity-tab:hover {
+  border-color: var(--nh-blue);
+  color: var(--nh-blue);
+}
+.nh-commodity-tab.active {
+  background: var(--nh-blue);
+  color: white;
+  border-color: var(--nh-blue);
+}
+
+.nh-commodity-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 36px;
+}
+
+.nh-commodity-card {
+  background: var(--nh-surface);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg);
+  padding: 24px;
+  text-align: center;
+  transition: var(--nh-transition);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.nh-commodity-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--nh-shadow-lg);
+  border-color: transparent;
+}
+.nh-commodity-card::after {
+  content: '↗';
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--nh-surface-raised);
+  border: 1px solid var(--nh-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--nh-text-muted);
+  opacity: 0;
+  transition: var(--nh-transition);
+}
+.nh-commodity-card:hover::after {
+  opacity: 1;
+}
+
+.nh-commodity-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+  font-size: 24px;
+  transition: transform 0.3s ease;
+}
+.nh-commodity-card:hover .nh-commodity-icon {
+  transform: scale(1.1);
+}
+.nh-commodity-icon.gold { background: linear-gradient(135deg, #fef3c7, #fbbf24); }
+.nh-commodity-icon.oil { background: linear-gradient(135deg, #1a1a1a, #333); color: white; }
+.nh-commodity-icon.copper { background: linear-gradient(135deg, #b87333, #8b5a2b); color: white; }
+.nh-commodity-icon.cocoa { background: linear-gradient(135deg, #5d4037, #3e2723); color: white; }
+.nh-commodity-icon.coffee { background: linear-gradient(135deg, #6f4e37, #4a3428); color: white; }
+.nh-commodity-icon.maize { background: linear-gradient(135deg, #fbbf24, #d97706); }
+.nh-commodity-icon.palladium { background: linear-gradient(135deg, #718096, #a0aec0); }
+.nh-commodity-icon.platinum { background: linear-gradient(135deg, #e2e8f0, #a0aec0); }
+.nh-commodity-icon.silver { background: linear-gradient(135deg, #e2e8f0, #cbd5e0); }
+.nh-commodity-icon.natural-gas { background: linear-gradient(135deg, #4299e1, #3182ce); color: white; }
+.nh-commodity-icon.wheat { background: linear-gradient(135deg, #f6e05e, #d69e2e); }
+.nh-commodity-icon.soybeans { background: linear-gradient(135deg, #68d391, #38a169); }
+.nh-commodity-icon.aluminum { background: linear-gradient(135deg, #a0aec0, #718096); color: white; }
+.nh-commodity-icon.iron { background: linear-gradient(135deg, #744210, #975a16); color: white; }
+.nh-commodity-icon.diamond { background: linear-gradient(135deg, #e2e8f0, #a0aec0); }
+.nh-commodity-icon.uranium { background: linear-gradient(135deg, #48bb78, #2f855a); color: white; }
+
+.nh-commodity-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--nh-text-primary);
+  margin-bottom: 4px;
+}
+.nh-commodity-unit {
+  font-size: 11px;
+  color: var(--nh-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+.nh-commodity-price {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--nh-text-primary);
+  margin-bottom: 6px;
+}
+.nh-commodity-change {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 100px;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+.nh-commodity-change.up {
+  background: rgba(42,157,143,0.12);
+  color: var(--nh-green);
+}
+.nh-commodity-change.down {
+  background: rgba(233,69,96,0.12);
+  color: var(--nh-red);
+}
+
+.nh-commodity-spark {
+  width: 100%;
+  height: 32px;
+  margin-top: 8px;
+}
+.nh-commodity-spark path {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.nh-commodity-spark.up path { stroke: var(--nh-green); }
+.nh-commodity-spark.down path { stroke: var(--nh-red); }
+
+.nh-commodity-meta {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--nh-text-muted);
+}
+
+/* Commodity Table */
+.nh-commodity-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 36px;
+  background: var(--nh-surface);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg);
+  overflow: hidden;
+}
+.nh-commodity-table th {
+  background: var(--nh-surface-raised);
+  padding: 14px 18px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--nh-text-secondary);
+  border-bottom: 1px solid var(--nh-border);
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  padding-right: 24px;
+}
+.nh-commodity-table th:hover {
+  background: var(--nh-border);
+}
+.nh-commodity-table th .sort-icon {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  opacity: 0.3;
+  transition: var(--nh-transition);
+}
+.nh-commodity-table th.sort-asc .sort-icon,
+.nh-commodity-table th.sort-desc .sort-icon {
+  opacity: 1;
+  color: var(--nh-blue);
+}
+.nh-commodity-table th.sort-asc .sort-icon {
+  transform: translateY(-50%) rotate(180deg);
+}
+.nh-commodity-table td {
+  padding: 14px 18px;
+  font-size: 14px;
+  border-bottom: 1px solid var(--nh-border);
+  color: var(--nh-text-primary);
+}
+.nh-commodity-table tr:last-child td { border-bottom: none; }
+.nh-commodity-table tr:hover td { background: var(--nh-surface-raised); }
+
+.nh-commodity-table .commodity-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.nh-commodity-table .commodity-icon-sm {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.nh-commodity-table .commodity-info {
+  display: flex;
+  flex-direction: column;
+}
+.nh-commodity-table .commodity-info .name {
+  font-weight: 600;
+  color: var(--nh-text-primary);
+}
+.nh-commodity-table .commodity-info .ticker {
+  font-size: 11px;
+  color: var(--nh-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.nh-change-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.nh-change-badge.up {
+  background: rgba(42,157,143,0.12);
+  color: var(--nh-green);
+}
+.nh-change-badge.down {
+  background: rgba(233,69,96,0.12);
+  color: var(--nh-red);
+}
+
+.nh-sparkline-sm {
+  width: 80px;
+  height: 24px;
+  display: block;
+}
+.nh-sparkline-sm path {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.nh-sparkline-sm.up path { stroke: var(--nh-green); }
+.nh-sparkline-sm.down path { stroke: var(--nh-red); }
+
+/* Insight Cards */
+.nh-insight-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 36px;
+}
+
+.nh-insight-card {
+  background: var(--nh-surface);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg);
+  padding: 24px;
+  transition: var(--nh-transition);
+}
+.nh-insight-card:hover {
+  box-shadow: var(--nh-shadow-md);
+  border-color: transparent;
+}
+.nh-insight-card .tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+.nh-insight-card .tag.bullish {
+  background: rgba(42,157,143,0.12);
+  color: var(--nh-green);
+}
+.nh-insight-card .tag.bearish {
+  background: rgba(233,69,96,0.12);
+  color: var(--nh-red);
+}
+.nh-insight-card .tag.neutral {
+  background: rgba(233,196,106,0.18);
+  color: #b8860b;
+}
+.nh-insight-card h3 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--nh-text-primary);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.nh-insight-card p {
+  font-size: 13px;
+  color: var(--nh-text-secondary);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+.nh-insight-card .meta {
+  font-size: 11px;
+  color: var(--nh-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Trust Bar */
+.nh-trust-bar {
+  background: var(--nh-surface-raised);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg);
+  padding: 16px 20px;
+  margin-bottom: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.nh-trust-bar p {
+  font-size: 12px;
+  color: var(--nh-text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+.nh-trust-bar p strong {
+  color: var(--nh-text-secondary);
+}
+.nh-trust-sources {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 11px;
+  color: var(--nh-text-muted);
+  flex-shrink: 0;
+}
+.nh-trust-sources span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+/* Ticker */
+.nh-ticker-wrap {
+  background: var(--nh-black); color: white;
+  padding: 12px 0; overflow: hidden;
+  position: relative; margin-bottom: 32px;
+}
+.nh-ticker-label {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  background: var(--nh-black); padding: 0 18px;
+  display: flex; align-items: center;
+  font-weight: 700; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 1px;
+  z-index: 10;
+  border-right: 1px solid rgba(255,255,255,0.1);
+}
+.nh-ticker {
+  display: flex; gap: 36px;
+  padding-left: 120px;
+  animation: ticker 30s linear infinite;
+  white-space: nowrap;
+}
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.nh-ticker-item {
+  display: flex; align-items: center;
+  gap: 6px; font-size: 13px;
+}
+.nh-ticker-symbol { font-weight: 700; color: var(--nh-blue-light); }
+.nh-ticker-price { font-weight: 500; }
+.nh-ticker-change { font-size: 11px; padding: 2px 6px; border-radius: 4px; }
+.nh-ticker-change.up { background: rgba(42,157,143,0.2); color: #4ecdc4; }
+.nh-ticker-change.down { background: rgba(233,69,96,0.15); color: #e94560; }
+
+/* Chart Modal */
+.nh-chart-modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 2000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.nh-chart-modal-overlay.open {
+  display: flex;
+  opacity: 1;
+}
+.nh-chart-modal {
+  background: var(--nh-surface);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg);
+  width: 100%;
+  max-width: 900px;
+  max-height: 85vh;
+  overflow: hidden;
+  box-shadow: var(--nh-shadow-lg);
+  transform: scale(0.95) translateY(20px);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.nh-chart-modal-overlay.open .nh-chart-modal {
+  transform: scale(1) translateY(0);
+}
+.nh-chart-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--nh-border);
+}
+.nh-chart-modal-header h3 {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--nh-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.nh-chart-modal-header .badge {
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.nh-chart-modal-header .badge.up {
+  background: rgba(42,157,143,0.12);
+  color: var(--nh-green);
+}
+.nh-chart-modal-header .badge.down {
+  background: rgba(233,69,96,0.12);
+  color: var(--nh-red);
+}
+.nh-chart-modal-close {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--nh-border);
+  background: var(--nh-surface-raised);
+  color: var(--nh-text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--nh-transition);
+}
+.nh-chart-modal-close:hover {
+  background: var(--nh-red);
+  color: white;
+  border-color: var(--nh-red);
+}
+.nh-chart-modal-body {
+  padding: 24px;
+}
+.nh-chart-canvas {
+  width: 100%;
+  height: 380px;
+  background: var(--nh-surface-raised);
+  border-radius: var(--nh-radius-md);
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.nh-chart-svg {
+  width: 100%;
+  height: 100%;
+}
+.nh-chart-svg .grid-line {
+  stroke: var(--nh-border);
+  stroke-width: 0.5;
+  stroke-dasharray: 4,4;
+}
+.nh-chart-svg .chart-area {
+  fill-opacity: 0.12;
+  stroke: none;
+}
+.nh-chart-svg .chart-line {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.nh-chart-svg .chart-line.up { stroke: var(--nh-green); }
+.nh-chart-svg .chart-area.up { fill: var(--nh-green); }
+.nh-chart-svg .chart-line.down { stroke: var(--nh-red); }
+.nh-chart-svg .chart-area.down { fill: var(--nh-red); }
+.nh-chart-tooltip {
+  position: absolute;
+  background: var(--nh-surface);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-sm);
+  padding: 8px 12px;
+  font-size: 12px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  box-shadow: var(--nh-shadow-sm);
+  z-index: 10;
+}
+.nh-chart-tooltip.visible { opacity: 1; }
+.nh-chart-timeframe {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.nh-chart-timeframe button {
+  padding: 7px 18px;
+  border: 1px solid var(--nh-border);
+  background: var(--nh-surface);
+  color: var(--nh-text-secondary);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--nh-transition);
+  font-family: inherit;
+}
+.nh-chart-timeframe button:hover {
+  border-color: var(--nh-blue);
+  color: var(--nh-blue);
+}
+.nh-chart-timeframe button.active {
+  background: var(--nh-blue);
+  color: white;
+  border-color: var(--nh-blue);
+}
+.nh-chart-stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+.nh-chart-stat {
+  text-align: center;
+  padding: 14px;
+  background: var(--nh-surface-raised);
+  border-radius: var(--nh-radius-sm);
+  border: 1px solid var(--nh-border);
+}
+.nh-chart-stat .val {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--nh-text-primary);
+  margin-bottom: 2px;
+}
+.nh-chart-stat .lbl {
+  font-size: 10px;
+  color: var(--nh-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .nh-commodity-grid { grid-template-columns: repeat(3, 1fr); }
+  .nh-commodity-hero-stats { grid-template-columns: repeat(2, 1fr); }
+  .nh-insight-grid { grid-template-columns: repeat(2, 1fr); }
+  .nh-footer-top { grid-template-columns: 1fr 1fr; }
+  .nh-chart-stats { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .nh-search input { width: 140px; }
+  .nh-commodity-grid { grid-template-columns: repeat(2, 1fr); }
+  .nh-commodity-hero-stats { grid-template-columns: 1fr; }
+  .nh-insight-grid { grid-template-columns: 1fr; }
+  .nh-newsletter-box { flex-direction: column; text-align: center; padding: 24px 16px; }
+  .nh-newsletter-form { flex-direction: column; }
+  .nh-stats { justify-content: center; }
+  .nh-footer-top { grid-template-columns: 1fr; gap: 24px; }
+  .nh-footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  .nh-section-title { font-size: 20px; }
+  .nh-ticker-label { display: none; }
+  .nh-ticker-wrap { padding-left: 16px; }
+  .nh-live { display: none; }
+  .nh-hamburger { display: flex; }
+  .nh-nav { display: none; }
+  .nh-search { display: none; }
+  .nh-btn:not(.nh-btn-icon) { display: none; }
+  .nh-header-inner { padding: 0 16px; }
+  .nh-main { padding: 16px; }
+  .nh-category-hero { padding: 32px 20px; }
+  .nh-category-hero h1 { font-size: 26px; }
+  .nh-trust-bar { flex-direction: column; text-align: center; }
+  .nh-trust-sources { flex-wrap: wrap; justify-content: center; }
+  .nh-chart-modal { max-height: 90vh; }
+  .nh-chart-canvas { height: 260px; }
+  .nh-chart-stats { grid-template-columns: repeat(3, 1fr); }
+  .nh-chart-modal-header h3 { font-size: 15px; }
+  .nh-commodity-tabs { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .nh-ticker { animation: none; }
+}
+
+button:focus-visible, input:focus-visible, a:focus-visible {
+  outline: 2px solid var(--nh-blue); outline-offset: 2px;
+}
+
+/* Back link */
+.nh-back-link {
+  display: inline-flex; align-items: center;
+  gap: 6px; color: var(--nh-blue);
+  font-weight: 500; font-size: 14px;
+  text-decoration: none; margin-bottom: 20px;
+  transition: var(--nh-transition);
+}
+.nh-back-link:hover { gap: 10px; }
+
+  </style>
+</head>
+<body>
+
+<!-- Mobile Overlay -->
+<div class="nh-mobile-overlay" id="mobileOverlay" onclick="closeMobileNav()"></div>
+
+<!-- Mobile Navigation Drawer -->
+<div class="nh-mobile-nav" id="mobileNav">
+  <div class="nh-mobile-nav-header">
+    <a href="index.html" class="nh-brand" style="text-decoration:none">
+      <div class="nh-brand-icon" aria-hidden="true">N</div>
+      <div>
+        <div class="nh-brand-text">newshub <span>AFRICA</span></div>
+      </div>
+    </a>
+    <button class="nh-mobile-nav-close" onclick="closeMobileNav()" aria-label="Close menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <div class="nh-mobile-section-title">Sections</div>
+  <ul class="nh-mobile-nav-list">
+    <li><a href="index.html">Home <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="business.html">Business <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="technology.html">Technology <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="agriculture.html">Agriculture <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="mining.html">Mining <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="energy.html">Energy <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="markets.html">Markets <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="events.html">Events <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+  </ul>
+
+  <div class="nh-mobile-section-title">Account</div>
+  <ul class="nh-mobile-nav-list">
+    <li><a href="#" onclick="alert('Subscribe feature coming soon!'); closeMobileNav(); return false;">Subscribe <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="#" onclick="toggleTheme(); closeMobileNav(); return false;">Toggle Dark Mode <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+  </ul>
+
+  <div class="nh-mobile-section-title">Company</div>
+  <ul class="nh-mobile-nav-list">
+    <li><a href="#">About Us <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="#">Careers <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="#">Advertise <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="#">Contact <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+  </ul>
+</div>
+
+<header class="nh-header" role="banner">
+  <div class="nh-header-inner">
+    <div class="nh-header-top">
+      <a href="index.html" class="nh-brand">
+        <div class="nh-brand-icon" aria-hidden="true">N</div>
+        <div>
+          <div class="nh-brand-text">newshub <span>AFRICA</span></div>
+          <div class="nh-brand-tagline">The pulse of the continent</div>
+        </div>
+      </a>
+      <div class="nh-actions">
+        <div class="nh-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" placeholder="Search news..." aria-label="Search news">
+        </div>
+        <button class="nh-btn nh-btn-icon" onclick="toggleTheme()" aria-label="Toggle dark mode" style="padding:9px 12px;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center">
+          <svg id="nh-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          <svg id="nh-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        </button>
+        <button class="nh-btn" onclick="alert('Thank you for subscribing to NewsHub Africa!')">Subscribe</button>
+        <button class="nh-hamburger" id="hamburgerBtn" onclick="toggleMobileNav()" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <nav class="nh-nav" role="navigation" aria-label="Main navigation">
+      <a href="index.html" class="nh-nav-item">Home</a>
+      <a href="business.html" class="nh-nav-item">Business</a>
+      <a href="technology.html" class="nh-nav-item">Technology</a>
+      <a href="agriculture.html" class="nh-nav-item">Agriculture</a>
+      <a href="mining.html" class="nh-nav-item">Mining</a>
+      <a href="energy.html" class="nh-nav-item">Energy</a>
+      <a href="markets.html" class="nh-nav-item active">Markets</a>
+      <a href="events.html" class="nh-nav-item">Events</a>
+      <div class="nh-live" role="status" aria-live="polite"><span class="dot"></span><span>Live Updates</span></div>
+    </nav>
+  </div>
+</header>
+
+<main class="nh-main">
+
+  <a href="markets.html" class="nh-back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+    Back to Markets
+  </a>
+
+  <div class="nh-category-hero">
+    <h1>Commodities</h1>
+    <p>Live prices, charts, and analysis for Africa's key commodity exports and global benchmarks. From gold and oil to cocoa and coffee — track what moves the continent.</p>
+  </div>
+
+  <!-- Hero Stats -->
+  <div class="nh-commodity-hero-stats">
+    <div class="nh-commodity-hero-stat">
+      <div class="icon">🛢️</div>
+      <div class="label">Brent Crude</div>
+      <div class="value">$84.62</div>
+      <div class="sub" style="color:var(--nh-green)">+1.24% today</div>
+    </div>
+    <div class="nh-commodity-hero-stat">
+      <div class="icon">🥇</div>
+      <div class="label">Gold Spot</div>
+      <div class="value">$2,487.30</div>
+      <div class="sub" style="color:var(--nh-green)">+0.72% today</div>
+    </div>
+    <div class="nh-commodity-hero-stat">
+      <div class="icon">🍫</div>
+      <div class="label">Cocoa</div>
+      <div class="value">$7,845</div>
+      <div class="sub" style="color:var(--nh-green)">+2.15% today</div>
+    </div>
+    <div class="nh-commodity-hero-stat">
+      <div class="icon">📈</div>
+      <div class="label">Bloomberg Commodity</div>
+      <div class="value">98.42</div>
+      <div class="sub" style="color:var(--nh-green)">+0.38% today</div>
+    </div>
+  </div>
+
+  <!-- Category Tabs -->
+  <div class="nh-commodity-tabs">
+    <button class="nh-commodity-tab active" onclick="filterCommodities('all', this)">All Commodities</button>
+    <button class="nh-commodity-tab" onclick="filterCommodities('energy', this)">Energy</button>
+    <button class="nh-commodity-tab" onclick="filterCommodities('metals', this)">Precious Metals</button>
+    <button class="nh-commodity-tab" onclick="filterCommodities('agri', this)">Agriculture</button>
+    <button class="nh-commodity-tab" onclick="filterCommodities('industrial', this)">Industrial</button>
+    <button class="nh-commodity-tab" onclick="filterCommodities('africa', this)">Africa Focus</button>
+  </div>
+
+  <!-- Commodity Cards Grid -->
+  <div class="nh-section-header">
+    <h2 class="nh-section-title">Price Board</h2>
+    <span style="font-size:12px;color:var(--nh-text-muted);">Last updated: <span id="lastUpdated">loading...</span></span>
+  </div>
+
+  <div class="nh-commodity-grid" id="commodityGrid">
+
+    <!-- Energy -->
+    <div class="nh-commodity-card" data-category="energy" onclick="openChartModal('Brent Crude', 84.62, 1.24, 'commodity')">
+      <div class="nh-commodity-icon oil">🛢️</div>
+      <div class="nh-commodity-name">Brent Crude</div>
+      <div class="nh-commodity-unit">USD / bbl</div>
+      <div class="nh-commodity-price">$84.62</div>
+      <div class="nh-commodity-change up">+1.24%</div>
+      <svg class="nh-commodity-spark up" viewBox="0 0 100 32"><path d="M0,26 L10,24 L20,23 L30,24 L40,21 L50,19 L60,18 L70,16 L80,13 L90,11 L100,9"/></svg>
+      <div class="nh-commodity-meta"><span>High: $85.10</span><span>Low: $83.45</span></div>
+    </div>
+
+    <div class="nh-commodity-card" data-category="energy" onclick="openChartModal('WTI Crude', 81.15, 1.08, 'commodity')">
+      <div class="nh-commodity-icon oil" style="background:linear-gradient(135deg,#2d3748,#1a202c);">🛢️</div>
+      <div class="nh-commodity-name">WTI Crude</div>
+      <div class="nh-commodity-unit">USD / bbl</div>
+      <div class="nh-commodity-price">$81.15</div>
+      <div class="nh-commodity-change up">+1.08%</div>
+      <svg class="nh-commodity-spark up" viewBox="0 0 100 32"><path d="M0,25 L10,23 L20,22 L30,23 L40,20 L50,18 L60,17 L70,15 L80,13 L90,11 L100,10"/></svg>
+      <div class="nh-commodity-meta"><span>High: $81.80</span><span>Low: $80.20</span></div>
+    </div>
+
+    <div class="nh-commodity-card" data-category="energy" onclick="openChartModal('Natural Gas', 2.45, -0.82, 'commodity')">
+      <div class="nh-commodity-icon natural-gas">🔥</div>
+      <div class="nh-commodity-name">Natural Gas</div>
+      <div class="nh-commodity-unit">USD / MMBtu</div>
+      <div class="nh-commodity-price">$2.45</div>
+      <div class="nh-commodity-change down">-0.82%</div>
+      <svg class="nh-commodity-spark down" viewBox="0 0 100 32"><path d="M0,8 L10,9 L20,8 L30,10 L40,11 L50,13 L60,14 L70,16 L80,18 L90,20 L100,22"/></svg>
+      <div class="nh-commodity-meta"><span>High: $2.52</span><span>Low: $2.38</span></div>
+    </div>
+
+    <!-- Precious Metals -->
+    <div class="nh-commodity-card" data-category="metals" onclick="openChartModal('Gold', 2487.30, 0.72, 'commodity')">
+      <div class="nh-commodity-icon gold">🥇</div>
+      <div class="nh-commodity-name">Gold</div>
+      <div class="nh-commodity-unit">USD / oz</div>
+      <div class="nh-commodity-price">$2,487.30</div>
+      <div class="nh-commodity-change up">+0.72%</div>
+      <svg class="nh-commodity-spark up" viewBox="0 0 100 32"><path d="M0,24 L10,22 L20,23 L30,20 L40,18 L50,16 L60,17 L70,14 L80,12 L90,10 L100,8"/></svg>
+      <div class="nh-commodity-meta"><span>High: $2,495</span><span>Low: $2,465</span></div>
+    </div>
+
+    <div class="nh-commodity-card" data-category="metals" onclick="openChartModal('Silver', 29.85, 0.45, 'commodity')">
+      <div class="nh-commodity-icon silver">🥈</div>
+      <div class="nh-commodity-name">Silver</div>
+      <div class="nh-commodity-unit">USD / oz</div>
+      <div class="nh-commodity-price">$29.85</div>
+      <div class="nh-commodity-change up">+0.45%</div>
+      <svg class="nh-commodity-spark up" viewBox="0 0 100 32"><path d="M0,22 L10,21 L20,20 L30,19 L40,18 L50,17 L60,16 L70,15 L80,14 L90,13 L100,12"/></svg>
+      <div class="nh-commodity-meta"><span>High: $30.10</span><span>Low: $29.50</span></div>
+    </div>
+
+    <div class="nh-commodity-card" data-category="metals" onclick="openChartModal('Platinum', 1024.50, -0.28, 'commodity')">
+      <div class="nh-commodity-icon platinum">⚪</div>
+      <div class="nh-commodity-name">Platinum</div>
+      <div class="nh-commodity-unit">USD / oz</div>
+      <div class="nh-commodity-price">$1,024.50</div>
+      <div class="nh-commodity-change down">-0.28%</div>
+      <svg class="nh-commodity-spark down" viewBox="0 0 100 32"><path d="M0,10 L10,11 L20,10 L30,12 L40,13 L50,14 L60,15 L70,16 L80,17 L90,18 L100,19"/></svg>
+      <div class="nh-commodity-meta"><span>High: $1,032</span><span>Low: $1,018</span></div>
+    </div>
+
+    <div class="nh-commodity-card" data-category="metals" onclick="openChartModal('Palladium', 1028.00, -1.15, 'commodity')">
+      <div class="nh-commodity-icon palladium">🔘</div>
+      <div class="nh-commodity-name">Palladium</div>
+      <div class="nh-commodity-unit">USD / oz</div>
+      <div class="nh-commodity-price">$1,028.00</div>
+      <div class="nh-commodity-change down">-1.15%</div>
+      <svg class="nh-commodity-spark down" viewBox="0 0 100 32"><path d="M0,8 L10,9 L20,10 L30,11 L40,12 L50,14 L60,15 L70,17 L80,19 L90,21 L100,23"/></svg>
+      <div class="nh-commodity-meta"><span>High: $1,045</span><span>Low: $1,015</span></div>
+    </div>
+
+    <!-- Agriculture -->
+    <div class="nh-commodity-card" data-category="agri africa" onclick="openChartModal('Cocoa', 7845.00, 2.15, 'commodity')">
+      <div class="nh-commodity-icon cocoa">🍫</div>
+      <div class="nh-commodity-name">Cocoa</div>
+      <div class="nh-commodity-unit">USD / mt</div>
+      <div class="nh-commodity-price">$7,845.00</div>
+      <div class="nh-commodity-change up">+2.15%</div>
+      <svg class="nh-commodity-spark up" viewBox="0 0 100 32"><path d="M0,28 L10,26 L20,27 L30,24 L40,22 L50,20 L60,18 L70,15 L80,12 L90,9 L100,6"/></svg>
+      <div class="nh-commodity-meta"><span>High: $7,920</span><span>Low: $7,680</span></div>
+    </div>
+
+    <div class="nh-commodity-card" data-category="agri africa" onclick="openChartModal('Coffee', 2.18, -0.91, 'commodity')">
+      <div class="nh-commodity-icon coffee">☕</div>
+      <div class="nh-commodity-name">Coffee (Arabica)</div>
+      <div class="nh-commodity-unit">USD / lb</div>
+      <div class="nh-commodity-price">$2.18</div>
+      <div class="nh-commodity-change down">-0.91%</div>
+      <svg class="nh-commodity-spark down" viewBox="0 0 100 32"><path d="M0,8 L10,9 L20,10 L30,9 L40,11 L50,12 L60,14 L70,15 L80,17 L90,19 L100,21"/></svg>
+      <div class="nh-commodity-meta"><span>High: $2.24</span><span>Low: $2.12</span></div>
+    </div>
+
+    <div class="nh-commodity-card" data-category="agri africa" onclick="openChartModal('Maize', 412.50, 0.55, 'commodity')">
+      <div class="nh-commodity-icon maize">🌽</div>
+      <div class="nh-commodity-name">Maize (Corn)</div>
+      <div class="nh-commodity-unit">USD / mt</div>
+      <div class="nh-commodity-price">$412.50</div>
+      <div class="nh-commodity-change up">+0.55%</div>
+      <svg class="nh-commodity-spark up" viewBox="0 0 100 32"><path d="M0,20 L10,19 L20,20 L30,18 L40,17 L50,18 L60,16 L70,15 L80,14 L90,13 L100,12"/></svg>
+      <div class="nh-commodity-meta"><span>High: $418</span><span>Low: $406</span></div>
+    </div>
+
+    <div class="nh-commodity-card" data-category="agri" onclick="openChartModal('Wheat', 245.80, -0.42, 'commodity')">
+      <div class="nh-commodity-icon wheat">🌾</div>
+      <div class="nh-commodity-name">Wheat</div>
+      <div class="nh-commodity-unit">USD / mt</div>
+      <div class="nh-commodity-price">$245.80</div>
+      <div class="nh-commodity-change down">-0.42%</div>
+      <svg class="nh-commodity-spark down" viewBox="0 0 100 32"><path d="M0,12 L10,13 L20,12 L30,14 L40,15 L50,16 L60,17 L70,18 L80,19 L90,20 L100,21"/></svg>
+      <div class="nh-commodity-meta"><span>High: $250</span><span>Low: $242</span></div>
+    </div>
+
+    <div class="nh-commodity-card" data-category="agri" onclick="openChartModal('Soybeans', 1185.40, 0.68, 'commodity')">
+      <div class="nh-commodity-icon soybeans">🫘</div>
+      <div class="nh-commodity-name">Soybeans</div>
+      <div class="nh-commodity-unit">USD / mt</div>
+      <div class="nh-commodity-price">$1,185.40</div>
+      <div class="nh-commodity-change up">+0.68%</div>
+      <svg class="nh-commodity-spark up" viewBox="0 0 100 32"><path d="M0,22 L10,21 L20,20 L30,19 L40,18 L50,17 L60,16 L70,15 L80,14 L90,13 L100,12"/></svg>
+      <div class="nh-commodity-meta"><span>High: $1,198</span><span>Low: $1,172</span></div>
+    </div>
+
+    <!-- Industrial -->
+    <div class="nh-commodity-card" data-category="industrial africa" onclick="openChartModal('Copper', 4.52, -0.38, 'commodity')">
+      <div class="nh-commodity-icon copper">⚙️</div>
+      <div class="nh-commodity-name">Copper</div>
+      <div class="nh-commodity-unit">USD / lb</div>
+      <div class="nh-commodity-price">$4.52</div>
+      <div class="nh-commodity-change down">-0.38%</div>
+      <svg class="nh-commodity-spark down" viewBox="0 0 100 32"><path d="M0,10 L10,11 L20,12 L30,11 L40,13 L50,14 L60,15 L70,16 L80,18 L90,19 L100,20"/></svg>
+      <div class="nh-commodity-meta"><span>High: $4.58</span><span>Low: $4.46</span></div>
+    </div>
+
+    <div class="nh-commodity-card" data-category="industrial" onclick="openChartModal('Aluminum', 2285.00, 0.92, 'commodity')">
+      <div class="nh-commodity-icon aluminum">🔩</div>
+      <div class="nh-commodity-name">Aluminum</div>
+      <div class="nh-commodity-unit">USD / mt</div>
+      <div class="nh-commodity-price">$2,285.00</div>
+      <div class="nh-commodity-change up">+0.92%</div>
+      <svg class="nh-commodity-spark up" viewBox="0 0 100 32"><path d="M0,24 L10,22 L20,23 L30,21 L40,19 L50,18 L60,16 L70,14 L80,13 L90,11 L100,10"/></svg>
+      <div class="nh-commodity-meta"><span>High: $2,310</span><span>Low: $2,260</span></div>
+    </div>
+
+    <div class="nh-commodity-card" data-category="industrial africa" onclick="openChartModal('Iron Ore', 108.50, -1.24, 'commodity')">
+      <div class="nh-commodity-icon iron">⛏️</div>
+      <div class="nh-commodity-name">Iron Ore</div>
+      <div class="nh-commodity-unit">USD / mt</div>
+      <div class="nh-commodity-price">$108.50</div>
+      <div class="nh-commodity-change down">-1.24%</div>
+      <svg class="nh-commodity-spark down" viewBox="0 0 100 32"><path d="M0,8 L10,9 L20,10 L30,11 L40,12 L50,14 L60,15 L70,17 L80,19 L90,21 L100,23"/></svg>
+      <div class="nh-commodity-meta"><span>High: $111</span><span>Low: $106</span></div>
+    </div>
+
+    <div class="nh-commodity-card" data-category="industrial africa" onclick="openChartModal('Uranium', 85.40, 3.25, 'commodity')">
+      <div class="nh-commodity-icon uranium">☢️</div>
+      <div class="nh-commodity-name">Uranium</div>
+      <div class="nh-commodity-unit">USD / lb</div>
+      <div class="nh-commodity-price">$85.40</div>
+      <div class="nh-commodity-change up">+3.25%</div>
+      <svg class="nh-commodity-spark up" viewBox="0 0 100 32"><path d="M0,28 L10,26 L20,24 L30,22 L40,20 L50,18 L60,15 L70,12 L80,9 L90,6 L100,4"/></svg>
+      <div class="nh-commodity-meta"><span>High: $87.50</span><span>Low: $82.80</span></div>
+    </div>
+
+    <!-- Africa Focus -->
+    <div class="nh-commodity-card" data-category="africa" onclick="openChartModal('Rough Diamonds', 145.20, 0.15, 'commodity')">
+      <div class="nh-commodity-icon diamond">💎</div>
+      <div class="nh-commodity-name">Rough Diamonds</div>
+      <div class="nh-commodity-unit">USD / ct</div>
+      <div class="nh-commodity-price">$145.20</div>
+      <div class="nh-commodity-change up">+0.15%</div>
+      <svg class="nh-commodity-spark up" viewBox="0 0 100 32"><path d="M0,18 L10,17 L20,18 L30,17 L40,16 L50,17 L60,16 L70,15 L80,16 L90,15 L100,14"/></svg>
+      <div class="nh-commodity-meta"><span>High: $148</span><span>Low: $142</span></div>
+    </div>
+
+    <div class="nh-commodity-card" data-category="africa agri" onclick="openChartModal('Palm Oil', 875.40, 1.42, 'commodity')">
+      <div class="nh-commodity-icon" style="background:linear-gradient(135deg,#48bb78,#276749);color:white;font-size:20px;">🌴</div>
+      <div class="nh-commodity-name">Palm Oil</div>
+      <div class="nh-commodity-unit">USD / mt</div>
+      <div class="nh-commodity-price">$875.40</div>
+      <div class="nh-commodity-change up">+1.42%</div>
+      <svg class="nh-commodity-spark up" viewBox="0 0 100 32"><path d="M0,24 L10,22 L20,23 L30,21 L40,19 L50,18 L60,16 L70,14 L80,12 L90,10 L100,8"/></svg>
+      <div class="nh-commodity-meta"><span>High: $885</span><span>Low: $865</span></div>
+    </div>
+
+    <div class="nh-commodity-card" data-category="africa agri" onclick="openChartModal('Cotton', 82.15, -0.65, 'commodity')">
+      <div class="nh-commodity-icon" style="background:linear-gradient(135deg,#f7fafc,#e2e8f0);font-size:20px;">🧵</div>
+      <div class="nh-commodity-name">Cotton</div>
+      <div class="nh-commodity-unit">USD / lb</div>
+      <div class="nh-commodity-price">$0.8215</div>
+      <div class="nh-commodity-change down">-0.65%</div>
+      <svg class="nh-commodity-spark down" viewBox="0 0 100 32"><path d="M0,10 L10,11 L20,10 L30,12 L40,13 L50,14 L60,15 L70,16 L80,17 L90,18 L100,19"/></svg>
+      <div class="nh-commodity-meta"><span>High: $0.835</span><span>Low: $0.810</span></div>
+    </div>
+
+    <div class="nh-commodity-card" data-category="africa agri" onclick="openChartModal('Rubber', 1680.00, 0.88, 'commodity')">
+      <div class="nh-commodity-icon" style="background:linear-gradient(135deg,#2d3748,#1a202c);color:white;font-size:20px;">🌳</div>
+      <div class="nh-commodity-name">Natural Rubber</div>
+      <div class="nh-commodity-unit">USD / mt</div>
+      <div class="nh-commodity-price">$1,680.00</div>
+      <div class="nh-commodity-change up">+0.88%</div>
+      <svg class="nh-commodity-spark up" viewBox="0 0 100 32"><path d="M0,22 L10,21 L20,20 L30,19 L40,18 L50,17 L60,16 L70,15 L80,14 L90,13 L100,12"/></svg>
+      <div class="nh-commodity-meta"><span>High: $1,695</span><span>Low: $1,665</span></div>
+    </div>
+
+  </div>
+
+  <!-- Detailed Commodity Table -->
+  <div class="nh-section-header">
+    <h2 class="nh-section-title">Detailed Prices</h2>
+    <button class="nh-view-all" onclick="exportTable()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Export CSV
+    </button>
+  </div>
+
+  <table class="nh-commodity-table" id="commodityTable">
+    <thead>
+      <tr>
+        <th onclick="sortTable(0)">Commodity
+          <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </th>
+        <th onclick="sortTable(1)">Category
+          <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </th>
+        <th onclick="sortTable(2)">Unit
+          <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </th>
+        <th onclick="sortTable(3)">Price
+          <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </th>
+        <th onclick="sortTable(4)">Change
+          <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </th>
+        <th>5D Trend</th>
+        <th onclick="sortTable(6)">YTD
+          <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-category="energy">
+        <td>
+          <div class="commodity-cell">
+            <div class="commodity-icon-sm" style="background:linear-gradient(135deg,#1a1a1a,#333);color:white;">🛢️</div>
+            <div class="commodity-info">
+              <span class="name">Brent Crude</span>
+              <span class="ticker">ICE: B</span>
+            </div>
+          </div>
+        </td>
+        <td>Energy</td>
+        <td>USD / bbl</td>
+        <td><strong>$84.62</strong></td>
+        <td><span class="nh-change-badge up">+1.24%</span></td>
+        <td><svg class="nh-sparkline-sm up" viewBox="0 0 80 24"><path d="M0,20 L8,18 L16,19 L24,16 L32,14 L40,13 L48,11 L56,9 L64,7 L72,5 L80,3"/></svg></td>
+        <td style="color:var(--nh-green)">+8.4%</td>
+      </tr>
+      <tr data-category="energy">
+        <td>
+          <div class="commodity-cell">
+            <div class="commodity-icon-sm" style="background:linear-gradient(135deg,#2d3748,#1a202c);color:white;">🛢️</div>
+            <div class="commodity-info">
+              <span class="name">WTI Crude</span>
+              <span class="ticker">NYMEX: CL</span>
+            </div>
+          </div>
+        </td>
+        <td>Energy</td>
+        <td>USD / bbl</td>
+        <td><strong>$81.15</strong></td>
+        <td><span class="nh-change-badge up">+1.08%</span></td>
+        <td><svg class="nh-sparkline-sm up" viewBox="0 0 80 24"><path d="M0,19 L8,17 L16,18 L24,16 L32,14 L40,13 L48,11 L56,10 L64,8 L72,6 L80,5"/></svg></td>
+        <td style="color:var(--nh-green)">+7.2%</td>
+      </tr>
+      <tr data-category="energy">
+        <td>
+          <div class="commodity-cell">
+            <div class="commodity-icon-sm" style="background:linear-gradient(135deg,#4299e1,#3182ce);color:white;">🔥</div>
+            <div class="commodity-info">
+              <span class="name">Natural Gas</span>
+              <span class="ticker">NYMEX: NG</span>
+            </div>
+          </div>
+        </td>
+        <td>Energy</td>
+        <td>USD / MMBtu</td>
+        <td><strong>$2.45</strong></td>
+        <td><span class="nh-change-badge down">-0.82%</span></td>
+        <td><svg class="nh-sparkline-sm down" viewBox="0 0 80 24"><path d="M0,6 L8,7 L16,8 L24,9 L32,10 L40,12 L48,13 L56,15 L64,17 L72,19 L80,21"/></svg></td>
+        <td style="color:var(--nh-red)">-12.5%</td>
+      </tr>
+      <tr data-category="metals">
+        <td>
+          <div class="commodity-cell">
+            <div class="commodity-icon-sm" style="background:linear-gradient(135deg,#fef3c7,#fbbf24);">🥇</div>
+            <div class="commodity-info">
+              <span class="name">Gold</span>
+              <span class="ticker">COMEX: GC</span>
+            </div>
+          </div>
+        </td>
+        <td>Precious Metals</td>
+        <td>USD / oz</td>
+        <td><strong>$2,487.30</strong></td>
+        <td><span class="nh-change-badge up">+0.72%</span></td>
+        <td><svg class="nh-sparkline-sm up" viewBox="0 0 80 24"><path d="M0,18 L8,16 L16,17 L24,15 L32,13 L40,12 L48,11 L56,9 L64,7 L72,5 L80,3"/></svg></td>
+        <td style="color:var(--nh-green)">+18.2%</td>
+      </tr>
+      <tr data-category="metals">
+        <td>
+          <div class="commodity-cell">
+            <div class="commodity-icon-sm" style="background:linear-gradient(135deg,#e2e8f0,#cbd5e0);">🥈</div>
+            <div class="commodity-info">
+              <span class="name">Silver</span>
+              <span class="ticker">COMEX: SI</span>
+            </div>
+          </div>
+        </td>
+        <td>Precious Metals</td>
+        <td>USD / oz</td>
+        <td><strong>$29.85</strong></td>
+        <td><span class="nh-change-badge up">+0.45%</span></td>
+        <td><svg class="nh-sparkline-sm up" viewBox="0 0 80 24"><path d="M0,16 L8,15 L16,14 L24,13 L32,12 L40,11 L48,10 L56,9 L64,8 L72,7 L80,6"/></svg></td>
+        <td style="color:var(--nh-green)">+22.4%</td>
+      </tr>
+      <tr data-category="metals">
+        <td>
+          <div class="commodity-cell">
+            <div class="commodity-icon-sm" style="background:linear-gradient(135deg,#e2e8f0,#a0aec0);">⚪</div>
+            <div class="commodity-info">
+              <span class="name">Platinum</span>
+              <span class="ticker">NYMEX: PL</span>
+            </div>
+          </div>
+        </td>
+        <td>Precious Metals</td>
+        <td>USD / oz</td>
+        <td><strong>$1,024.50</strong></td>
+        <td><span class="nh-change-badge down">-0.28%</span></td>
+        <td><svg class="nh-sparkline-sm down" viewBox="0 0 80 24"><path d="M0,8 L8,9 L16,8 L24,10 L32,11 L40,12 L48,13 L56,14 L64,15 L72,16 L80,17"/></svg></td>
+        <td style="color:var(--nh-red)">-3.8%</td>
+      </tr>
+      <tr data-category="metals">
+        <td>
+          <div class="commodity-cell">
+            <div class="commodity-icon-sm" style="background:linear-gradient(135deg,#718096,#a0aec0);color:white;">🔘</div>
+            <div class="commodity-info">
+              <span class="name">Palladium</span>
+              <span class="ticker">NYMEX: PA</span>
+            </div>
+          </div>
+        </td>
+        <td>Precious Metals</td>
+        <td>USD / oz</td>
+        <td><strong>$1,028.00</strong></td>
+        <td><span class="nh-change-badge down">-1.15%</span></td>
+        <td><svg class="nh-sparkline-sm down" viewBox="0 0 80 24"><path d="M0,6 L8,7 L16,8 L24,9 L32,10 L40,12 L48,14 L56,16 L64,18 L72,20 L80,22"/></svg></td>
+        <td style="color:var(--nh-red)">-15.2%</td>
+      </tr>
+      <tr data-category="agri africa">
+        <td>
+          <div class="commodity-cell">
+            <div class="commodity-icon-sm" style="background:linear-gradient(135deg,#5d4037,#3e2723);color:white;">🍫</div>
+            <div class="commodity-info">
+              <span class="name">Cocoa</span>
+              <span class="ticker">ICE: CC</span>
+            </div>
+          </div>
+        </td>
+        <td>Agriculture</td>
+        <td>USD / mt</td>
+        <td><strong>$7,845.00</strong></td>
+        <td><span class="nh-change-badge up">+2.15%</span></td>
+        <td><svg class="nh-sparkline-sm up" viewBox="0 0 80 24"><path d="M0,26 L8,24 L16,22 L24,20 L32,17 L40,14 L48,11 L56,8 L64,6 L72,4 L80,2"/></svg></td>
+        <td style="color:var(--nh-green)">+128.5%</td>
+      </tr>
+      <tr data-category="agri africa">
+        <td>
+          <div class="commodity-cell">
+            <div class="commodity-icon-sm" style="background:linear-gradient(135deg,#6f4e37,#4a3428);color:white;">☕</div>
+            <div class="commodity-info">
+              <span class="name">Coffee (Arabica)</span>
+              <span class="ticker">ICE: KC</span>
+            </div>
+          </div>
+        </td>
+        <td>Agriculture</td>
+        <td>USD / lb</td>
+        <td><strong>$2.18</strong></td>
+        <td><span class="nh-change-badge down">-0.91%</span></td>
+        <td><svg class="nh-sparkline-sm down" viewBox="0 0 80 24"><path d="M0,7 L8,8 L16,9 L24,8 L32,10 L40,11 L48,13 L56,14 L64,16 L72,18 L80,20"/></svg></td>
+        <td style="color:var(--nh-green)">+15.8%</td>
+      </tr>
+      <tr data-category="agri">
+        <td>
+          <div class="commodity-cell">
+            <div class="commodity-icon-sm" style="background:linear-gradient(135deg,#f6e05e,#d69e2e);">🌾</div>
+            <div class="commodity-info">
+              <span class="name">Wheat</span>
+              <span class="ticker">CBOT: W</span>
+            </div>
+          </div>
+        </td>
+        <td>Agriculture</td>
+        <td>USD / mt</td>
+        <td><strong>$245.80</strong></td>
+        <td><span class="nh-change-badge down">-0.42%</span></td>
+        <td><svg class="nh-sparkline-sm down" viewBox="0 0 80 24"><path d="M0,10 L8,11 L16,10 L24,12 L32,13 L40,14 L48,15 L56,16 L64,17 L72,18 L80,19"/></svg></td>
+        <td style="color:var(--nh-red)">-8.2%</td>
+      </tr>
+      <tr data-category="agri">
+        <td>
+          <div class="commodity-cell">
+            <div class="commodity-icon-sm" style="background:linear-gradient(135deg,#68d391,#38a169);color:white;">🫘</div>
+            <div class="commodity-info">
+              <span class="name">Soybeans</span>
+              <span class="ticker">CBOT: S</span>
+            </div>
+          </div>
+        </td>
+        <td>Agriculture</td>
+        <td>USD / mt</td>
+        <td><strong>$1,185.40</strong></td>
+        <td><span class="nh-change-badge up">+0.68%</span></td>
+        <td><svg class="nh-sparkline-sm up" viewBox="0 0 80 24"><path d="M0,18 L8,17 L16,16 L24,15 L32,14 L40,13 L48,12 L56,11 L64,10 L72,9 L80,8"/></svg></td>
+        <td style="color:var(--nh-green)">+4.5%</td>
+      </tr>
+      <tr data-category="industrial africa">
+        <td>
+          <div class="commodity-cell">
+            <div class="commodity-icon-sm" style="background:linear-gradient(135deg,#b87333,#8b5a2b);color:white;">⚙️</div>
+            <div class="commodity-info">
+              <span class="name">Copper</span>
+              <span class="ticker">COMEX: HG</span>
+            </div>
+          </div>
+        </td>
+        <td>Industrial</td>
+        <td>USD / lb</td>
+        <td><strong>$4.52</strong></td>
+        <td><span class="nh-change-badge down">-0.38%</span></td>
+        <td><svg class="nh-sparkline-sm down" viewBox="0 0 80 24"><path d="M0,9 L8,10 L16,11 L24,10 L32,12 L40,13 L48,14 L56,15 L64,17 L72,18 L80,19"/></svg></td>
+        <td style="color:var(--nh-green)">+12.8%</td>
+      </tr>
+      <tr data-category="industrial">
+        <td>
+          <div class="commodity-cell">
+            <div class="commodity-icon-sm" style="background:linear-gradient(135deg,#a0aec0,#718096);color:white;">🔩</div>
+            <div class="commodity-info">
+              <span class="name">Aluminum</span>
+              <span class="ticker">LME: AL</span>
+            </div>
+          </div>
+        </td>
+        <td>Industrial</td>
+        <td>USD / mt</td>
+        <td><strong>$2,285.00</strong></td>
+        <td><span class="nh-change-badge up">+0.92%</span></td>
+        <td><svg class="nh-sparkline-sm up" viewBox="0 0 80 24"><path d="M0,20 L8,18 L16,19 L24,17 L32,15 L40,14 L48,12 L56,10 L64,9 L72,7 L80,6"/></svg></td>
+        <td style="color:var(--nh-green)">+9.4%</td>
+      </tr>
+      <tr data-category="industrial africa">
+        <td>
+          <div class="commodity-cell">
+            <div class="commodity-icon-sm" style="background:linear-gradient(135deg,#744210,#975a16);color:white;">⛏️</div>
+            <div class="commodity-info">
+              <span class="name">Iron Ore</span>
+              <span class="ticker">SGX: FE</span>
+            </div>
+          </div>
+        </td>
+        <td>Industrial</td>
+        <td>USD / mt</td>
+        <td><strong>$108.50</strong></td>
+        <td><span class="nh-change-badge down">-1.24%</span></td>
+        <td><svg class="nh-sparkline-sm down" viewBox="0 0 80 24"><path d="M0,7 L8,8 L16,9 L24,10 L32,11 L40,13 L48,14 L56,16 L64,18 L72,20 L80,22"/></svg></td>
+        <td style="color:var(--nh-red)">-5.6%</td>
+      </tr>
+      <tr data-category="industrial africa">
+        <td>
+          <div class="commodity-cell">
+            <div class="commodity-icon-sm" style="background:linear-gradient(135deg,#48bb78,#2f855a);color:white;">☢️</div>
+            <div class="commodity-info">
+              <span class="name">Uranium</span>
+              <span class="ticker">UxC: U3O8</span>
+            </div>
+          </div>
+        </td>
+        <td>Industrial</td>
+        <td>USD / lb</td>
+        <td><strong>$85.40</strong></td>
+        <td><span class="nh-change-badge up">+3.25%</span></td>
+        <td><svg class="nh-sparkline-sm up" viewBox="0 0 80 24"><path d="M0,26 L8,24 L16,22 L24,19 L32,16 L40,13 L48,10 L56,7 L64,5 L72,3 L80,2"/></svg></td>
+        <td style="color:var(--nh-green)">+42.8%</td>
+      </tr>
+      <tr data-category="africa">
+        <td>
+          <div class="commodity-cell">
+            <div class="commodity-icon-sm" style="background:linear-gradient(135deg,#e2e8f0,#a0aec0);">💎</div>
+            <div class="commodity-info">
+              <span class="name">Rough Diamonds</span>
+              <span class="ticker">DPA: RDI</span>
+            </div>
+          </div>
+        </td>
+        <td>Africa Focus</td>
+        <td>USD / ct</td>
+        <td><strong>$145.20</strong></td>
+        <td><span class="nh-change-badge up">+0.15%</span></td>
+        <td><svg class="nh-sparkline-sm up" viewBox="0 0 80 24"><path d="M0,14 L8,13 L16,14 L24,13 L32,12 L40,13 L48,12 L56,11 L64,12 L72,11 L80,10"/></svg></td>
+        <td style="color:var(--nh-green)">+2.1%</td>
+      </tr>
+      <tr data-category="africa agri">
+        <td>
+          <div class="commodity-cell">
+            <div class="commodity-icon-sm" style="background:linear-gradient(135deg,#48bb78,#276749);color:white;">🌴</div>
+            <div class="commodity-info">
+              <span class="name">Palm Oil</span>
+              <span class="ticker">BMD: FCPO</span>
+            </div>
+          </div>
+        </td>
+        <td>Africa Focus</td>
+        <td>USD / mt</td>
+        <td><strong>$875.40</strong></td>
+        <td><span class="nh-change-badge up">+1.42%</span></td>
+        <td><svg class="nh-sparkline-sm up" viewBox="0 0 80 24"><path d="M0,22 L8,20 L16,21 L24,19 L32,17 L40,16 L48,14 L56,12 L64,10 L72,8 L80,6"/></svg></td>
+        <td style="color:var(--nh-green)">+18.6%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Market Insights -->
+  <div class="nh-section-header">
+    <h2 class="nh-section-title">Market Insights</h2>
+    <a href="#" class="nh-view-all">All Analysis &rarr;</a>
+  </div>
+
+  <div class="nh-insight-grid">
+    <div class="nh-insight-card">
+      <span class="tag bullish">Bullish</span>
+      <h3>Cocoa Surge Continues as West African Supply Tightens</h3>
+      <p>Cocoa prices have more than doubled this year as disease and adverse weather slash output in Côte d'Ivoire and Ghana, which together produce 60% of global supply. Analysts see further upside.</p>
+      <div class="meta">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        4 min read &middot; 23 Jul 2026
+      </div>
+    </div>
+    <div class="nh-insight-card">
+      <span class="tag neutral">Neutral</span>
+      <h3>Gold Holds Near Record Highs on Fed Rate-Cut Bets</h3>
+      <p>Gold remains supported above $2,480/oz as markets price in a September rate cut. African gold miners are seeing improved margins, with South African producers leading the charge.</p>
+      <div class="meta">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        6 min read &middot; 23 Jul 2026
+      </div>
+    </div>
+    <div class="nh-insight-card">
+      <span class="tag bearish">Bearish</span>
+      <h3>Iron Ore Weakens on China Property Sector Concerns</h3>
+      <p>Benchmark iron ore prices slipped below $110/mt as Chinese steel demand shows signs of fatigue. African producers including Kumba Iron Ore are monitoring the downturn closely.</p>
+      <div class="meta">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        5 min read &middot; 22 Jul 2026
+      </div>
+    </div>
+  </div>
+
+  <!-- Trust Bar -->
+  <div class="nh-trust-bar">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--nh-blue)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span style="font-size:12px;font-weight:600;color:var(--nh-text-primary);">Data Provenance</span>
+      </div>
+      <p>
+        <strong>Delay Disclaimer:</strong> Commodity prices are delayed by 10–15 minutes. 
+        <strong>Sources:</strong> ICE, NYMEX, COMEX, LME, CBOT, SGX, Alpha Vantage, and exchange direct feeds.
+      </p>
+    </div>
+    <div class="nh-trust-sources">
+      <span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Delayed 10–15 min
+      </span>
+      <span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <span id="lastUpdated2">loading...</span>
+      </span>
+    </div>
+  </div>
+
+</main>
+
+<div class="nh-ticker-wrap" role="complementary" aria-label="Live commodity ticker">
+  <div class="nh-ticker-label">Commodities</div>
+  <div class="nh-ticker">
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">Gold</span><span class="nh-ticker-price">$2,487.30</span><span class="nh-ticker-change up">+0.72%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">Brent</span><span class="nh-ticker-price">$84.62</span><span class="nh-ticker-change up">+1.24%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">Cocoa</span><span class="nh-ticker-price">$7,845</span><span class="nh-ticker-change up">+2.15%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">Copper</span><span class="nh-ticker-price">$4.52</span><span class="nh-ticker-change down">-0.38%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">Coffee</span><span class="nh-ticker-price">$2.18</span><span class="nh-ticker-change down">-0.91%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">Uranium</span><span class="nh-ticker-price">$85.40</span><span class="nh-ticker-change up">+3.25%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">Wheat</span><span class="nh-ticker-price">$245.80</span><span class="nh-ticker-change down">-0.42%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">Platinum</span><span class="nh-ticker-price">$1,024.50</span><span class="nh-ticker-change down">-0.28%</span></div>
+    <!-- Duplicate for seamless scroll -->
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">Gold</span><span class="nh-ticker-price">$2,487.30</span><span class="nh-ticker-change up">+0.72%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">Brent</span><span class="nh-ticker-price">$84.62</span><span class="nh-ticker-change up">+1.24%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">Cocoa</span><span class="nh-ticker-price">$7,845</span><span class="nh-ticker-change up">+2.15%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">Copper</span><span class="nh-ticker-price">$4.52</span><span class="nh-ticker-change down">-0.38%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">Coffee</span><span class="nh-ticker-price">$2.18</span><span class="nh-ticker-change down">-0.91%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">Uranium</span><span class="nh-ticker-price">$85.40</span><span class="nh-ticker-change up">+3.25%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">Wheat</span><span class="nh-ticker-price">$245.80</span><span class="nh-ticker-change down">-0.42%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">Platinum</span><span class="nh-ticker-price">$1,024.50</span><span class="nh-ticker-change down">-0.28%</span></div>
+  </div>
+</div>
+
+<div class="nh-newsletter">
+  <div class="nh-newsletter-box">
+    <div class="nh-newsletter-content">
+      <h2>Commodity Intelligence in Your Inbox</h2>
+      <p>Get daily price alerts, market analysis, and Africa-focused commodity news delivered every morning.</p>
+      <form class="nh-newsletter-form" onsubmit="event.preventDefault(); alert('Thank you for subscribing to NewsHub Africa Commodities!');">
+        <input type="email" placeholder="Enter your email" required aria-label="Email address">
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+    <div class="nh-stats">
+      <div class="nh-stat"><div class="nh-stat-num">250K+</div><div class="nh-stat-label">Subscribers</div></div>
+      <div class="nh-stat"><div class="nh-stat-num">54</div><div class="nh-stat-label">Countries</div></div>
+      <div class="nh-stat"><div class="nh-stat-num">Daily</div><div class="nh-stat-label">Updates</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="nh-footer">
+  <div class="nh-footer-inner">
+    <div class="nh-footer-top">
+      <div class="nh-footer-brand">
+        <div class="nh-brand-text">newshub <span>AFRICA</span></div>
+        <p>Your trusted source for comprehensive business, technology, agriculture, mining, and energy news across the African continent.</p>
+        <div class="nh-social">
+          <a href="#" aria-label="Twitter">𝕏</a>
+          <a href="#" aria-label="LinkedIn">in</a>
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="Instagram">📷</a>
+        </div>
+      </div>
+      <div class="nh-footer-col"><h4>Sections</h4><ul><li><a href="business.html">Business</a></li><li><a href="technology.html">Technology</a></li><li><a href="agriculture.html">Agriculture</a></li><li><a href="mining.html">Mining</a></li><li><a href="energy.html">Energy</a></li></ul></div>
+      <div class="nh-footer-col"><h4>Company</h4><ul><li><a href="#">About Us</a></li><li><a href="#">Careers</a></li><li><a href="#">Advertise</a></li><li><a href="#">Contact</a></li></ul></div>
+      <div class="nh-footer-col"><h4>Resources</h4><ul><li><a href="#">Market Data</a></li><li><a href="#">Newsletters</a></li><li><a href="#">Podcasts</a></li><li><a href="#">Events</a></li></ul></div>
+      <div class="nh-footer-col"><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li><li><a href="#">Cookie Policy</a></li></ul></div>
+    </div>
+    <div class="nh-footer-bottom">
+      <span>&copy; 2026 NewsHub Africa. All rights reserved.</span>
+      <div style="display:flex;gap:16px"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Cookies</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ==========================
+// THEME TOGGLE
+// ==========================
+function toggleTheme() {
+  const html = document.documentElement;
+  const moon = document.getElementById('nh-moon');
+  const sun = document.getElementById('nh-sun');
+  if (html.getAttribute('data-theme') === 'dark') {
+    html.removeAttribute('data-theme');
+    if (moon) moon.style.display = 'block';
+    if (sun) sun.style.display = 'none';
+  } else {
+    html.setAttribute('data-theme', 'dark');
+    if (moon) moon.style.display = 'none';
+    if (sun) sun.style.display = 'block';
+  }
+}
+
+// ==========================
+// MOBILE NAV
+// ==========================
+function toggleMobileNav() {
+  const nav = document.getElementById('mobileNav');
+  const overlay = document.getElementById('mobileOverlay');
+  const btn = document.getElementById('hamburgerBtn');
+  const isOpen = nav.classList.contains('open');
+
+  if (isOpen) {
+    closeMobileNav();
+  } else {
+    nav.style.display = 'block';
+    overlay.style.display = 'block';
+    void nav.offsetWidth;
+    void overlay.offsetWidth;
+    nav.classList.add('open');
+    overlay.classList.add('open');
+    btn.classList.add('active');
+    btn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeMobileNav() {
+  const nav = document.getElementById('mobileNav');
+  const overlay = document.getElementById('mobileOverlay');
+  const btn = document.getElementById('hamburgerBtn');
+
+  nav.classList.remove('open');
+  overlay.classList.remove('open');
+  btn.classList.remove('active');
+  btn.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+
+  setTimeout(() => {
+    if (!nav.classList.contains('open')) {
+      nav.style.display = 'none';
+      overlay.style.display = 'none';
+    }
+  }, 300);
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeMobileNav();
+    closeChartModal();
+  }
+});
+
+// ==========================
+// FILTER COMMODITIES
+// ==========================
+function filterCommodities(category, btn) {
+  // Update active tab
+  document.querySelectorAll('.nh-commodity-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+
+  // Filter cards
+  document.querySelectorAll('.nh-commodity-card').forEach(card => {
+    const cats = card.dataset.category ? card.dataset.category.split(' ') : [];
+    if (category === 'all' || cats.includes(category)) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  // Filter table rows
+  document.querySelectorAll('.nh-commodity-table tbody tr').forEach(row => {
+    const cats = row.dataset.category ? row.dataset.category.split(' ') : [];
+    if (category === 'all' || cats.includes(category)) {
+      row.style.display = 'table-row';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+}
+
+// ==========================
+// SORT TABLE
+// ==========================
+let currentSort = { column: -1, direction: 'desc' };
+
+function sortTable(columnIndex) {
+  const table = document.getElementById('commodityTable');
+  if (!table) return;
+
+  const tbody = table.querySelector('tbody');
+  const rows = Array.from(tbody.querySelectorAll('tr')).filter(r => r.style.display !== 'none');
+
+  if (currentSort.column === columnIndex) {
+    currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+  } else {
+    currentSort.direction = 'desc';
+    currentSort.column = columnIndex;
+  }
+
+  table.querySelectorAll('th').forEach(th => {
+    th.classList.remove('sort-asc', 'sort-desc');
+  });
+  const activeHeader = table.querySelectorAll('th')[columnIndex];
+  if (activeHeader) {
+    activeHeader.classList.add(currentSort.direction === 'asc' ? 'sort-asc' : 'sort-desc');
+  }
+
+  rows.sort((a, b) => {
+    let aVal, bVal;
+
+    if (columnIndex === 0) {
+      aVal = a.querySelector('.name')?.textContent.trim().toLowerCase() || '';
+      bVal = b.querySelector('.name')?.textContent.trim().toLowerCase() || '';
+      return currentSort.direction === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+    } else if (columnIndex === 1) {
+      aVal = a.cells[1].textContent.trim();
+      bVal = b.cells[1].textContent.trim();
+      return currentSort.direction === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+    } else if (columnIndex === 3) {
+      aVal = parseFloat(a.cells[3].textContent.replace(/[^0-9.]/g, '')) || 0;
+      bVal = parseFloat(b.cells[3].textContent.replace(/[^0-9.]/g, '')) || 0;
+    } else if (columnIndex === 4) {
+      aVal = parseFloat(a.cells[4].textContent.replace('%', '').replace('+', '')) || 0;
+      bVal = parseFloat(b.cells[4].textContent.replace('%', '').replace('+', '')) || 0;
+    } else if (columnIndex === 6) {
+      aVal = parseFloat(a.cells[6].textContent.replace('%', '').replace('+', '')) || 0;
+      bVal = parseFloat(b.cells[6].textContent.replace('%', '').replace('+', '')) || 0;
+    } else {
+      aVal = a.cells[columnIndex].textContent.trim().toLowerCase();
+      bVal = b.cells[columnIndex].textContent.trim().toLowerCase();
+      return currentSort.direction === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+    }
+
+    return currentSort.direction === 'asc' ? aVal - bVal : bVal - aVal;
+  });
+
+  rows.forEach(row => tbody.appendChild(row));
+}
+
+// ==========================
+// EXPORT TABLE
+// ==========================
+function exportTable() {
+  const table = document.getElementById('commodityTable');
+  if (!table) return;
+
+  let csv = 'Commodity,Category,Unit,Price,Change,YTD\n';
+  table.querySelectorAll('tbody tr').forEach(row => {
+    if (row.style.display === 'none') return;
+    const name = row.querySelector('.name')?.textContent.trim() || '';
+    const category = row.cells[1].textContent.trim();
+    const unit = row.cells[2].textContent.trim();
+    const price = row.cells[3].textContent.trim().replace('$', '').replace(',', '');
+    const change = row.cells[4].textContent.trim().replace('%', '').replace('+', '');
+    const ytd = row.cells[6].textContent.trim().replace('%', '').replace('+', '');
+    csv += `"${name}","${category}","${unit}",${price},${change},${ytd}\n`;
+  });
+
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'newshub_commodities_' + new Date().toISOString().split('T')[0] + '.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ==========================
+// TIMESTAMP
+// ==========================
+function updateTimestamp() {
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZoneName: 'short' });
+  const dateStr = now.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
+
+  const el1 = document.getElementById('lastUpdated');
+  const el2 = document.getElementById('lastUpdated2');
+  if (el1) el1.textContent = dateStr + ' ' + timeStr;
+  if (el2) el2.textContent = dateStr + ' ' + timeStr;
+}
+
+setInterval(updateTimestamp, 60000);
+updateTimestamp();
+
+// ==========================
+// CHART MODAL
+// ==========================
+let currentChartData = null;
+let currentChartTimeframe = '1W';
+
+function openChartModal(name, price, changePct, type) {
+  const overlay = document.getElementById('chartModalOverlay');
+  const modalName = document.getElementById('chartModalName');
+  const modalBadge = document.getElementById('chartModalBadge');
+
+  modalName.textContent = name;
+  modalBadge.textContent = (changePct >= 0 ? '+' : '') + changePct.toFixed(2) + '%';
+  modalBadge.className = 'badge ' + (changePct >= 0 ? 'up' : 'down');
+
+  currentChartData = generateChartData(price, changePct, currentChartTimeframe);
+  renderChart(currentChartData, changePct >= 0);
+  updateChartStats(currentChartData, price, type);
+
+  overlay.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  requestAnimationFrame(() => overlay.classList.add('open'));
+}
+
+function closeChartModal(event) {
+  if (event && event.target !== event.currentTarget) return;
+  const overlay = document.getElementById('chartModalOverlay');
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+  setTimeout(() => { overlay.style.display = 'none'; }, 300);
+}
+
+function changeChartTimeframe(tf) {
+  currentChartTimeframe = tf;
+  const buttons = document.querySelectorAll('.nh-chart-timeframe button');
+  buttons.forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+
+  if (currentChartData) {
+    const basePrice = currentChartData[currentChartData.length - 1].price;
+    const startPrice = currentChartData[0].price;
+    const changePct = ((basePrice - startPrice) / startPrice) * 100;
+    currentChartData = generateChartData(basePrice, changePct, tf);
+    renderChart(currentChartData, changePct >= 0);
+  }
+}
+
+function generateChartData(basePrice, changePct, timeframe) {
+  const now = new Date();
+  const data = [];
+  let points, volatility;
+
+  switch(timeframe) {
+    case '1D': points = 24; volatility = 0.3; break;
+    case '1W': points = 7; volatility = 0.8; break;
+    case '1M': points = 30; volatility = 1.5; break;
+    case '6M': points = 26; volatility = 3.0; break;
+    case '1Y': points = 52; volatility = 5.0; break;
+    default: points = 7; volatility = 0.8;
+  }
+
+  const isUp = changePct >= 0;
+  const totalChange = basePrice * (Math.abs(changePct) / 100);
+  const startPrice = isUp ? basePrice - totalChange : basePrice + totalChange;
+
+  for (let i = 0; i < points; i++) {
+    const progress = i / (points - 1);
+    const trend = startPrice + (basePrice - startPrice) * progress;
+    const noise = (Math.sin(i * 2.1) * volatility * 0.5 + Math.sin(i * 4.3) * volatility * 0.3) * (basePrice / 1000);
+    const randomWalk = (Math.random() - 0.5) * volatility * (basePrice / 2000);
+    let price = trend + noise + randomWalk;
+    if (i === points - 1) price = basePrice;
+
+    const date = new Date(now);
+    if (timeframe === '1D') date.setHours(date.getHours() - (points - 1 - i));
+    else if (timeframe === '1W') date.setDate(date.getDate() - (points - 1 - i));
+    else if (timeframe === '1M') date.setDate(date.getDate() - (points - 1 - i));
+    else if (timeframe === '6M') date.setDate(date.getDate() - (points - 1 - i) * 7);
+    else date.setDate(date.getDate() - (points - 1 - i) * 7);
+
+    data.push({ date, price: Math.max(price, basePrice * 0.5), label: formatChartDate(date, timeframe) });
+  }
+  return data;
+}
+
+function formatChartDate(date, timeframe) {
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  if (timeframe === '1D') return date.getHours() + ':00';
+  if (timeframe === '1W' || timeframe === '1M') return date.getDate() + ' ' + months[date.getMonth()];
+  return months[date.getMonth()] + " '" + (date.getFullYear() % 100);
+}
+
+function renderChart(data, isUp) {
+  const svg = document.getElementById('chartSvg');
+  const areaPath = document.getElementById('chartAreaPath');
+  const linePath = document.getElementById('chartLinePath');
+
+  const width = 800;
+  const height = 380;
+  const padding = { top: 20, right: 20, bottom: 40, left: 20 };
+  const chartW = width - padding.left - padding.right;
+  const chartH = height - padding.top - padding.bottom;
+
+  const prices = data.map(d => d.price);
+  const minPrice = Math.min(...prices);
+  const maxPrice = Math.max(...prices);
+  const priceRange = maxPrice - minPrice || 1;
+
+  const points = data.map((d, i) => {
+    const x = padding.left + (i / (data.length - 1)) * chartW;
+    const y = padding.top + chartH - ((d.price - minPrice) / priceRange) * chartH;
+    return { x, y, price: d.price, label: d.label };
+  });
+
+  const lineD = points.map((p, i) => (i === 0 ? 'M' : 'L') + p.x.toFixed(1) + ',' + p.y.toFixed(1)).join(' ');
+  const areaD = lineD + ' L' + points[points.length-1].x.toFixed(1) + ',' + (height - padding.bottom) + 
+                ' L' + points[0].x.toFixed(1) + ',' + (height - padding.bottom) + ' Z';
+
+  linePath.setAttribute('d', lineD);
+  areaPath.setAttribute('d', areaD);
+
+  const colorClass = isUp ? 'up' : 'down';
+  linePath.setAttribute('class', 'chart-line ' + colorClass);
+  areaPath.setAttribute('class', 'chart-area ' + colorClass);
+
+  const canvas = document.getElementById('chartCanvas');
+  const tooltip = document.getElementById('chartTooltip');
+
+  canvas.onmousemove = (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const relativeX = Math.max(0, Math.min(1, mouseX / rect.width));
+    const index = Math.round(relativeX * (points.length - 1));
+    const point = points[Math.min(index, points.length - 1)];
+
+    tooltip.style.left = (mouseX - 40) + 'px';
+    tooltip.style.top = (point.y - 60) + 'px';
+    tooltip.classList.add('visible');
+    document.getElementById('tooltipDate').textContent = point.label;
+    document.getElementById('tooltipPrice').textContent = point.price.toLocaleString('en-US', { maximumFractionDigits: 2 });
+  };
+
+  canvas.onmouseleave = () => {
+    tooltip.classList.remove('visible');
+  };
+}
+
+function updateChartStats(data, currentPrice, type) {
+  const prices = data.map(d => d.price);
+  const open = prices[0];
+  const high = Math.max(...prices);
+  const low = Math.min(...prices);
+
+  document.getElementById('statOpen').textContent = open.toLocaleString('en-US', { maximumFractionDigits: 0 });
+  document.getElementById('statHigh').textContent = high.toLocaleString('en-US', { maximumFractionDigits: 0 });
+  document.getElementById('statLow').textContent = low.toLocaleString('en-US', { maximumFractionDigits: 0 });
+
+  const volMap = { 'commodity': '1.8M', 'stock': '45.2M', 'index': '2.4B' };
+  const capMap = { 'commodity': '—', 'stock': '7.66T', 'index': '1.2T' };
+  document.getElementById('statVol').textContent = volMap[type] || 'N/A';
+  document.getElementById('statMktCap').textContent = capMap[type] || 'N/A';
+}
+</script>
+
+<!-- Chart Modal Overlay -->
+<div class="nh-chart-modal-overlay" id="chartModalOverlay" onclick="closeChartModal(event)">
+  <div class="nh-chart-modal" onclick="event.stopPropagation()">
+    <div class="nh-chart-modal-header">
+      <h3 id="chartModalTitle">
+        <span id="chartModalName">Gold</span>
+        <span class="badge up" id="chartModalBadge">+0.72%</span>
+      </h3>
+      <button class="nh-chart-modal-close" onclick="closeChartModal()" aria-label="Close chart">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="nh-chart-modal-body">
+      <div class="nh-chart-timeframe">
+        <button onclick="changeChartTimeframe('1D')">1D</button>
+        <button class="active" onclick="changeChartTimeframe('1W')">1W</button>
+        <button onclick="changeChartTimeframe('1M')">1M</button>
+        <button onclick="changeChartTimeframe('6M')">6M</button>
+        <button onclick="changeChartTimeframe('1Y')">1Y</button>
+      </div>
+      <div class="nh-chart-canvas" id="chartCanvas">
+        <svg class="nh-chart-svg" id="chartSvg" viewBox="0 0 800 380" preserveAspectRatio="none">
+          <line class="grid-line" x1="0" y1="76" x2="800" y2="76"/>
+          <line class="grid-line" x1="0" y1="152" x2="800" y2="152"/>
+          <line class="grid-line" x1="0" y1="228" x2="800" y2="228"/>
+          <line class="grid-line" x1="0" y1="304" x2="800" y2="304"/>
+          <path class="chart-area up" id="chartAreaPath" d=""/>
+          <path class="chart-line up" id="chartLinePath" d=""/>
+        </svg>
+        <div class="nh-chart-tooltip" id="chartTooltip">
+          <div id="tooltipDate" style="color:var(--nh-text-muted);margin-bottom:2px;">Jul 23</div>
+          <div id="tooltipPrice" style="font-weight:600;color:var(--nh-text-primary);">2,487.30</div>
+        </div>
+      </div>
+      <div class="nh-chart-stats" id="chartStats">
+        <div class="nh-chart-stat"><div class="val" id="statOpen">2,465</div><div class="lbl">Open</div></div>
+        <div class="nh-chart-stat"><div class="val" id="statHigh">2,495</div><div class="lbl">High</div></div>
+        <div class="nh-chart-stat"><div class="val" id="statLow">2,450</div><div class="lbl">Low</div></div>
+        <div class="nh-chart-stat"><div class="val" id="statVol">1.8M</div><div class="lbl">Volume</div></div>
+        <div class="nh-chart-stat"><div class="val" id="statMktCap">—</div><div class="lbl">Mkt Cap</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

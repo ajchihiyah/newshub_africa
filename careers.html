@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Careers — NewsHub Africa</title>
+  <meta name="description" content="Join the NewsHub Africa team. Explore career opportunities in journalism, technology, and media.">
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --nh-blue: #0033cc; --nh-blue-light: #1a53ff; --nh-blue-dark: #002080;
+  --nh-black: #0a0a0a; --nh-white: #ffffff;
+  --nh-surface: #ffffff; --nh-surface-raised: #f8f9fa;
+  --nh-text-primary: #0a0a0a; --nh-text-secondary: #495057;
+  --nh-text-muted: #adb5bd; --nh-border: #dee2e6;
+  --nh-shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --nh-shadow-md: 0 4px 12px rgba(0,0,0,0.10);
+  --nh-shadow-lg: 0 10px 40px rgba(0,0,0,0.15);
+  --nh-radius-sm: 6px; --nh-radius-md: 10px; --nh-radius-lg: 12px;
+  --nh-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+[data-theme="dark"] {
+  --nh-surface: #0f1115; --nh-surface-raised: #1a1d23;
+  --nh-text-primary: #f0f0f5; --nh-text-secondary: #8a8b97;
+  --nh-text-muted: #5a5a6b; --nh-border: #2a2d35;
+  --nh-shadow-sm: 0 1px 3px rgba(0,0,0,0.30);
+  --nh-shadow-md: 0 4px 12px rgba(0,0,0,0.40);
+  --nh-shadow-lg: 0 10px 40px rgba(0,0,0,0.50);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--nh-surface); color: var(--nh-text-primary);
+  transition: var(--nh-transition); overflow-x: hidden; line-height: 1.6;
+}
+.nh-header {
+  position: sticky; top: 0; z-index: 1000;
+  background: var(--nh-surface); border-bottom: 1px solid var(--nh-border);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+}
+.nh-header-inner { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+.nh-header-top {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 0; border-bottom: 1px solid var(--nh-border);
+  gap: 16px; flex-wrap: wrap;
+}
+.nh-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nh-brand-icon {
+  width: 32px; height: 32px; background: var(--nh-blue); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: 700; font-size: 14px; flex-shrink: 0;
+}
+.nh-brand-text { font-size: 20px; font-weight: 500; letter-spacing: -0.3px; color: var(--nh-text-primary); }
+.nh-brand-text span { color: var(--nh-blue); font-weight: 500; }
+.nh-brand-tagline {
+  font-size: 11px; font-weight: 400; color: var(--nh-text-muted);
+  letter-spacing: 0.8px; text-transform: uppercase; margin-top: -2px; line-height: 1.2;
+}
+[data-theme="dark"] .nh-brand-tagline { color: var(--nh-text-secondary); }
+.nh-actions { display: flex; align-items: center; gap: 10px; }
+.nh-search { position: relative; }
+.nh-search input {
+  width: 220px; padding: 9px 14px 9px 36px;
+  border: 1px solid var(--nh-border); border-radius: 100px;
+  background: var(--nh-surface-raised); color: var(--nh-text-primary);
+  font-size: 13px; outline: none; font-family: inherit;
+}
+.nh-search input:focus { border-color: var(--nh-blue); box-shadow: 0 0 0 3px rgba(0,51,204,0.1); }
+.nh-search svg {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  color: var(--nh-text-muted); width: 14px; height: 14px;
+}
+.nh-btn {
+  padding: 9px 20px; background: var(--nh-blue); color: white;
+  border: none; border-radius: 100px; font-weight: 500; font-size: 13px;
+  cursor: pointer; transition: var(--nh-transition); font-family: inherit;
+}
+.nh-btn:hover { background: var(--nh-blue-dark); transform: translateY(-2px); }
+.nh-nav { display: flex; align-items: center; gap: 4px; padding: 10px 0; overflow-x: auto; }
+.nh-nav-item {
+  padding: 7px 16px; border-radius: 100px; font-size: 13px; font-weight: 500;
+  color: var(--nh-text-secondary); cursor: pointer; white-space: nowrap;
+  transition: var(--nh-transition); border: none; background: transparent;
+  font-family: inherit; text-decoration: none;
+}
+.nh-nav-item.active, .nh-nav-item:hover { color: white; background: var(--nh-blue); }
+.nh-hamburger {
+  display: none; flex-direction: column; justify-content: center; align-items: center;
+  width: 40px; height: 40px; background: transparent; border: none; cursor: pointer;
+  gap: 5px; padding: 8px; border-radius: 8px; transition: var(--nh-transition);
+}
+.nh-hamburger:hover { background: var(--nh-surface-raised); }
+.nh-hamburger span { display: block; width: 20px; height: 2px; background: var(--nh-text-primary); border-radius: 2px; transition: var(--nh-transition); transform-origin: center; }
+.nh-hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nh-hamburger.active span:nth-child(2) { opacity: 0; }
+.nh-hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.nh-mobile-nav {
+  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--nh-surface); z-index: 999; padding: 80px 24px 24px;
+  overflow-y: auto; transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.nh-mobile-nav.open { transform: translateX(0); }
+.nh-mobile-nav-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 24px; border-bottom: 1px solid var(--nh-border);
+  position: fixed; top: 0; left: 0; right: 0; background: var(--nh-surface);
+  z-index: 1001; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+}
+.nh-mobile-nav-close {
+  width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+  background: transparent; border: none; cursor: pointer; border-radius: 8px; color: var(--nh-text-primary);
+}
+.nh-mobile-nav-close:hover { background: var(--nh-surface-raised); }
+.nh-mobile-nav-list { list-style: none; padding: 0; }
+.nh-mobile-nav-list li { border-bottom: 1px solid var(--nh-border); }
+.nh-mobile-nav-list a {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 0; color: var(--nh-text-primary); text-decoration: none;
+  font-size: 16px; font-weight: 500; transition: var(--nh-transition);
+}
+.nh-mobile-nav-list a:hover { color: var(--nh-blue); padding-left: 8px; }
+.nh-mobile-section-title {
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;
+  color: var(--nh-text-muted); margin: 24px 0 12px;
+}
+.nh-mobile-overlay {
+  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5); z-index: 998; opacity: 0; transition: opacity 0.3s ease;
+}
+.nh-mobile-overlay.open { opacity: 1; }
+.nh-main { padding: 24px; max-width: 1400px; margin: 0 auto; }
+.nh-page-hero {
+  background: linear-gradient(135deg, var(--nh-blue-dark), var(--nh-blue));
+  border-radius: var(--nh-radius-lg); padding: 64px 48px;
+  margin-bottom: 48px; color: white; position: relative; overflow: hidden;
+}
+.nh-page-hero::before {
+  content: ''; position: absolute; top: -50%; right: -10%;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, var(--nh-blue-light) 0%, transparent 70%);
+  opacity: 0.2;
+}
+.nh-page-hero h1 { font-size: 42px; font-weight: 500; margin-bottom: 12px; position: relative; z-index: 1; }
+.nh-page-hero p { color: rgba(255,255,255,0.75); font-size: 16px; position: relative; z-index: 1; max-width: 600px; }
+.nh-content { max-width: 800px; margin: 0 auto; padding: 0 24px 64px; }
+.nh-content h2 { font-size: 24px; font-weight: 500; color: var(--nh-text-primary); margin: 40px 0 16px; }
+.nh-content h3 { font-size: 18px; font-weight: 500; color: var(--nh-text-primary); margin: 28px 0 12px; }
+.nh-content p { font-size: 16px; color: var(--nh-text-secondary); line-height: 1.8; margin-bottom: 20px; }
+.nh-content ul { margin: 16px 0 16px 24px; color: var(--nh-text-secondary); }
+.nh-content li { margin-bottom: 10px; line-height: 1.6; }
+.nh-content a { color: var(--nh-blue); text-decoration: none; }
+.nh-content a:hover { text-decoration: underline; }
+
+.nh-perks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 32px 0; }
+.nh-perk-card {
+  background: var(--nh-surface-raised); border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg); padding: 28px; text-align: center;
+  transition: var(--nh-transition);
+}
+.nh-perk-card:hover { transform: translateY(-4px); box-shadow: var(--nh-shadow-md); }
+.nh-perk-icon { font-size: 28px; margin-bottom: 12px; }
+.nh-perk-card h4 { font-size: 15px; font-weight: 500; color: var(--nh-text-primary); margin-bottom: 6px; }
+.nh-perk-card p { font-size: 13px; color: var(--nh-text-secondary); line-height: 1.5; margin: 0; }
+
+.nh-job-list { margin: 32px 0; }
+.nh-job-item {
+  background: var(--nh-surface); border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg); padding: 24px;
+  margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;
+  transition: var(--nh-transition); cursor: pointer;
+}
+.nh-job-item:hover { transform: translateY(-3px); box-shadow: var(--nh-shadow-md); border-color: transparent; }
+.nh-job-info h4 { font-size: 16px; font-weight: 500; color: var(--nh-text-primary); margin-bottom: 6px; }
+.nh-job-meta { display: flex; gap: 16px; font-size: 13px; color: var(--nh-text-muted); }
+.nh-job-apply {
+  padding: 8px 20px; background: var(--nh-blue); color: white;
+  border: none; border-radius: 100px; font-weight: 500; font-size: 13px;
+  cursor: pointer; transition: var(--nh-transition); font-family: inherit; text-decoration: none;
+}
+.nh-job-apply:hover { background: var(--nh-blue-dark); transform: translateY(-2px); }
+
+.nh-culture-img {
+  width: 100%; height: 280px; object-fit: cover; border-radius: var(--nh-radius-lg);
+  margin: 24px 0;
+}
+
+.nh-footer {
+  background: var(--nh-black); color: white; padding: 48px 24px 24px;
+}
+.nh-footer-inner { max-width: 1400px; margin: 0 auto; }
+.nh-footer-top {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 36px; margin-bottom: 36px;
+}
+.nh-footer-brand { max-width: 260px; }
+.nh-footer-brand .nh-brand-text { color: white; margin-bottom: 12px; font-size: 20px; font-weight: 500; }
+.nh-footer-brand .nh-brand-text span { color: var(--nh-blue-light); }
+.nh-footer-brand p { color: rgba(255,255,255,0.6); font-size: 13px; line-height: 1.6; margin-bottom: 16px; }
+.nh-social { display: flex; gap: 8px; }
+.nh-social a {
+  width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  color: white; text-decoration: none; transition: var(--nh-transition); font-size: 12px;
+}
+.nh-social a:hover { background: var(--nh-blue); transform: translateY(-2px); }
+.nh-footer-col h4 {
+  font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;
+  margin-bottom: 16px; color: var(--nh-blue-light);
+}
+.nh-footer-col ul { list-style: none; }
+.nh-footer-col li { margin-bottom: 8px; }
+.nh-footer-col a {
+  color: rgba(255,255,255,0.6); text-decoration: none; font-size: 13px; transition: var(--nh-transition);
+}
+.nh-footer-col a:hover { color: white; padding-left: 3px; }
+.nh-footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px; color: rgba(255,255,255,0.4);
+}
+.nh-footer-bottom a { color: rgba(255,255,255,0.4); text-decoration: none; transition: var(--nh-transition); }
+.nh-footer-bottom a:hover { color: white; }
+
+@media (max-width: 1024px) {
+  .nh-footer-top { grid-template-columns: 1fr 1fr; }
+  .nh-perks { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .nh-search input { width: 140px; }
+  .nh-footer-top { grid-template-columns: 1fr; gap: 24px; }
+  .nh-footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  .nh-hamburger { display: flex; }
+  .nh-nav { display: none; }
+  .nh-search { display: none; }
+  .nh-btn:not(.nh-btn-icon) { display: none; }
+  .nh-header-inner { padding: 0 16px; }
+  .nh-main { padding: 16px; }
+  .nh-page-hero { padding: 40px 24px; }
+  .nh-page-hero h1 { font-size: 28px; }
+  .nh-content { padding: 0 16px 48px; }
+  .nh-perks { grid-template-columns: 1fr; }
+  .nh-job-item { flex-direction: column; align-items: flex-start; gap: 12px; }
+}
+button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid var(--nh-blue); outline-offset: 2px; }
+</style>
+</head>
+<body>
+
+<div class="nh-mobile-overlay" id="mobileOverlay" onclick="closeMobileNav()"></div>
+<div class="nh-mobile-nav" id="mobileNav">
+  <div class="nh-mobile-nav-header">
+    <a href="index.html" class="nh-brand" style="text-decoration:none">
+      <div class="nh-brand-icon" aria-hidden="true">N</div>
+      <div><div class="nh-brand-text">newshub <span>AFRICA</span></div></div>
+    </a>
+    <button class="nh-mobile-nav-close" onclick="closeMobileNav()" aria-label="Close menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="nh-mobile-section-title">Sections</div>
+  <ul class="nh-mobile-nav-list">
+    <li><a href="index.html">Home <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="business.html">Business <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="technology.html">Technology <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="agriculture.html">Agriculture <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="mining.html">Mining <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="energy.html">Energy <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="markets_v13_linked.html">Markets <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="events.html">Events <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="m9 18 6-6-6-6"/></svg></a></li>
+  </ul>
+  <div class="nh-mobile-section-title">Company</div>
+  <ul class="nh-mobile-nav-list">
+    <li><a href="about.html">About Us <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="careers.html">Careers <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="advertise.html">Advertise <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="contact.html">Contact <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="m9 18 6-6-6-6"/></svg></a></li>
+  </ul>
+</div>
+
+<header class="nh-header" role="banner">
+  <div class="nh-header-inner">
+    <div class="nh-header-top">
+      <a href="index.html" class="nh-brand">
+        <div class="nh-brand-icon" aria-hidden="true">N</div>
+        <div>
+          <div class="nh-brand-text">newshub <span>AFRICA</span></div>
+          <div class="nh-brand-tagline">The pulse of the continent</div>
+        </div>
+      </a>
+      <div class="nh-actions">
+        <div class="nh-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" placeholder="Search news..." aria-label="Search news">
+        </div>
+        <button class="nh-btn nh-btn-icon" onclick="toggleTheme()" aria-label="Toggle dark mode" style="padding:9px 12px;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center">
+          <svg id="nh-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          <svg id="nh-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        </button>
+        <button class="nh-btn" onclick="alert('Thank you for subscribing to NewsHub Africa!')">Subscribe</button>
+        <button class="nh-hamburger" id="hamburgerBtn" onclick="toggleMobileNav()" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <nav class="nh-nav" role="navigation" aria-label="Main navigation">
+      <a href="index.html" class="nh-nav-item">Home</a>
+      <a href="business.html" class="nh-nav-item">Business</a>
+      <a href="technology.html" class="nh-nav-item">Technology</a>
+      <a href="agriculture.html" class="nh-nav-item">Agriculture</a>
+      <a href="mining.html" class="nh-nav-item">Mining</a>
+      <a href="energy.html" class="nh-nav-item">Energy</a>
+      <a href="markets_v13_linked.html" class="nh-nav-item">Markets</a>
+      <a href="events.html" class="nh-nav-item">Events</a>
+    </nav>
+  </div>
+</header>
+
+<main class="nh-main">
+  <div class="nh-page-hero">
+    <h1>Careers at NewsHub Africa</h1>
+    <p>Join a team that's shaping the future of African journalism. We're always looking for passionate storytellers, analysts, and technologists.</p>
+  </div>
+
+  <div class="nh-content">
+    <h2>Why NewsHub Africa?</h2>
+    <p>At NewsHub Africa, we believe great journalism drives great change. Our team spans the continent — from Lagos to Nairobi, Accra to Johannesburg — united by a shared mission to tell Africa's most important stories with depth, speed, and integrity.</p>
+
+    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=500&fit=crop" alt="Team collaboration" class="nh-culture-img" loading="lazy">
+
+    <h2>Perks & Benefits</h2>
+    <div class="nh-perks">
+      <div class="nh-perk-card">
+        <div class="nh-perk-icon">🌍</div>
+        <h4>Remote-First</h4>
+        <p>Work from anywhere in Africa. We trust our team to deliver from wherever they are.</p>
+      </div>
+      <div class="nh-perk-card">
+        <div class="nh-perk-icon">⚕️</div>
+        <h4>Health Coverage</h4>
+        <p>Comprehensive health insurance for you and your dependents.</p>
+      </div>
+      <div class="nh-perk-card">
+        <div class="nh-perk-icon">📚</div>
+        <h4>Learning Budget</h4>
+        <p>Annual stipend for courses, conferences, and professional development.</p>
+      </div>
+      <div class="nh-perk-card">
+        <div class="nh-perk-icon">🏖️</div>
+        <h4>Generous Leave</h4>
+        <p>25 days paid annual leave plus public holidays in your country.</p>
+      </div>
+      <div class="nh-perk-card">
+        <div class="nh-perk-icon">💰</div>
+        <h4>Competitive Pay</h4>
+        <p>Salaries benchmarked to global standards, paid in your local currency.</p>
+      </div>
+      <div class="nh-perk-card">
+        <div class="nh-perk-icon">🚀</div>
+        <h4>Stock Options</h4>
+        <p>Early team members receive equity in NewsHub Africa's growth.</p>
+      </div>
+    </div>
+
+    <h2>Open Positions</h2>
+    <div class="nh-job-list">
+      <div class="nh-job-item" onclick="alert('Apply by sending your CV and portfolio to j.chihiyah@gmail.com')">
+        <div class="nh-job-info">
+          <h4>Senior Business Reporter</h4>
+          <div class="nh-job-meta">
+            <span>📍 Remote (Africa)</span>
+            <span>💼 Full-time</span>
+            <span>📅 Posted 3 days ago</span>
+          </div>
+        </div>
+        <button class="nh-job-apply">Apply</button>
+      </div>
+      <div class="nh-job-item" onclick="alert('Apply by sending your CV and portfolio to j.chihiyah@gmail.com')">
+        <div class="nh-job-info">
+          <h4>Technology Editor</h4>
+          <div class="nh-job-meta">
+            <span>📍 Remote (Africa)</span>
+            <span>💼 Full-time</span>
+            <span>📅 Posted 1 week ago</span>
+          </div>
+        </div>
+        <button class="nh-job-apply">Apply</button>
+      </div>
+      <div class="nh-job-item" onclick="alert('Apply by sending your CV and portfolio to j.chihiyah@gmail.com')">
+        <div class="nh-job-info">
+          <h4>Data Journalist — Markets</h4>
+          <div class="nh-job-meta">
+            <span>📍 Remote (Africa)</span>
+            <span>💼 Full-time</span>
+            <span>📅 Posted 2 weeks ago</span>
+          </div>
+        </div>
+        <button class="nh-job-apply">Apply</button>
+      </div>
+      <div class="nh-job-item" onclick="alert('Apply by sending your CV and portfolio to j.chihiyah@gmail.com')">
+        <div class="nh-job-info">
+          <h4>Frontend Developer</h4>
+          <div class="nh-job-meta">
+            <span>📍 Remote (Africa)</span>
+            <span>💼 Full-time</span>
+            <span>📅 Posted 2 weeks ago</span>
+          </div>
+        </div>
+        <button class="nh-job-apply">Apply</button>
+      </div>
+    </div>
+
+    <h2>Don't See Your Role?</h2>
+    <p>We're always interested in meeting exceptional people. Send your CV and a short note about what you'd bring to NewsHub Africa to <a href="mailto:j.chihiyah@gmail.com">j.chihiyah@gmail.com</a>. We'll be in touch if something opens up.</p>
+  </div>
+</main>
+
+<footer class="nh-footer">
+  <div class="nh-footer-inner">
+    <div class="nh-footer-top">
+      <div class="nh-footer-brand">
+        <div class="nh-brand-text">newshub <span>AFRICA</span></div>
+        <p>Your trusted source for comprehensive business, technology, agriculture, mining, and energy news across the African continent.</p>
+        <div class="nh-social">
+          <a href="https://twitter.com/ajchihiyah" target="_blank" rel="noopener noreferrer" aria-label="Twitter">𝕏</a>
+          <a href="https://www.linkedin.com/in/ashley-chihiya-610814162/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">in</a>
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="Instagram">📷</a>
+        </div>
+      </div>
+      <div class="nh-footer-col"><h4>Sections</h4><ul><li><a href="business.html">Business</a></li><li><a href="technology.html">Technology</a></li><li><a href="agriculture.html">Agriculture</a></li><li><a href="mining.html">Mining</a></li><li><a href="energy.html">Energy</a></li></ul></div>
+      <div class="nh-footer-col"><h4>Company</h4><ul><li><a href="about.html">About Us</a></li><li><a href="careers.html">Careers</a></li><li><a href="advertise.html">Advertise</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div class="nh-footer-col"><h4>Resources</h4><ul><li><a href="#">Market Data</a></li><li><a href="#">Newsletters</a></li><li><a href="#">Podcasts</a></li><li><a href="events.html">Events</a></li></ul></div>
+      <div class="nh-footer-col"><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li><li><a href="#">Cookie Policy</a></li></ul></div>
+    </div>
+    <div class="nh-footer-bottom">
+      <span>&copy; 2026 NewsHub Africa. All rights reserved.</span>
+      <div style="display:flex;gap:16px"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Cookies</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const moon = document.getElementById('nh-moon');
+  const sun = document.getElementById('nh-sun');
+  if (html.getAttribute('data-theme') === 'dark') {
+    html.removeAttribute('data-theme');
+    if (moon) moon.style.display = 'block';
+    if (sun) sun.style.display = 'none';
+  } else {
+    html.setAttribute('data-theme', 'dark');
+    if (moon) moon.style.display = 'none';
+    if (sun) sun.style.display = 'block';
+  }
+}
+function toggleMobileNav() {
+  const nav = document.getElementById('mobileNav');
+  const overlay = document.getElementById('mobileOverlay');
+  const btn = document.getElementById('hamburgerBtn');
+  const isOpen = nav.classList.contains('open');
+  if (isOpen) { closeMobileNav(); }
+  else {
+    nav.style.display = 'block'; overlay.style.display = 'block';
+    void nav.offsetWidth; void overlay.offsetWidth;
+    nav.classList.add('open'); overlay.classList.add('open');
+    btn.classList.add('active'); btn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+}
+function closeMobileNav() {
+  const nav = document.getElementById('mobileNav');
+  const overlay = document.getElementById('mobileOverlay');
+  const btn = document.getElementById('hamburgerBtn');
+  nav.classList.remove('open'); overlay.classList.remove('open');
+  btn.classList.remove('active'); btn.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+  setTimeout(() => { if (!nav.classList.contains('open')) { nav.style.display = 'none'; overlay.style.display = 'none'; } }, 300);
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeMobileNav(); });
+</script>
+</body>
+</html>

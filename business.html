@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Business News — NewsHub Africa</title>
+  <meta name="description" content="Comprehensive business, technology, agriculture, mining, and energy news across the African continent.">
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+
+:root {
+  --nh-blue: #0033cc;
+  --nh-blue-light: #1a53ff;
+  --nh-blue-dark: #002080;
+  --nh-black: #0a0a0a;
+  --nh-white: #ffffff;
+  --nh-surface: #ffffff;
+  --nh-surface-raised: #f8f9fa;
+  --nh-text-primary: #0a0a0a;
+  --nh-text-secondary: #495057;
+  --nh-text-muted: #adb5bd;
+  --nh-border: #dee2e6;
+  --nh-shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --nh-shadow-md: 0 4px 12px rgba(0,0,0,0.10);
+  --nh-shadow-lg: 0 10px 40px rgba(0,0,0,0.15);
+  --nh-radius-sm: 6px;
+  --nh-radius-md: 10px;
+  --nh-radius-lg: 12px;
+  --nh-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] {
+  --nh-surface: #0f1115;
+  --nh-surface-raised: #1a1d23;
+  --nh-text-primary: #f0f0f5;
+  --nh-text-secondary: #8a8b97;
+  --nh-text-muted: #5a5a6b;
+  --nh-border: #2a2d35;
+  --nh-shadow-sm: 0 1px 3px rgba(0,0,0,0.30);
+  --nh-shadow-md: 0 4px 12px rgba(0,0,0,0.40);
+  --nh-shadow-lg: 0 10px 40px rgba(0,0,0,0.50);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--nh-surface);
+  color: var(--nh-text-primary);
+  transition: var(--nh-transition);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+.nh-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--nh-surface);
+  border-bottom: 1px solid var(--nh-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.nh-header-inner { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+
+.nh-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--nh-border);
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.nh-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+
+.nh-brand-icon {
+  width: 32px; height: 32px;
+  background: var(--nh-blue);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: 700; font-size: 14px;
+  flex-shrink: 0;
+}
+
+.nh-brand-text {
+  font-size: 20px; font-weight: 500;
+  letter-spacing: -0.3px;
+  color: var(--nh-text-primary);
+}
+
+.nh-brand-text span { color: var(--nh-blue); font-weight: 500; }
+
+.nh-brand-tagline {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--nh-text-muted);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-top: -2px;
+  line-height: 1.2;
+}
+[data-theme="dark"] .nh-brand-tagline { color: var(--nh-text-secondary); }
+
+.nh-actions { display: flex; align-items: center; gap: 10px; }
+
+.nh-search { position: relative; }
+
+.nh-search input {
+  width: 220px;
+  padding: 9px 14px 9px 36px;
+  border: 1px solid var(--nh-border);
+  border-radius: 100px;
+  background: var(--nh-surface-raised);
+  color: var(--nh-text-primary);
+  font-size: 13px; outline: none;
+  font-family: inherit;
+}
+
+.nh-search input:focus {
+  border-color: var(--nh-blue);
+  box-shadow: 0 0 0 3px rgba(0,51,204,0.1);
+}
+
+.nh-search svg {
+  position: absolute; left: 12px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--nh-text-muted);
+  width: 14px; height: 14px;
+}
+
+.nh-btn {
+  padding: 9px 20px;
+  background: var(--nh-blue); color: white;
+  border: none; border-radius: 100px;
+  font-weight: 500; font-size: 13px;
+  cursor: pointer; transition: var(--nh-transition);
+  font-family: inherit;
+}
+
+.nh-btn:hover { background: var(--nh-blue-dark); transform: translateY(-2px); }
+
+.nh-nav {
+  display: flex; align-items: center;
+  gap: 4px; padding: 10px 0;
+  overflow-x: auto;
+}
+
+.nh-nav-item {
+  padding: 7px 16px;
+  border-radius: 100px;
+  font-size: 13px; font-weight: 500;
+  color: var(--nh-text-secondary);
+  cursor: pointer; white-space: nowrap;
+  transition: var(--nh-transition);
+  border: none; background: transparent;
+  font-family: inherit;
+  text-decoration: none;
+}
+
+.nh-nav-item.active, .nh-nav-item:hover { color: white; background: var(--nh-blue); }
+
+.nh-live {
+  display: flex; align-items: center;
+  gap: 5px; padding: 5px 12px;
+  background: rgba(0,51,204,0.08);
+  color: var(--nh-blue);
+  border-radius: 100px;
+  font-size: 11px; font-weight: 500;
+  margin-left: auto; cursor: pointer;
+  animation: pulse 2s infinite;
+  white-space: nowrap;
+}
+
+.nh-live .dot {
+  width: 7px; height: 7px;
+  background: var(--nh-blue);
+  border-radius: 50%;
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.7; }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.nh-main { padding: 24px; max-width: 1400px; margin: 0 auto; }
+
+.nh-breaking {
+  display: flex; align-items: center;
+  gap: 10px; padding: 10px 18px;
+  background: linear-gradient(90deg, var(--nh-blue), var(--nh-blue-light));
+  color: white; border-radius: 10px;
+  margin-bottom: 20px;
+  font-size: 13px; font-weight: 500;
+  overflow: hidden; position: relative;
+}
+
+.nh-breaking::before {
+  content: '';
+  position: absolute; top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+.nh-breaking-label {
+  background: white; color: var(--nh-blue);
+  padding: 3px 10px; border-radius: 4px;
+  font-weight: 700; font-size: 10px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  z-index: 1; flex-shrink: 0;
+}
+
+.nh-breaking-ticker {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  mask-image: linear-gradient(90deg, transparent, black 5%, black 95%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 5%, black 95%, transparent);
+}
+.nh-breaking-track {
+  display: flex;
+  gap: 60px;
+  width: max-content;
+  animation: breaking-scroll 30s linear infinite;
+  will-change: transform;
+}
+.nh-breaking-track:hover { animation-play-state: paused; }
+.nh-breaking-text {
+  white-space: nowrap;
+  flex-shrink: 0;
+  z-index: 1;
+}
+@keyframes breaking-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.nh-section-header {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.nh-section-title {
+  font-size: 24px; font-weight: 500;
+  position: relative; display: inline-block;
+  color: var(--nh-text-primary);
+}
+
+.nh-section-title::after {
+  content: '';
+  position: absolute; bottom: -6px; left: 0;
+  width: 40px; height: 3px;
+  background: var(--nh-blue); border-radius: 2px;
+}
+
+.nh-view-all {
+  color: var(--nh-blue); font-weight: 500;
+  font-size: 13px; cursor: pointer;
+  display: flex; align-items: center; gap: 4px;
+  transition: var(--nh-transition);
+  text-decoration: none; background: none; border: none;
+  font-family: inherit;
+}
+
+.nh-view-all:hover { gap: 6px; }
+
+.nh-card {
+  background: var(--nh-surface);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg);
+  overflow: hidden;
+  transition: var(--nh-transition);
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.nh-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--nh-shadow-lg);
+  border-color: transparent;
+}
+
+.nh-card img {
+  width: 100%; height: 180px;
+  object-fit: cover; display: block;
+  transition: transform 0.5s ease;
+}
+
+.nh-card:hover img { transform: scale(1.08); }
+
+.nh-card-body { padding: 18px; }
+
+.nh-card-tag {
+  display: inline-block;
+  padding: 3px 8px; border-radius: 4px;
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.nh-tag-business { background: rgba(42,157,143,0.12); color: #2a9d8f; }
+.nh-tag-tech { background: rgba(38,70,83,0.12); color: #264653; }
+.nh-tag-agri { background: rgba(233,196,106,0.18); color: #b8860b; }
+.nh-tag-mining { background: rgba(107,91,149,0.12); color: #6b5b95; }
+.nh-tag-energy { background: rgba(244,162,97,0.18); color: #c77733; }
+
+[data-theme="dark"] .nh-tag-business { background: rgba(42,157,143,0.2); color: #4ecdc4; }
+[data-theme="dark"] .nh-tag-tech { background: rgba(100,200,255,0.12); color: #64c8ff; }
+[data-theme="dark"] .nh-tag-agri { background: rgba(233,196,106,0.15); color: #e9c46a; }
+[data-theme="dark"] .nh-tag-mining { background: rgba(107,91,149,0.2); color: #9b8ec7; }
+[data-theme="dark"] .nh-tag-energy { background: rgba(244,162,97,0.15); color: #f4a261; }
+
+.nh-card h3 {
+  font-size: 16px; font-weight: 500;
+  line-height: 1.3; margin-bottom: 8px;
+  color: var(--nh-text-primary);
+}
+
+.nh-card p {
+  font-size: 13px; color: var(--nh-text-secondary);
+  line-height: 1.5; margin-bottom: 12px;
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+
+.nh-card-author {
+  display: flex; align-items: center; gap: 6px;
+}
+
+.nh-card-author img {
+  width: 24px; height: 24px;
+  border-radius: 50%; object-fit: cover;
+}
+
+.nh-card-author span { font-size: 11px; color: var(--nh-text-muted); margin-left: auto; }
+
+.nh-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 36px; }
+
+.nh-article-page { max-width: 800px; margin: 0 auto; padding: 32px 24px; }
+
+.nh-article-header { margin-bottom: 24px; }
+
+.nh-article-header img {
+  width: 100%; height: 400px;
+  object-fit: cover; border-radius: var(--nh-radius-lg);
+  margin-bottom: 24px;
+}
+
+.nh-article-tag {
+  display: inline-block;
+  padding: 4px 12px; border-radius: 4px;
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+.nh-article-title {
+  font-size: 32px; font-weight: 500;
+  line-height: 1.2; margin-bottom: 16px;
+  color: var(--nh-text-primary);
+}
+
+.nh-article-meta {
+  display: flex; gap: 16px;
+  font-size: 13px; color: var(--nh-text-muted);
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--nh-border);
+}
+
+.nh-article-body {
+  font-size: 16px; line-height: 1.8;
+  color: var(--nh-text-secondary);
+}
+
+.nh-article-body p { margin-bottom: 20px; }
+
+.nh-article-body h3 {
+  font-size: 20px; font-weight: 500;
+  color: var(--nh-text-primary);
+  margin: 32px 0 16px;
+}
+
+.nh-article-body ul {
+  margin: 16px 0 16px 24px;
+  color: var(--nh-text-secondary);
+}
+
+.nh-article-body li { margin-bottom: 8px; }
+
+.nh-back-link {
+  display: inline-flex; align-items: center;
+  gap: 6px; color: var(--nh-blue);
+  font-weight: 500; font-size: 14px;
+  text-decoration: none; margin-bottom: 24px;
+  transition: var(--nh-transition);
+}
+
+.nh-back-link:hover { gap: 10px; }
+
+.nh-ticker-wrap {
+  background: var(--nh-black); color: white;
+  padding: 12px 0; overflow: hidden;
+  position: relative; margin-bottom: 32px;
+}
+
+.nh-ticker-label {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  background: var(--nh-black); padding: 0 18px;
+  display: flex; align-items: center;
+  font-weight: 700; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 1px;
+  z-index: 10;
+  border-right: 1px solid rgba(255,255,255,0.1);
+}
+
+.nh-ticker {
+  display: flex; gap: 36px;
+  padding-left: 120px;
+  animation: ticker 30s linear infinite;
+  white-space: nowrap;
+}
+
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.nh-ticker-item {
+  display: flex; align-items: center;
+  gap: 6px; font-size: 13px;
+}
+
+.nh-ticker-symbol { font-weight: 700; color: var(--nh-blue-light); }
+.nh-ticker-price { font-weight: 500; }
+.nh-ticker-change { font-size: 11px; padding: 2px 6px; border-radius: 4px; }
+.nh-ticker-change.up { background: rgba(42,157,143,0.2); color: #4ecdc4; }
+.nh-ticker-change.down { background: rgba(233,69,96,0.15); color: #e94560; }
+
+.nh-footer {
+  background: var(--nh-black); color: white;
+  padding: 48px 24px 24px;
+}
+
+.nh-footer-inner { max-width: 1400px; margin: 0 auto; }
+
+.nh-footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 36px; margin-bottom: 36px;
+}
+
+.nh-footer-brand { max-width: 260px; }
+
+.nh-footer-brand .nh-brand-text {
+  color: white; margin-bottom: 12px;
+  font-size: 20px; font-weight: 500;
+}
+
+.nh-footer-brand .nh-brand-text span { color: var(--nh-blue-light); }
+
+.nh-footer-brand p {
+  color: rgba(255,255,255,0.6);
+  font-size: 13px; line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.nh-social { display: flex; gap: 8px; }
+
+.nh-social a {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  color: white; text-decoration: none;
+  transition: var(--nh-transition); font-size: 12px;
+}
+
+.nh-social a:hover { background: var(--nh-blue); transform: translateY(-2px); }
+
+.nh-footer-col h4 {
+  font-size: 12px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 1px;
+  margin-bottom: 16px; color: var(--nh-blue-light);
+}
+
+.nh-footer-col ul { list-style: none; }
+.nh-footer-col li { margin-bottom: 8px; }
+
+.nh-footer-col a {
+  color: rgba(255,255,255,0.6); text-decoration: none;
+  font-size: 13px; transition: var(--nh-transition);
+}
+
+.nh-footer-col a:hover { color: white; padding-left: 3px; }
+
+.nh-footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 24px;
+  display: flex; justify-content: space-between;
+  align-items: center; font-size: 12px;
+  color: rgba(255,255,255,0.4);
+}
+
+.nh-footer-bottom a {
+  color: rgba(255,255,255,0.4);
+  text-decoration: none; transition: var(--nh-transition);
+}
+
+.nh-footer-bottom a:hover { color: white; }
+
+.nh-newsletter { max-width: 1400px; margin: 0 auto 48px; padding: 0 24px; }
+
+.nh-newsletter-box {
+  background: linear-gradient(135deg, var(--nh-blue-dark), var(--nh-blue));
+  border-radius: var(--nh-radius-lg); padding: 36px;
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 36px;
+  position: relative; overflow: hidden;
+}
+
+.nh-newsletter-box::before {
+  content: '';
+  position: absolute; top: -50%; right: -10%;
+  width: 350px; height: 350px;
+  background: radial-gradient(circle, var(--nh-blue-light) 0%, transparent 70%);
+  opacity: 0.15;
+}
+
+.nh-newsletter-content { position: relative; z-index: 1; max-width: 420px; }
+
+.nh-newsletter-content h2 {
+  font-size: 24px; color: white;
+  margin-bottom: 8px; font-weight: 500;
+}
+
+.nh-newsletter-content p {
+  color: rgba(255,255,255,0.7);
+  font-size: 14px; line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.nh-newsletter-form { display: flex; gap: 8px; }
+
+.nh-newsletter-form input {
+  flex: 1; padding: 11px 16px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.1);
+  color: white; font-size: 13px; outline: none;
+  font-family: inherit;
+}
+
+.nh-newsletter-form input::placeholder { color: rgba(255,255,255,0.5); }
+.nh-newsletter-form input:focus { border-color: white; background: rgba(255,255,255,0.15); }
+
+.nh-newsletter-form button {
+  padding: 11px 22px; background: white;
+  color: var(--nh-blue); border: none;
+  border-radius: 10px; font-weight: 500;
+  font-size: 13px; cursor: pointer;
+  transition: var(--nh-transition);
+  white-space: nowrap; font-family: inherit;
+}
+
+.nh-newsletter-form button:hover { background: var(--nh-gray-100); transform: translateY(-2px); }
+
+.nh-stats { display: flex; gap: 24px; position: relative; z-index: 1; }
+
+.nh-stat { text-align: center; }
+
+.nh-stat-num { font-size: 28px; font-weight: 500; color: white; }
+
+.nh-stat-label { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+
+.nh-ad-slot { position: relative; }
+.nh-ad-label {
+  font-size: 10px;
+  color: var(--nh-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: absolute;
+  top: 4px;
+  left: 8px;
+  z-index: 1;
+  background: var(--nh-surface-raised);
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+.nh-ad-slot img {
+  display: block;
+  margin: 0 auto;
+  border-radius: 6px;
+  transition: transform 0.3s ease;
+}
+.nh-ad-slot a:hover img { transform: scale(1.02); }
+
+/* Mobile Navigation */
+.nh-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  gap: 5px;
+  padding: 8px;
+  border-radius: 8px;
+  transition: var(--nh-transition);
+}
+
+.nh-hamburger:hover { background: var(--nh-surface-raised); }
+
+.nh-hamburger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--nh-text-primary);
+  border-radius: 2px;
+  transition: var(--nh-transition);
+  transform-origin: center;
+}
+
+.nh-hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nh-hamburger.active span:nth-child(2) { opacity: 0; }
+.nh-hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.nh-mobile-nav {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--nh-surface);
+  z-index: 999;
+  padding: 80px 24px 24px;
+  overflow-y: auto;
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nh-mobile-nav.open { transform: translateX(0); }
+
+.nh-mobile-nav-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--nh-border);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--nh-surface);
+  z-index: 1001;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.nh-mobile-nav-close {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  color: var(--nh-text-primary);
+}
+
+.nh-mobile-nav-close:hover { background: var(--nh-surface-raised); }
+
+.nh-mobile-nav-list { list-style: none; padding: 0; }
+.nh-mobile-nav-list li { border-bottom: 1px solid var(--nh-border); }
+
+.nh-mobile-nav-list a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  color: var(--nh-text-primary);
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: var(--nh-transition);
+}
+
+.nh-mobile-nav-list a:hover { color: var(--nh-blue); padding-left: 8px; }
+
+.nh-mobile-nav-list a svg {
+  width: 20px;
+  height: 20px;
+  color: var(--nh-text-muted);
+}
+
+.nh-mobile-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--nh-text-muted);
+  margin: 24px 0 12px;
+}
+
+.nh-mobile-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 998;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.nh-mobile-overlay.open { opacity: 1; }
+
+/* Hero Grid */
+.nh-hero-grid { display:grid; grid-template-columns:1.2fr 1fr; gap:24px; margin-bottom:40px; }
+.nh-hero-main { display:flex; flex-direction:column; min-height:480px; position:relative; overflow:hidden; }
+.nh-hero-main img { width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; z-index:0; }
+.nh-hero-side { display:flex; flex-direction:column; gap:18px; }
+
+/* Video Grid */
+.nh-video-grid { display:grid; grid-template-columns:2fr 1fr; gap:18px; margin-bottom:40px; }
+
+/* Category Page Styles */
+.nh-category-hero {
+  background: linear-gradient(135deg, var(--nh-blue-dark), var(--nh-blue));
+  border-radius: var(--nh-radius-lg);
+  padding: 48px 36px;
+  margin-bottom: 36px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.nh-category-hero::before {
+  content: '';
+  position: absolute; top: -50%; right: -10%;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, var(--nh-blue-light) 0%, transparent 70%);
+  opacity: 0.2;
+}
+.nh-category-hero h1 { font-size: 36px; font-weight: 500; margin-bottom: 8px; position: relative; z-index: 1; }
+.nh-category-hero p { color: rgba(255,255,255,0.7); font-size: 15px; position: relative; z-index: 1; }
+
+.nh-featured-row { display: grid; grid-template-columns: 1.5fr 1fr; gap: 24px; margin-bottom: 36px; }
+
+.nh-featured-large { position: relative; overflow: hidden; border-radius: var(--nh-radius-lg); min-height: 400px; display: block; text-decoration: none; color: inherit; }
+.nh-featured-large img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
+.nh-featured-large .overlay {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.85));
+  padding: 32px; color: white;
+}
+
+.nh-featured-stack { display: flex; flex-direction: column; gap: 16px; }
+.nh-featured-stack .nh-card { display: flex; gap: 16px; padding: 16px; align-items: center; flex: 1; }
+.nh-featured-stack .nh-card img { width: 120px; height: 90px; object-fit: cover; border-radius: var(--nh-radius-sm); flex-shrink: 0; }
+
+/* Events Page */
+.nh-events-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 36px; }
+.nh-event-card {
+  background: var(--nh-surface);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg);
+  overflow: hidden;
+  transition: var(--nh-transition);
+}
+.nh-event-card:hover { transform: translateY(-5px); box-shadow: var(--nh-shadow-lg); border-color: transparent; }
+.nh-event-card img { width: 100%; height: 200px; object-fit: cover; display: block; }
+.nh-event-card-body { padding: 20px; }
+.nh-event-date {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 12px; border-radius: 100px;
+  background: rgba(0,51,204,0.08); color: var(--nh-blue);
+  font-size: 12px; font-weight: 500; margin-bottom: 10px;
+}
+.nh-event-card h3 { font-size: 17px; font-weight: 500; line-height: 1.3; margin-bottom: 8px; color: var(--nh-text-primary); }
+.nh-event-card p { font-size: 13px; color: var(--nh-text-secondary); line-height: 1.5; margin-bottom: 12px; }
+.nh-event-location { font-size: 12px; color: var(--nh-text-muted); display: flex; align-items: center; gap: 4px; }
+
+/* Markets Page */
+.nh-market-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 36px;
+  background: var(--nh-surface);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg);
+  overflow: hidden;
+}
+.nh-market-table th {
+  background: var(--nh-surface-raised);
+  padding: 14px 18px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--nh-text-secondary);
+  border-bottom: 1px solid var(--nh-border);
+}
+.nh-market-table td {
+  padding: 14px 18px;
+  font-size: 14px;
+  border-bottom: 1px solid var(--nh-border);
+  color: var(--nh-text-primary);
+}
+.nh-market-table tr:last-child td { border-bottom: none; }
+.nh-market-table tr:hover td { background: var(--nh-surface-raised); }
+
+.nh-market-index {
+  background: var(--nh-surface);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg);
+  padding: 24px;
+  text-align: center;
+  transition: var(--nh-transition);
+}
+.nh-market-index:hover { box-shadow: var(--nh-shadow-md); border-color: transparent; }
+.nh-market-index h4 { font-size: 13px; color: var(--nh-text-secondary); margin-bottom: 8px; font-weight: 500; }
+.nh-market-index .value { font-size: 28px; font-weight: 500; color: var(--nh-text-primary); margin-bottom: 4px; }
+.nh-market-index .change { font-size: 13px; font-weight: 500; padding: 3px 10px; border-radius: 100px; display: inline-block; }
+.nh-market-index .change.up { background: rgba(42,157,143,0.12); color: #2a9d8f; }
+.nh-market-index .change.down { background: rgba(233,69,96,0.12); color: #e94560; }
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .nh-grid { grid-template-columns: repeat(2, 1fr); }
+  .nh-footer-top { grid-template-columns: 1fr 1fr; }
+  .nh-hero-grid { grid-template-columns: 1fr; }
+  .nh-video-grid { grid-template-columns: 1fr; }
+  .nh-featured-row { grid-template-columns: 1fr; }
+  .nh-events-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .nh-search input { width: 140px; }
+  .nh-grid { grid-template-columns: 1fr; }
+  .nh-newsletter-box { flex-direction: column; text-align: center; padding: 24px 16px; }
+  .nh-newsletter-form { flex-direction: column; }
+  .nh-stats { justify-content: center; }
+  .nh-footer-top { grid-template-columns: 1fr; gap: 24px; }
+  .nh-footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  .nh-section-title { font-size: 20px; }
+  .nh-ticker-label { display: none; }
+  .nh-ticker-wrap { padding-left: 16px; }
+  .nh-live { display: none; }
+  .nh-article-title { font-size: 24px; }
+  .nh-article-header img { height: 240px; }
+  .nh-hamburger { display: flex; }
+  .nh-nav { display: none; }
+  .nh-search { display: none; }
+  .nh-btn:not(.nh-btn-icon) { display: none; }
+  .nh-header-inner { padding: 0 16px; }
+  .nh-main { padding: 16px; }
+  .nh-hero-main { min-height: 320px; }
+  .nh-hero-main h2 { font-size: 20px; }
+  .nh-hero-main p { font-size: 13px; }
+  .nh-hero-side { gap: 12px; }
+  .nh-hero-side .nh-card { padding: 12px; }
+  .nh-hero-side img { width: 100px; height: 75px; }
+  .nh-hero-side h3 { font-size: 14px; }
+  .nh-video-main img { height: 200px; }
+  .nh-ad-slot img { width: 100% !important; }
+  .nh-category-hero { padding: 32px 20px; }
+  .nh-category-hero h1 { font-size: 26px; }
+  .nh-events-grid { grid-template-columns: 1fr; }
+  .nh-featured-stack .nh-card { flex-direction: column; }
+  .nh-featured-stack .nh-card img { width: 100%; height: 160px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .nh-ticker { animation: none; }
+  .nh-breaking-track { animation: none; }
+}
+
+button:focus-visible, input:focus-visible, a:focus-visible {
+  outline: 2px solid var(--nh-blue); outline-offset: 2px;
+}
+
+  </style>
+</head>
+<body>
+
+<!-- Mobile Overlay -->
+<div class="nh-mobile-overlay" id="mobileOverlay" onclick="closeMobileNav()"></div>
+
+<!-- Mobile Navigation Drawer -->
+<div class="nh-mobile-nav" id="mobileNav">
+  <div class="nh-mobile-nav-header">
+    <a href="index.html" class="nh-brand" style="text-decoration:none">
+      <div class="nh-brand-icon" aria-hidden="true">N</div>
+      <div>
+        <div class="nh-brand-text">newshub <span>AFRICA</span></div>
+      </div>
+    </a>
+    <button class="nh-mobile-nav-close" onclick="closeMobileNav()" aria-label="Close menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <div class="nh-mobile-section-title">Sections</div>
+  <ul class="nh-mobile-nav-list">
+    <li><a href="index.html">Home <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="business.html">Business <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="technology.html">Technology <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="agriculture.html">Agriculture <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="mining.html">Mining <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="energy.html">Energy <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="markets.html">Markets <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="events.html">Events <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+  </ul>
+
+  <div class="nh-mobile-section-title">Account</div>
+  <ul class="nh-mobile-nav-list">
+    <li><a href="#" onclick="alert('Subscribe feature coming soon!'); closeMobileNav(); return false;">Subscribe <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="#" onclick="toggleTheme(); closeMobileNav(); return false;">Toggle Dark Mode <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+  </ul>
+
+  <div class="nh-mobile-section-title">Company</div>
+  <ul class="nh-mobile-nav-list">
+    <li><a href="#">About Us <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="#">Careers <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="#">Advertise <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="#">Contact <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+  </ul>
+</div>
+
+<header class="nh-header" role="banner">
+  <div class="nh-header-inner">
+    <div class="nh-header-top">
+      <a href="index.html" class="nh-brand">
+        <div class="nh-brand-icon" aria-hidden="true">N</div>
+        <div>
+          <div class="nh-brand-text">newshub <span>AFRICA</span></div>
+          <div class="nh-brand-tagline">The pulse of the continent</div>
+        </div>
+      </a>
+      <div class="nh-actions">
+        <div class="nh-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" placeholder="Search news..." aria-label="Search news">
+        </div>
+        <button class="nh-btn nh-btn-icon" onclick="toggleTheme()" aria-label="Toggle dark mode" style="padding:9px 12px;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center">
+          <svg id="nh-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          <svg id="nh-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        </button>
+        <button class="nh-btn" onclick="alert('Thank you for subscribing to NewsHub Africa!')">Subscribe</button>
+        <button class="nh-hamburger" id="hamburgerBtn" onclick="toggleMobileNav()" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <nav class="nh-nav" role="navigation" aria-label="Main navigation">
+      <a href="index.html" class="nh-nav-item ">Home</a>
+      <a href="business.html" class="nh-nav-item active">Business</a>
+      <a href="technology.html" class="nh-nav-item ">Technology</a>
+      <a href="agriculture.html" class="nh-nav-item ">Agriculture</a>
+      <a href="mining.html" class="nh-nav-item ">Mining</a>
+      <a href="energy.html" class="nh-nav-item ">Energy</a>
+      <a href="markets.html" class="nh-nav-item ">Markets</a>
+      <a href="events.html" class="nh-nav-item ">Events</a>
+      <div class="nh-live" role="status" aria-live="polite"><span class="dot"></span><span>Live Updates</span></div>
+</nav>
+  </div>
+</header>
+
+<main class="nh-main">
+<div class="nh-ad-slot" style="background:var(--nh-surface-raised);border:1px dashed var(--nh-border);border-radius:var(--nh-radius-md);padding:8px 16px;margin-bottom:20px;text-align:center;position:relative;overflow:hidden">
+  <span class="nh-ad-label">Advertisement</span>
+  <a href="https://africanmediaagency.com" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none">
+    <img src="https://kimi-web-img.moonshot.cn/img/africanmediaagency.com/04912b6be587182aec4daa2dca4619d5a608e9a1.png" 
+         alt="Africa Money & DeFi Summit West Africa" 
+         style="width:100%;max-width:970px;height:auto;min-height:90px;object-fit:cover;border-radius:6px;display:block;margin:0 auto">
+  </a>
+</div>
+<div class="nh-category-hero">
+  <h1>Business</h1>
+  <p>Comprehensive coverage of African markets, finance, trade, and corporate developments across the continent.</p>
+</div>
+
+<div class="nh-featured-row">
+  <a href="article_b1.html" class="nh-featured-large">
+      <img src="https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&h=600&fit=crop" alt="Africa's FinTech Revenues Projected to Hit $65B by 2030">
+      <div class="overlay">
+        <span style="display:inline-block;padding:4px 12px;border-radius:4px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;background:var(--nh-blue);color:white;margin-bottom:12px">Business</span>
+        <h2 style="font-size:24px;font-weight:500;color:white;line-height:1.3;margin-bottom:10px">Africa's FinTech Revenues Projected to Hit $65B by 2030</h2>
+        <p style="font-size:14px;color:rgba(255,255,255,0.75);line-height:1.5;margin-bottom:12px">Africa is currently the fastest-growing FinTech market globally, with revenues projected to expand nearly 13-fold by 2030, driven by mobile money and digital banking.</p>
+        <div style="display:flex;align-items:center;gap:10px">
+          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" alt="" style="width:24px;height:24px;border-radius:50%;object-fit:cover">
+          <span style="font-size:12px;color:rgba(255,255,255,0.7)">Amara Okafor</span>
+          <span style="font-size:12px;color:rgba(255,255,255,0.5)">• 2 hours ago</span>
+        </div>
+      </div>
+    </a>
+  <div class="nh-featured-stack">
+<a href="article_b2.html" class="nh-card" style="display:flex;gap:16px;padding:16px;align-items:center;flex:1;text-decoration:none;color:inherit">
+        <img src="https://images.unsplash.com/photo-1444653614773-995cb1ef9bfa?w=600&h=400&fit=crop" alt="Flutterwave Secures Banking License; Expands to 15 Nations" style="width:120px;height:90px;object-fit:cover;border-radius:var(--nh-radius-sm);flex-shrink:0">
+        <div>
+          <span class="nh-card-tag nh-tag-business" style="margin-bottom:6px">Business</span>
+          <h3 style="font-size:15px;font-weight:500;line-height:1.3;color:var(--nh-text-primary);margin-bottom:6px">Flutterwave Secures Banking License; Expands to 15 Nations</h3>
+          <span style="font-size:11px;color:var(--nh-text-muted)">Sarah Mensah • 4 hours ago</span>
+        </div>
+      </a>
+<a href="article_b3.html" class="nh-card" style="display:flex;gap:16px;padding:16px;align-items:center;flex:1;text-decoration:none;color:inherit">
+        <img src="https://images.unsplash.com/photo-1553729459-afe8f5c1965a?w=600&h=400&fit=crop" alt="Nigerian Stock Exchange Hits Record High on Banking Reforms" style="width:120px;height:90px;object-fit:cover;border-radius:var(--nh-radius-sm);flex-shrink:0">
+        <div>
+          <span class="nh-card-tag nh-tag-business" style="margin-bottom:6px">Business</span>
+          <h3 style="font-size:15px;font-weight:500;line-height:1.3;color:var(--nh-text-primary);margin-bottom:6px">Nigerian Stock Exchange Hits Record High on Banking Reforms</h3>
+          <span style="font-size:11px;color:var(--nh-text-muted)">Oluwaseun Adeyemi • 5 hours ago</span>
+        </div>
+      </a>
+<a href="article_b4.html" class="nh-card" style="display:flex;gap:16px;padding:16px;align-items:center;flex:1;text-decoration:none;color:inherit">
+        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop" alt="Kenyan Shilling Strengthens Against Dollar for Third Week" style="width:120px;height:90px;object-fit:cover;border-radius:var(--nh-radius-sm);flex-shrink:0">
+        <div>
+          <span class="nh-card-tag nh-tag-business" style="margin-bottom:6px">Business</span>
+          <h3 style="font-size:15px;font-weight:500;line-height:1.3;color:var(--nh-text-primary);margin-bottom:6px">Kenyan Shilling Strengthens Against Dollar for Third Week</h3>
+          <span style="font-size:11px;color:var(--nh-text-muted)">Wanjiku Mwangi • 6 hours ago</span>
+        </div>
+      </a>
+</div>
+</div>
+
+<div class="nh-section-header">
+  <h2 class="nh-section-title">More Business</h2>
+  <a href="#" class="nh-view-all">View All &rarr;</a>
+</div>
+
+<div class="nh-grid">
+<a href="article_b5.html" class="nh-card" tabindex="0">
+  <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop" alt="Egypt Signs $8B Investment Deal with UAE Sovereign Fund" loading="lazy">
+  <div class="nh-card-body">
+    <span class="nh-card-tag nh-tag-business">Business</span>
+    <h3>Egypt Signs $8B Investment Deal with UAE Sovereign Fund</h3>
+    <p>The agreement covers infrastructure, renewable energy, and technology sectors across North Africa's largest economy.</p>
+    <div class="nh-card-author">
+      <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop" alt="">
+      <span>Ahmed Hassan</span>
+      <span>8 hours ago</span>
+    </div>
+  </div>
+</a>
+<a href="article_b6.html" class="nh-card" tabindex="0">
+  <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop" alt="Rwanda Emerges as East Africa's Top Investment Destination" loading="lazy">
+  <div class="nh-card-body">
+    <span class="nh-card-tag nh-tag-business">Business</span>
+    <h3>Rwanda Emerges as East Africa's Top Investment Destination</h3>
+    <p>World Bank report ranks Rwanda first in ease of doing business in the region, attracting $1.2B in FDI this quarter.</p>
+    <div class="nh-card-author">
+      <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop" alt="">
+      <span>Jeanne Uwase</span>
+      <span>10 hours ago</span>
+    </div>
+  </div>
+</a>
+<a href="article_b7.html" class="nh-card" tabindex="0">
+  <img src="https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=600&h=400&fit=crop" alt="Morocco's Automotive Exports Reach $12B Milestone" loading="lazy">
+  <div class="nh-card-body">
+    <span class="nh-card-tag nh-tag-business">Business</span>
+    <h3>Morocco's Automotive Exports Reach $12B Milestone</h3>
+    <p>The kingdom's automotive sector continues to drive industrial growth with new EV battery manufacturing partnerships.</p>
+    <div class="nh-card-author">
+      <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop" alt="">
+      <span>Youssef Alami</span>
+      <span>12 hours ago</span>
+    </div>
+  </div>
+</a>
+<a href="article_b8.html" class="nh-card" tabindex="0">
+  <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&h=400&fit=crop" alt="Ghana Cocoa Board Secures $1.5B Syndicated Loan" loading="lazy">
+  <div class="nh-card-body">
+    <span class="nh-card-tag nh-tag-business">Business</span>
+    <h3>Ghana Cocoa Board Secures $1.5B Syndicated Loan</h3>
+    <p>The financing will support cocoa farmers and stabilize production ahead of the upcoming harvest season.</p>
+    <div class="nh-card-author">
+      <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" alt="">
+      <span>Abena Owusu</span>
+      <span>14 hours ago</span>
+    </div>
+  </div>
+</a>
+</div>
+<div class="nh-ad-slot" style="background:var(--nh-surface-raised);border:1px dashed var(--nh-border);border-radius:var(--nh-radius-md);padding:8px 16px;margin-bottom:36px;text-align:center;position:relative">
+  <span class="nh-ad-label">Advertisement</span>
+  <a href="https://www.globalafricanetwork.com" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none">
+    <img src="https://kimi-web-img.moonshot.cn/img/www.globalafricanetwork.com/193ed8efeffe6900234c8e904d61e19282a62cd6.jpg" 
+         alt="Digital Finance Africa 2023" 
+         style="width:100%;max-width:336px;height:auto;min-height:280px;object-fit:cover;border-radius:6px;display:block;margin:0 auto">
+  </a>
+</div>
+</main>
+
+<div class="nh-ticker-wrap" role="complementary" aria-label="Live market ticker">
+  <div class="nh-ticker-label">Markets</div>
+  <div class="nh-ticker">
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">JSE All Share</span><span class="nh-ticker-price">110,027</span><span class="nh-ticker-change up">+0.49%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">NGX All Share</span><span class="nh-ticker-price">205,831</span><span class="nh-ticker-change up">+0.67%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">EGX 30</span><span class="nh-ticker-price">52,312</span><span class="nh-ticker-change up">+0.54%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">NSE 25</span><span class="nh-ticker-price">5,733</span><span class="nh-ticker-change up">+0.32%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">GSE Composite</span><span class="nh-ticker-price">13,270</span><span class="nh-ticker-change up">+0.87%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">BRVM Composite</span><span class="nh-ticker-price">402.18</span><span class="nh-ticker-change down">-0.46%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">LuSE All Share</span><span class="nh-ticker-price">26,943</span><span class="nh-ticker-change down">-0.41%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">ZSE All Share</span><span class="nh-ticker-price">362.68</span><span class="nh-ticker-change down">-0.06%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">JSE All Share</span><span class="nh-ticker-price">110,027</span><span class="nh-ticker-change up">+0.49%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">NGX All Share</span><span class="nh-ticker-price">205,831</span><span class="nh-ticker-change up">+0.67%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">EGX 30</span><span class="nh-ticker-price">52,312</span><span class="nh-ticker-change up">+0.54%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">NSE 25</span><span class="nh-ticker-price">5,733</span><span class="nh-ticker-change up">+0.32%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">GSE Composite</span><span class="nh-ticker-price">13,270</span><span class="nh-ticker-change up">+0.87%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">BRVM Composite</span><span class="nh-ticker-price">402.18</span><span class="nh-ticker-change down">-0.46%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">LuSE All Share</span><span class="nh-ticker-price">26,943</span><span class="nh-ticker-change down">-0.41%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">ZSE All Share</span><span class="nh-ticker-price">362.68</span><span class="nh-ticker-change down">-0.06%</span></div>
+  </div>
+</div>
+
+<div class="nh-newsletter">
+  <div class="nh-newsletter-box">
+    <div class="nh-newsletter-content">
+      <h2>Stay Ahead of African Markets</h2>
+      <p>Get curated business intelligence, market data, and breaking news delivered to your inbox every morning.</p>
+      <form class="nh-newsletter-form" onsubmit="event.preventDefault(); alert('Thank you for subscribing to NewsHub Africa!');">
+        <input type="email" placeholder="Enter your email" required aria-label="Email address">
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+    <div class="nh-stats">
+      <div class="nh-stat"><div class="nh-stat-num">250K+</div><div class="nh-stat-label">Subscribers</div></div>
+      <div class="nh-stat"><div class="nh-stat-num">54</div><div class="nh-stat-label">Countries</div></div>
+      <div class="nh-stat"><div class="nh-stat-num">Daily</div><div class="nh-stat-label">Updates</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="nh-ad-slot" style="background:var(--nh-surface-raised);border:1px dashed var(--nh-border);border-radius:var(--nh-radius-md);padding:8px 16px;margin-bottom:36px;text-align:center;position:relative;overflow:hidden">
+  <span class="nh-ad-label">Advertisement</span>
+  <a href="https://mgtix.africa" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none">
+    <img src="https://kimi-web-img.moonshot.cn/img/mgtix.africa/5220896a7b6e63fa56c581cab34917eb59925ca2" 
+         alt="Beyond Mobile Money: Fintech's Next Frontier" 
+         style="width:100%;max-width:970px;height:auto;min-height:90px;object-fit:cover;border-radius:6px;display:block;margin:0 auto">
+  </a>
+</div>
+
+<footer class="nh-footer">
+  <div class="nh-footer-inner">
+    <div class="nh-footer-top">
+      <div class="nh-footer-brand">
+        <div class="nh-brand-text">newshub <span>AFRICA</span></div>
+        <p>Your trusted source for comprehensive business, technology, agriculture, mining, and energy news across the African continent.</p>
+        <div class="nh-social">
+          <a href="#" aria-label="Twitter">𝕏</a>
+          <a href="#" aria-label="LinkedIn">in</a>
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="Instagram">📷</a>
+        </div>
+      </div>
+      <div class="nh-footer-col"><h4>Sections</h4><ul><li><a href="business.html">Business</a></li><li><a href="technology.html">Technology</a></li><li><a href="agriculture.html">Agriculture</a></li><li><a href="mining.html">Mining</a></li><li><a href="energy.html">Energy</a></li></ul></div>
+      <div class="nh-footer-col"><h4>Company</h4><ul><li><a href="#">About Us</a></li><li><a href="#">Careers</a></li><li><a href="#">Advertise</a></li><li><a href="#">Contact</a></li></ul></div>
+      <div class="nh-footer-col"><h4>Resources</h4><ul><li><a href="#">Market Data</a></li><li><a href="#">Newsletters</a></li><li><a href="#">Podcasts</a></li><li><a href="#">Events</a></li></ul></div>
+      <div class="nh-footer-col"><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li><li><a href="#">Cookie Policy</a></li></ul></div>
+    </div>
+    <div class="nh-footer-bottom">
+      <span>&copy; 2026 NewsHub Africa. All rights reserved.</span>
+      <div style="display:flex;gap:16px"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Cookies</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+
+function toggleTheme() {
+  const html = document.documentElement;
+  const moon = document.getElementById('nh-moon');
+  const sun = document.getElementById('nh-sun');
+  if (html.getAttribute('data-theme') === 'dark') {
+    html.removeAttribute('data-theme');
+    if (moon) moon.style.display = 'block';
+    if (sun) sun.style.display = 'none';
+  } else {
+    html.setAttribute('data-theme', 'dark');
+    if (moon) moon.style.display = 'none';
+    if (sun) sun.style.display = 'block';
+  }
+}
+
+function toggleMobileNav() {
+  const nav = document.getElementById('mobileNav');
+  const overlay = document.getElementById('mobileOverlay');
+  const btn = document.getElementById('hamburgerBtn');
+  const isOpen = nav.classList.contains('open');
+
+  if (isOpen) {
+    closeMobileNav();
+  } else {
+    nav.style.display = 'block';
+    overlay.style.display = 'block';
+    void nav.offsetWidth;
+    void overlay.offsetWidth;
+    nav.classList.add('open');
+    overlay.classList.add('open');
+    btn.classList.add('active');
+    btn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeMobileNav() {
+  const nav = document.getElementById('mobileNav');
+  const overlay = document.getElementById('mobileOverlay');
+  const btn = document.getElementById('hamburgerBtn');
+
+  nav.classList.remove('open');
+  overlay.classList.remove('open');
+  btn.classList.remove('active');
+  btn.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+
+  setTimeout(() => {
+    if (!nav.classList.contains('open')) {
+      nav.style.display = 'none';
+      overlay.style.display = 'none';
+    }
+  }, 300);
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeMobileNav();
+});
+
+
+
+</script>
+
+</body>
+</html>

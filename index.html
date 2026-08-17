@@ -1,0 +1,1618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Africa's Premier News Aggregator — NewsHub Africa</title>
+  <meta name="description" content="Comprehensive business, technology, agriculture, mining, and energy news across the African continent.">
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+
+:root {
+  --nh-blue: #0033cc;
+  --nh-blue-light: #1a53ff;
+  --nh-blue-dark: #002080;
+  --nh-black: #0a0a0a;
+  --nh-white: #ffffff;
+  --nh-surface: #ffffff;
+  --nh-surface-raised: #f8f9fa;
+  --nh-text-primary: #0a0a0a;
+  --nh-text-secondary: #495057;
+  --nh-text-muted: #adb5bd;
+  --nh-border: #dee2e6;
+  --nh-shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --nh-shadow-md: 0 4px 12px rgba(0,0,0,0.10);
+  --nh-shadow-lg: 0 10px 40px rgba(0,0,0,0.15);
+  --nh-radius-sm: 6px;
+  --nh-radius-md: 10px;
+  --nh-radius-lg: 12px;
+  --nh-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] {
+  --nh-surface: #0f1115;
+  --nh-surface-raised: #1a1d23;
+  --nh-text-primary: #f0f0f5;
+  --nh-text-secondary: #8a8b97;
+  --nh-text-muted: #5a5a6b;
+  --nh-border: #2a2d35;
+  --nh-shadow-sm: 0 1px 3px rgba(0,0,0,0.30);
+  --nh-shadow-md: 0 4px 12px rgba(0,0,0,0.40);
+  --nh-shadow-lg: 0 10px 40px rgba(0,0,0,0.50);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--nh-surface);
+  color: var(--nh-text-primary);
+  transition: var(--nh-transition);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+.nh-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--nh-surface);
+  border-bottom: 1px solid var(--nh-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.nh-header-inner { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+
+.nh-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--nh-border);
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.nh-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+
+.nh-brand-icon {
+  width: 32px; height: 32px;
+  background: var(--nh-blue);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: 700; font-size: 14px;
+  flex-shrink: 0;
+}
+
+.nh-brand-text {
+  font-size: 20px; font-weight: 500;
+  letter-spacing: -0.3px;
+  color: var(--nh-text-primary);
+}
+
+.nh-brand-text span { color: var(--nh-blue); font-weight: 500; }
+
+.nh-brand-tagline {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--nh-text-muted);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-top: -2px;
+  line-height: 1.2;
+}
+[data-theme="dark"] .nh-brand-tagline { color: var(--nh-text-secondary); }
+
+.nh-actions { display: flex; align-items: center; gap: 10px; }
+
+.nh-search { position: relative; }
+
+.nh-search input {
+  width: 220px;
+  padding: 9px 14px 9px 36px;
+  border: 1px solid var(--nh-border);
+  border-radius: 100px;
+  background: var(--nh-surface-raised);
+  color: var(--nh-text-primary);
+  font-size: 13px; outline: none;
+  font-family: inherit;
+}
+
+.nh-search input:focus {
+  border-color: var(--nh-blue);
+  box-shadow: 0 0 0 3px rgba(0,51,204,0.1);
+}
+
+.nh-search svg {
+  position: absolute; left: 12px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--nh-text-muted);
+  width: 14px; height: 14px;
+}
+
+.nh-btn {
+  padding: 9px 20px;
+  background: var(--nh-blue); color: white;
+  border: none; border-radius: 100px;
+  font-weight: 500; font-size: 13px;
+  cursor: pointer; transition: var(--nh-transition);
+  font-family: inherit;
+}
+
+.nh-btn:hover { background: var(--nh-blue-dark); transform: translateY(-2px); }
+
+.nh-nav {
+  display: flex; align-items: center;
+  gap: 4px; padding: 10px 0;
+  overflow-x: auto;
+}
+
+.nh-nav-item {
+  padding: 7px 16px;
+  border-radius: 100px;
+  font-size: 13px; font-weight: 500;
+  color: var(--nh-text-secondary);
+  cursor: pointer; white-space: nowrap;
+  transition: var(--nh-transition);
+  border: none; background: transparent;
+  font-family: inherit;
+  text-decoration: none;
+}
+
+.nh-nav-item.active, .nh-nav-item:hover { color: white; background: var(--nh-blue); }
+
+.nh-live {
+  display: flex; align-items: center;
+  gap: 5px; padding: 5px 12px;
+  background: rgba(0,51,204,0.08);
+  color: var(--nh-blue);
+  border-radius: 100px;
+  font-size: 11px; font-weight: 500;
+  margin-left: auto; cursor: pointer;
+  animation: pulse 2s infinite;
+  white-space: nowrap;
+}
+
+.nh-live .dot {
+  width: 7px; height: 7px;
+  background: var(--nh-blue);
+  border-radius: 50%;
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.7; }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.nh-main { padding: 24px; max-width: 1400px; margin: 0 auto; }
+
+.nh-breaking {
+  display: flex; align-items: center;
+  gap: 10px; padding: 10px 18px;
+  background: linear-gradient(90deg, var(--nh-blue), var(--nh-blue-light));
+  color: white; border-radius: 10px;
+  margin-bottom: 20px;
+  font-size: 13px; font-weight: 500;
+  overflow: hidden; position: relative;
+}
+
+.nh-breaking::before {
+  content: '';
+  position: absolute; top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+.nh-breaking-label {
+  background: white; color: var(--nh-blue);
+  padding: 3px 10px; border-radius: 4px;
+  font-weight: 700; font-size: 10px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  z-index: 1; flex-shrink: 0;
+}
+
+.nh-breaking-ticker {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  mask-image: linear-gradient(90deg, transparent, black 5%, black 95%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 5%, black 95%, transparent);
+}
+.nh-breaking-track {
+  display: flex;
+  gap: 60px;
+  width: max-content;
+  animation: breaking-scroll 30s linear infinite;
+  will-change: transform;
+}
+.nh-breaking-track:hover { animation-play-state: paused; }
+.nh-breaking-text {
+  white-space: nowrap;
+  flex-shrink: 0;
+  z-index: 1;
+}
+@keyframes breaking-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.nh-section-header {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.nh-section-title {
+  font-size: 24px; font-weight: 500;
+  position: relative; display: inline-block;
+  color: var(--nh-text-primary);
+}
+
+.nh-section-title::after {
+  content: '';
+  position: absolute; bottom: -6px; left: 0;
+  width: 40px; height: 3px;
+  background: var(--nh-blue); border-radius: 2px;
+}
+
+.nh-view-all {
+  color: var(--nh-blue); font-weight: 500;
+  font-size: 13px; cursor: pointer;
+  display: flex; align-items: center; gap: 4px;
+  transition: var(--nh-transition);
+  text-decoration: none; background: none; border: none;
+  font-family: inherit;
+}
+
+.nh-view-all:hover { gap: 6px; }
+
+.nh-card {
+  background: var(--nh-surface);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg);
+  overflow: hidden;
+  transition: var(--nh-transition);
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.nh-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--nh-shadow-lg);
+  border-color: transparent;
+}
+
+.nh-card img {
+  width: 100%; height: 180px;
+  object-fit: cover; display: block;
+  transition: transform 0.5s ease;
+}
+
+.nh-card:hover img { transform: scale(1.08); }
+
+.nh-card-body { padding: 18px; }
+
+.nh-card-tag {
+  display: inline-block;
+  padding: 3px 8px; border-radius: 4px;
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.nh-tag-business { background: rgba(42,157,143,0.12); color: #2a9d8f; }
+.nh-tag-tech { background: rgba(38,70,83,0.12); color: #264653; }
+.nh-tag-agri { background: rgba(233,196,106,0.18); color: #b8860b; }
+.nh-tag-mining { background: rgba(107,91,149,0.12); color: #6b5b95; }
+.nh-tag-energy { background: rgba(244,162,97,0.18); color: #c77733; }
+
+[data-theme="dark"] .nh-tag-business { background: rgba(42,157,143,0.2); color: #4ecdc4; }
+[data-theme="dark"] .nh-tag-tech { background: rgba(100,200,255,0.12); color: #64c8ff; }
+[data-theme="dark"] .nh-tag-agri { background: rgba(233,196,106,0.15); color: #e9c46a; }
+[data-theme="dark"] .nh-tag-mining { background: rgba(107,91,149,0.2); color: #9b8ec7; }
+[data-theme="dark"] .nh-tag-energy { background: rgba(244,162,97,0.15); color: #f4a261; }
+
+.nh-card h3 {
+  font-size: 16px; font-weight: 500;
+  line-height: 1.3; margin-bottom: 8px;
+  color: var(--nh-text-primary);
+}
+
+.nh-card p {
+  font-size: 13px; color: var(--nh-text-secondary);
+  line-height: 1.5; margin-bottom: 12px;
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+
+.nh-card-author {
+  display: flex; align-items: center; gap: 6px;
+}
+
+.nh-card-author img {
+  width: 24px; height: 24px;
+  border-radius: 50%; object-fit: cover;
+}
+
+.nh-card-author span { font-size: 11px; color: var(--nh-text-muted); margin-left: auto; }
+
+.nh-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 36px; }
+
+.nh-article-page { max-width: 800px; margin: 0 auto; padding: 32px 24px; }
+
+.nh-article-header { margin-bottom: 24px; }
+
+.nh-article-header img {
+  width: 100%; height: 400px;
+  object-fit: cover; border-radius: var(--nh-radius-lg);
+  margin-bottom: 24px;
+}
+
+.nh-article-tag {
+  display: inline-block;
+  padding: 4px 12px; border-radius: 4px;
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+.nh-article-title {
+  font-size: 32px; font-weight: 500;
+  line-height: 1.2; margin-bottom: 16px;
+  color: var(--nh-text-primary);
+}
+
+.nh-article-meta {
+  display: flex; gap: 16px;
+  font-size: 13px; color: var(--nh-text-muted);
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--nh-border);
+}
+
+.nh-article-body {
+  font-size: 16px; line-height: 1.8;
+  color: var(--nh-text-secondary);
+}
+
+.nh-article-body p { margin-bottom: 20px; }
+
+.nh-article-body h3 {
+  font-size: 20px; font-weight: 500;
+  color: var(--nh-text-primary);
+  margin: 32px 0 16px;
+}
+
+.nh-article-body ul {
+  margin: 16px 0 16px 24px;
+  color: var(--nh-text-secondary);
+}
+
+.nh-article-body li { margin-bottom: 8px; }
+
+.nh-back-link {
+  display: inline-flex; align-items: center;
+  gap: 6px; color: var(--nh-blue);
+  font-weight: 500; font-size: 14px;
+  text-decoration: none; margin-bottom: 24px;
+  transition: var(--nh-transition);
+}
+
+.nh-back-link:hover { gap: 10px; }
+
+.nh-ticker-wrap {
+  background: var(--nh-black); color: white;
+  padding: 12px 0; overflow: hidden;
+  position: relative; margin-bottom: 32px;
+}
+
+.nh-ticker-label {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  background: var(--nh-black); padding: 0 18px;
+  display: flex; align-items: center;
+  font-weight: 700; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 1px;
+  z-index: 10;
+  border-right: 1px solid rgba(255,255,255,0.1);
+}
+
+.nh-ticker {
+  display: flex; gap: 36px;
+  padding-left: 120px;
+  animation: ticker 30s linear infinite;
+  white-space: nowrap;
+}
+
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.nh-ticker-item {
+  display: flex; align-items: center;
+  gap: 6px; font-size: 13px;
+}
+
+.nh-ticker-symbol { font-weight: 700; color: var(--nh-blue-light); }
+.nh-ticker-price { font-weight: 500; }
+.nh-ticker-change { font-size: 11px; padding: 2px 6px; border-radius: 4px; }
+.nh-ticker-change.up { background: rgba(42,157,143,0.2); color: #4ecdc4; }
+.nh-ticker-change.down { background: rgba(233,69,96,0.15); color: #e94560; }
+
+.nh-footer {
+  background: var(--nh-black); color: white;
+  padding: 48px 24px 24px;
+}
+
+.nh-footer-inner { max-width: 1400px; margin: 0 auto; }
+
+.nh-footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 36px; margin-bottom: 36px;
+}
+
+.nh-footer-brand { max-width: 260px; }
+
+.nh-footer-brand .nh-brand-text {
+  color: white; margin-bottom: 12px;
+  font-size: 20px; font-weight: 500;
+}
+
+.nh-footer-brand .nh-brand-text span { color: var(--nh-blue-light); }
+
+.nh-footer-brand p {
+  color: rgba(255,255,255,0.6);
+  font-size: 13px; line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.nh-social { display: flex; gap: 8px; }
+
+.nh-social a {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  color: white; text-decoration: none;
+  transition: var(--nh-transition); font-size: 12px;
+}
+
+.nh-social a:hover { background: var(--nh-blue); transform: translateY(-2px); }
+
+.nh-footer-col h4 {
+  font-size: 12px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 1px;
+  margin-bottom: 16px; color: var(--nh-blue-light);
+}
+
+.nh-footer-col ul { list-style: none; }
+.nh-footer-col li { margin-bottom: 8px; }
+
+.nh-footer-col a {
+  color: rgba(255,255,255,0.6); text-decoration: none;
+  font-size: 13px; transition: var(--nh-transition);
+}
+
+.nh-footer-col a:hover { color: white; padding-left: 3px; }
+
+.nh-footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 24px;
+  display: flex; justify-content: space-between;
+  align-items: center; font-size: 12px;
+  color: rgba(255,255,255,0.4);
+}
+
+.nh-footer-bottom a {
+  color: rgba(255,255,255,0.4);
+  text-decoration: none; transition: var(--nh-transition);
+}
+
+.nh-footer-bottom a:hover { color: white; }
+
+.nh-newsletter { max-width: 1400px; margin: 0 auto 48px; padding: 0 24px; }
+
+.nh-newsletter-box {
+  background: linear-gradient(135deg, var(--nh-blue-dark), var(--nh-blue));
+  border-radius: var(--nh-radius-lg); padding: 36px;
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 36px;
+  position: relative; overflow: hidden;
+}
+
+.nh-newsletter-box::before {
+  content: '';
+  position: absolute; top: -50%; right: -10%;
+  width: 350px; height: 350px;
+  background: radial-gradient(circle, var(--nh-blue-light) 0%, transparent 70%);
+  opacity: 0.15;
+}
+
+.nh-newsletter-content { position: relative; z-index: 1; max-width: 420px; }
+
+.nh-newsletter-content h2 {
+  font-size: 24px; color: white;
+  margin-bottom: 8px; font-weight: 500;
+}
+
+.nh-newsletter-content p {
+  color: rgba(255,255,255,0.7);
+  font-size: 14px; line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.nh-newsletter-form { display: flex; gap: 8px; }
+
+.nh-newsletter-form input {
+  flex: 1; padding: 11px 16px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.1);
+  color: white; font-size: 13px; outline: none;
+  font-family: inherit;
+}
+
+.nh-newsletter-form input::placeholder { color: rgba(255,255,255,0.5); }
+.nh-newsletter-form input:focus { border-color: white; background: rgba(255,255,255,0.15); }
+
+.nh-newsletter-form button {
+  padding: 11px 22px; background: white;
+  color: var(--nh-blue); border: none;
+  border-radius: 10px; font-weight: 500;
+  font-size: 13px; cursor: pointer;
+  transition: var(--nh-transition);
+  white-space: nowrap; font-family: inherit;
+}
+
+.nh-newsletter-form button:hover { background: var(--nh-gray-100); transform: translateY(-2px); }
+
+.nh-stats { display: flex; gap: 24px; position: relative; z-index: 1; }
+
+.nh-stat { text-align: center; }
+
+.nh-stat-num { font-size: 28px; font-weight: 500; color: white; }
+
+.nh-stat-label { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+
+.nh-ad-slot { position: relative; }
+.nh-ad-label {
+  font-size: 10px;
+  color: var(--nh-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: absolute;
+  top: 4px;
+  left: 8px;
+  z-index: 1;
+  background: var(--nh-surface-raised);
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+.nh-ad-slot img {
+  display: block;
+  margin: 0 auto;
+  border-radius: 6px;
+  transition: transform 0.3s ease;
+}
+.nh-ad-slot a:hover img { transform: scale(1.02); }
+
+/* Mobile Navigation */
+.nh-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  gap: 5px;
+  padding: 8px;
+  border-radius: 8px;
+  transition: var(--nh-transition);
+}
+
+.nh-hamburger:hover { background: var(--nh-surface-raised); }
+
+.nh-hamburger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--nh-text-primary);
+  border-radius: 2px;
+  transition: var(--nh-transition);
+  transform-origin: center;
+}
+
+.nh-hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nh-hamburger.active span:nth-child(2) { opacity: 0; }
+.nh-hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.nh-mobile-nav {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--nh-surface);
+  z-index: 999;
+  padding: 80px 24px 24px;
+  overflow-y: auto;
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nh-mobile-nav.open { transform: translateX(0); }
+
+.nh-mobile-nav-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--nh-border);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--nh-surface);
+  z-index: 1001;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.nh-mobile-nav-close {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  color: var(--nh-text-primary);
+}
+
+.nh-mobile-nav-close:hover { background: var(--nh-surface-raised); }
+
+.nh-mobile-nav-list { list-style: none; padding: 0; }
+.nh-mobile-nav-list li { border-bottom: 1px solid var(--nh-border); }
+
+.nh-mobile-nav-list a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  color: var(--nh-text-primary);
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: var(--nh-transition);
+}
+
+.nh-mobile-nav-list a:hover { color: var(--nh-blue); padding-left: 8px; }
+
+.nh-mobile-nav-list a svg {
+  width: 20px;
+  height: 20px;
+  color: var(--nh-text-muted);
+}
+
+.nh-mobile-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--nh-text-muted);
+  margin: 24px 0 12px;
+}
+
+.nh-mobile-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 998;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.nh-mobile-overlay.open { opacity: 1; }
+
+/* Hero Grid */
+.nh-hero-grid { display:grid; grid-template-columns:1.2fr 1fr; gap:24px; margin-bottom:40px; }
+.nh-hero-main { display:flex; flex-direction:column; min-height:480px; position:relative; overflow:hidden; }
+.nh-hero-main img { width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; z-index:0; }
+.nh-hero-side { display:flex; flex-direction:column; gap:18px; }
+
+/* Video Grid */
+.nh-video-grid { display:grid; grid-template-columns:2fr 1fr; gap:18px; margin-bottom:40px; }
+
+/* Category Page Styles */
+.nh-category-hero {
+  background: linear-gradient(135deg, var(--nh-blue-dark), var(--nh-blue));
+  border-radius: var(--nh-radius-lg);
+  padding: 48px 36px;
+  margin-bottom: 36px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.nh-category-hero::before {
+  content: '';
+  position: absolute; top: -50%; right: -10%;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, var(--nh-blue-light) 0%, transparent 70%);
+  opacity: 0.2;
+}
+.nh-category-hero h1 { font-size: 36px; font-weight: 500; margin-bottom: 8px; position: relative; z-index: 1; }
+.nh-category-hero p { color: rgba(255,255,255,0.7); font-size: 15px; position: relative; z-index: 1; }
+
+.nh-featured-row { display: grid; grid-template-columns: 1.5fr 1fr; gap: 24px; margin-bottom: 36px; }
+
+.nh-featured-large { position: relative; overflow: hidden; border-radius: var(--nh-radius-lg); min-height: 400px; display: block; text-decoration: none; color: inherit; }
+.nh-featured-large img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
+.nh-featured-large .overlay {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.85));
+  padding: 32px; color: white;
+}
+
+.nh-featured-stack { display: flex; flex-direction: column; gap: 16px; }
+.nh-featured-stack .nh-card { display: flex; gap: 16px; padding: 16px; align-items: center; flex: 1; }
+.nh-featured-stack .nh-card img { width: 120px; height: 90px; object-fit: cover; border-radius: var(--nh-radius-sm); flex-shrink: 0; }
+
+/* Events Page */
+.nh-events-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 36px; }
+.nh-event-card {
+  background: var(--nh-surface);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg);
+  overflow: hidden;
+  transition: var(--nh-transition);
+}
+.nh-event-card:hover { transform: translateY(-5px); box-shadow: var(--nh-shadow-lg); border-color: transparent; }
+.nh-event-card img { width: 100%; height: 200px; object-fit: cover; display: block; }
+.nh-event-card-body { padding: 20px; }
+.nh-event-date {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 12px; border-radius: 100px;
+  background: rgba(0,51,204,0.08); color: var(--nh-blue);
+  font-size: 12px; font-weight: 500; margin-bottom: 10px;
+}
+.nh-event-card h3 { font-size: 17px; font-weight: 500; line-height: 1.3; margin-bottom: 8px; color: var(--nh-text-primary); }
+.nh-event-card p { font-size: 13px; color: var(--nh-text-secondary); line-height: 1.5; margin-bottom: 12px; }
+.nh-event-location { font-size: 12px; color: var(--nh-text-muted); display: flex; align-items: center; gap: 4px; }
+
+/* Markets Page */
+.nh-market-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 36px;
+  background: var(--nh-surface);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg);
+  overflow: hidden;
+}
+.nh-market-table th {
+  background: var(--nh-surface-raised);
+  padding: 14px 18px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--nh-text-secondary);
+  border-bottom: 1px solid var(--nh-border);
+}
+.nh-market-table td {
+  padding: 14px 18px;
+  font-size: 14px;
+  border-bottom: 1px solid var(--nh-border);
+  color: var(--nh-text-primary);
+}
+.nh-market-table tr:last-child td { border-bottom: none; }
+.nh-market-table tr:hover td { background: var(--nh-surface-raised); }
+
+.nh-market-index {
+  background: var(--nh-surface);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg);
+  padding: 24px;
+  text-align: center;
+  transition: var(--nh-transition);
+}
+.nh-market-index:hover { box-shadow: var(--nh-shadow-md); border-color: transparent; }
+.nh-market-index h4 { font-size: 13px; color: var(--nh-text-secondary); margin-bottom: 8px; font-weight: 500; }
+.nh-market-index .value { font-size: 28px; font-weight: 500; color: var(--nh-text-primary); margin-bottom: 4px; }
+.nh-market-index .change { font-size: 13px; font-weight: 500; padding: 3px 10px; border-radius: 100px; display: inline-block; }
+.nh-market-index .change.up { background: rgba(42,157,143,0.12); color: #2a9d8f; }
+.nh-market-index .change.down { background: rgba(233,69,96,0.12); color: #e94560; }
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .nh-grid { grid-template-columns: repeat(2, 1fr); }
+  .nh-footer-top { grid-template-columns: 1fr 1fr; }
+  .nh-hero-grid { grid-template-columns: 1fr; }
+  .nh-video-grid { grid-template-columns: 1fr; }
+  .nh-featured-row { grid-template-columns: 1fr; }
+  .nh-events-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .nh-search input { width: 140px; }
+  .nh-grid { grid-template-columns: 1fr; }
+  .nh-newsletter-box { flex-direction: column; text-align: center; padding: 24px 16px; }
+  .nh-newsletter-form { flex-direction: column; }
+  .nh-stats { justify-content: center; }
+  .nh-footer-top { grid-template-columns: 1fr; gap: 24px; }
+  .nh-footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  .nh-section-title { font-size: 20px; }
+  .nh-ticker-label { display: none; }
+  .nh-ticker-wrap { padding-left: 16px; }
+  .nh-live { display: none; }
+  .nh-article-title { font-size: 24px; }
+  .nh-article-header img { height: 240px; }
+  .nh-hamburger { display: flex; }
+  .nh-nav { display: none; }
+  .nh-search { display: none; }
+  .nh-btn:not(.nh-btn-icon) { display: none; }
+  .nh-header-inner { padding: 0 16px; }
+  .nh-main { padding: 16px; }
+  .nh-hero-main { min-height: 320px; }
+  .nh-hero-main h2 { font-size: 20px; }
+  .nh-hero-main p { font-size: 13px; }
+  .nh-hero-side { gap: 12px; }
+  .nh-hero-side .nh-card { padding: 12px; }
+  .nh-hero-side img { width: 100px; height: 75px; }
+  .nh-hero-side h3 { font-size: 14px; }
+  .nh-video-main img { height: 200px; }
+  .nh-ad-slot img { width: 100% !important; }
+  .nh-category-hero { padding: 32px 20px; }
+  .nh-category-hero h1 { font-size: 26px; }
+  .nh-events-grid { grid-template-columns: 1fr; }
+  .nh-featured-stack .nh-card { flex-direction: column; }
+  .nh-featured-stack .nh-card img { width: 100%; height: 160px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .nh-ticker { animation: none; }
+  .nh-breaking-track { animation: none; }
+}
+
+button:focus-visible, input:focus-visible, a:focus-visible {
+  outline: 2px solid var(--nh-blue); outline-offset: 2px;
+}
+
+  
+/* Live Updates Toggle */
+.nh-live-hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- Mobile Overlay -->
+<div class="nh-mobile-overlay" id="mobileOverlay" onclick="closeMobileNav()"></div>
+
+<!-- Mobile Navigation Drawer -->
+<div class="nh-mobile-nav" id="mobileNav">
+  <div class="nh-mobile-nav-header">
+    <a href="index.html" class="nh-brand" style="text-decoration:none">
+      <div class="nh-brand-icon" aria-hidden="true">N</div>
+      <div>
+        <div class="nh-brand-text">newshub <span>AFRICA</span></div>
+      </div>
+    </a>
+    <button class="nh-mobile-nav-close" onclick="closeMobileNav()" aria-label="Close menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <div class="nh-mobile-section-title">Sections</div>
+  <ul class="nh-mobile-nav-list">
+    <li><a href="index.html">Home <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="business.html">Business <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="technology.html">Technology <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="agriculture.html">Agriculture <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="mining.html">Mining <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="energy.html">Energy <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="markets_v13_linked.html">Markets <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="events.html">Events <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+  </ul>
+
+  <div class="nh-mobile-section-title">Account</div>
+  <ul class="nh-mobile-nav-list">
+    <li><a href="#" onclick="alert('Subscribe feature coming soon!'); closeMobileNav(); return false;">Subscribe <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="#" onclick="toggleTheme(); closeMobileNav(); return false;">Toggle Dark Mode <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+  </ul>
+
+  <div class="nh-mobile-section-title">Company</div>
+  <ul class="nh-mobile-nav-list">
+    <li><a href="about.html">About Us <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="careers.html">Careers <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="advertise.html">Advertise <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="contact.html">Contact <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+  </ul>
+</div>
+
+<header class="nh-header" role="banner">
+  <div class="nh-header-inner">
+    <div class="nh-header-top">
+      <a href="index.html" class="nh-brand">
+        <div class="nh-brand-icon" aria-hidden="true">N</div>
+        <div>
+          <div class="nh-brand-text">newshub <span>AFRICA</span></div>
+          <div class="nh-brand-tagline">The pulse of the continent</div>
+        </div>
+      </a>
+      <div class="nh-actions">
+        <div class="nh-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" placeholder="Search news..." aria-label="Search news">
+        </div>
+        <button class="nh-btn nh-btn-icon" onclick="toggleTheme()" aria-label="Toggle dark mode" style="padding:9px 12px;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center">
+          <svg id="nh-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          <svg id="nh-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        </button>
+        <button class="nh-btn" onclick="alert('Thank you for subscribing to NewsHub Africa!')">Subscribe</button>
+        <button class="nh-hamburger" id="hamburgerBtn" onclick="toggleMobileNav()" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <nav class="nh-nav" role="navigation" aria-label="Main navigation">
+      <a href="index.html" class="nh-nav-item active">Home</a>
+      <a href="business.html" class="nh-nav-item ">Business</a>
+      <a href="technology.html" class="nh-nav-item ">Technology</a>
+      <a href="agriculture.html" class="nh-nav-item ">Agriculture</a>
+      <a href="mining.html" class="nh-nav-item ">Mining</a>
+      <a href="energy.html" class="nh-nav-item ">Energy</a>
+      <a href="markets_v13_linked.html" class="nh-nav-item ">Markets</a>
+      <a href="events.html" class="nh-nav-item ">Events</a>
+
+          <div class="nh-live" id="navQuote" role="status" aria-live="polite" style="cursor:default;animation:none;flex:1;max-width:420px;overflow:hidden;position:relative;mask-image:linear-gradient(90deg,transparent,black 5%,black 95%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,black 5%,black 95%,transparent)">
+        <span class="dot" style="background:var(--nh-blue);animation:blink 1.5s infinite;flex-shrink:0"></span>
+        <div id="nav-qod-track" style="display:flex;gap:60px;width:max-content;animation:breaking-scroll 25s linear infinite;white-space:nowrap;padding-left:10px">
+          <span class="nav-qod-item" style="flex-shrink:0">Loading today's wisdom...</span>
+          <span class="nav-qod-item" style="flex-shrink:0">Loading today's wisdom...</span>
+        </div>
+      </div>
+</nav>
+  </div>
+</header>
+
+<main class="nh-main">
+
+<div class="nh-ad-slot" style="background:var(--nh-surface-raised);border:1px dashed var(--nh-border);border-radius:var(--nh-radius-md);padding:8px 16px;margin-bottom:20px;text-align:center;position:relative;overflow:hidden">
+  <span class="nh-ad-label">Advertisement</span>
+  <a href="https://africanmediaagency.com" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none">
+    <img src="https://kimi-web-img.moonshot.cn/img/africanmediaagency.com/04912b6be587182aec4daa2dca4619d5a608e9a1.png" 
+         alt="Africa Money & DeFi Summit West Africa" 
+         style="width:100%;max-width:970px;height:auto;min-height:90px;object-fit:cover;border-radius:6px;display:block;margin:0 auto">
+  </a>
+</div>
+<div class="nh-breaking" role="alert" aria-live="polite">
+    <span class="nh-breaking-label">Breaking</span>
+    <div class="nh-breaking-ticker">
+      <div class="nh-breaking-track">
+        <span class="nh-breaking-text">Visa, Onafriq and M-Pesa team up for stablecoin payments across Africa — July 22, 2026</span>
+        <span class="nh-breaking-text">Nigeria's Central Bank raises interest rate to 27.25% to combat inflation — July 22, 2026</span>
+        <span class="nh-breaking-text">Kenya launches Africa's largest solar farm in Turkana County — July 22, 2026</span>
+        <span class="nh-breaking-text">Ethiopia Airlines orders 20 new Boeing 737 MAX jets worth $2.5B — July 22, 2026</span>
+        <span class="nh-breaking-text">African Union approves continental free trade zone digital payments framework — July 22, 2026</span>
+        <span class="nh-breaking-text">Visa, Onafriq and M-Pesa team up for stablecoin payments across Africa — July 22, 2026</span>
+        <span class="nh-breaking-text">Nigeria's Central Bank raises interest rate to 27.25% to combat inflation — July 22, 2026</span>
+        <span class="nh-breaking-text">Kenya launches Africa's largest solar farm in Turkana County — July 22, 2026</span>
+        <span class="nh-breaking-text">Ethiopia Airlines orders 20 new Boeing 737 MAX jets worth $2.5B — July 22, 2026</span>
+        <span class="nh-breaking-text">African Union approves continental free trade zone digital payments framework — July 22, 2026</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIVE UPDATES — Rolling Coverage -->
+  <div class="nh-card" id="liveUpdates" data-live-active="true" style="margin-bottom:28px;border:1px solid var(--nh-border);position:relative;overflow:hidden">
+    <!-- Live Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--nh-surface-raised);border-bottom:1px solid var(--nh-border)">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="width:8px;height:8px;border-radius:50%;background:#e94560;animation:blink 1.5s infinite;display:inline-block"></span>
+        <h3 style="font-size:14px;font-weight:600;color:var(--nh-text-primary);text-transform:uppercase;letter-spacing:0.8px">Live Updates</h3>
+        <span style="font-size:12px;color:var(--nh-text-muted);padding-left:8px;border-left:1px solid var(--nh-border)">AU Summit on Industrialization — Addis Ababa</span>
+      </div>
+      <span style="font-size:11px;color:var(--nh-text-muted);font-weight:500">Updated 2 min ago</span>
+    </div>
+    <!-- Timeline -->
+    <div style="padding:20px;max-height:320px;overflow-y:auto">
+      <!-- Timeline Item -->
+      <div style="display:flex;gap:16px;margin-bottom:18px;position:relative">
+        <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
+          <span style="width:10px;height:10px;border-radius:50%;background:var(--nh-blue);border:2px solid var(--nh-surface);box-shadow:0 0 0 2px var(--nh-blue);z-index:1"></span>
+          <div style="width:2px;flex:1;background:var(--nh-border);margin-top:4px"></div>
+        </div>
+        <div style="flex:1;padding-bottom:6px">
+          <span style="font-size:11px;font-weight:600;color:var(--nh-text-muted);font-family:monospace">10:42 AM</span>
+          <p style="font-size:14px;color:var(--nh-text-primary);line-height:1.5;margin-top:4px"><strong>Ethiopia commits $2B</strong> to the African Continental Free Trade Area (AfCFTA) industrial parks fund, targeting textile and pharmaceutical manufacturing zones.</p>
+        </div>
+      </div>
+      <!-- Timeline Item -->
+      <div style="display:flex;gap:16px;margin-bottom:18px;position:relative">
+        <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
+          <span style="width:10px;height:10px;border-radius:50%;background:var(--nh-blue);border:2px solid var(--nh-surface);box-shadow:0 0 0 2px var(--nh-blue);z-index:1"></span>
+          <div style="width:2px;flex:1;background:var(--nh-border);margin-top:4px"></div>
+        </div>
+        <div style="flex:1;padding-bottom:6px">
+          <span style="font-size:11px;font-weight:600;color:var(--nh-text-muted);font-family:monospace">10:28 AM</span>
+          <p style="font-size:14px;color:var(--nh-text-primary);line-height:1.5;margin-top:4px"><strong>Nigeria and South Africa sign</strong> a bilateral agreement on critical minerals processing, establishing a joint venture for lithium refining in the Northern Cape.</p>
+        </div>
+      </div>
+      <!-- Timeline Item -->
+      <div style="display:flex;gap:16px;margin-bottom:18px;position:relative">
+        <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
+          <span style="width:10px;height:10px;border-radius:50%;background:var(--nh-blue);border:2px solid var(--nh-surface);box-shadow:0 0 0 2px var(--nh-blue);z-index:1"></span>
+          <div style="width:2px;flex:1;background:var(--nh-border);margin-top:4px"></div>
+        </div>
+        <div style="flex:1;padding-bottom:6px">
+          <span style="font-size:11px;font-weight:600;color:var(--nh-text-muted);font-family:monospace">10:15 AM</span>
+          <p style="font-size:14px;color:var(--nh-text-primary);line-height:1.5;margin-top:4px"><strong>AU Commissioner Amani Abou-Zeid announces</strong> the launch of the Pan-African Payment & Settlement System (PAPSS) in 12 additional countries by Q4 2026.</p>
+        </div>
+      </div>
+      <!-- Timeline Item -->
+      <div style="display:flex;gap:16px;margin-bottom:18px;position:relative">
+        <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
+          <span style="width:10px;height:10px;border-radius:50%;background:var(--nh-blue);border:2px solid var(--nh-surface);box-shadow:0 0 0 2px var(--nh-blue);z-index:1"></span>
+          <div style="width:2px;flex:1;background:var(--nh-border);margin-top:4px"></div>
+        </div>
+        <div style="flex:1;padding-bottom:6px">
+          <span style="font-size:11px;font-weight:600;color:var(--nh-text-muted);font-family:monospace">09:58 AM</span>
+          <p style="font-size:14px;color:var(--nh-text-primary);line-height:1.5;margin-top:4px"><strong>Kenya's President Ruto proposes</strong> a continental green hydrogen alliance, inviting Namibia, Morocco, and Egypt to form a production and export bloc.</p>
+        </div>
+      </div>
+      <!-- Timeline Item -->
+      <div style="display:flex;gap:16px;margin-bottom:18px;position:relative">
+        <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
+          <span style="width:10px;height:10px;border-radius:50%;background:var(--nh-blue);border:2px solid var(--nh-surface);box-shadow:0 0 0 2px var(--nh-blue);z-index:1"></span>
+          <div style="width:2px;flex:1;background:var(--nh-border);margin-top:4px"></div>
+        </div>
+        <div style="flex:1;padding-bottom:6px">
+          <span style="font-size:11px;font-weight:600;color:var(--nh-text-muted);font-family:monospace">09:41 AM</span>
+          <p style="font-size:14px;color:var(--nh-text-primary);line-height:1.5;margin-top:4px"><strong>Summit opens</strong> with a keynote from AU Chairperson Moussa Faki Mahamat, calling for "industrial sovereignty" and reduced dependency on imported manufactured goods.</p>
+        </div>
+      </div>
+      <!-- Timeline Item -->
+      <div style="display:flex;gap:16px;position:relative">
+        <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
+          <span style="width:10px;height:10px;border-radius:50%;background:var(--nh-blue);border:2px solid var(--nh-surface);box-shadow:0 0 0 2px var(--nh-blue);z-index:1"></span>
+        </div>
+        <div style="flex:1">
+          <span style="font-size:11px;font-weight:600;color:var(--nh-text-muted);font-family:monospace">09:30 AM</span>
+          <p style="font-size:14px;color:var(--nh-text-primary);line-height:1.5;margin-top:4px"><strong>Delegates arrive</strong> at the African Union Headquarters for the 3-day Extraordinary Summit on Industrialization and Economic Diversification.</p>
+        </div>
+      </div>
+    </div>
+    <!-- Footer -->
+    <div style="padding:12px 20px;background:var(--nh-surface-raised);border-top:1px solid var(--nh-border);display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:12px;color:var(--nh-text-muted)">6 updates today</span>
+      <a href="live-coverage.html" style="font-size:12px;color:var(--nh-blue);font-weight:500;text-decoration:none">Full Live Coverage &rarr;</a>
+    </div>
+  </div>
+
+  <!-- HERO HEADLINE SECTION -->
+  <div class="nh-hero-grid">
+    <!-- Main Featured Story -->
+    <a href="article_t3.html" class="nh-card nh-hero-main" style="min-height:480px;position:relative;overflow:hidden">
+      <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&h=700&fit=crop" alt="Google AI Research Center Accra" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;z-index:0">
+      <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));padding:32px;z-index:1">
+        <span style="display:inline-block;padding:4px 12px;border-radius:4px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;background:var(--nh-blue);color:white;margin-bottom:12px">Featured</span>
+        <h2 style="font-size:28px;font-weight:500;color:white;line-height:1.3;margin-bottom:12px">Google Opens First African AI Research Center in Accra</h2>
+        <p style="font-size:14px;color:rgba(255,255,255,0.75);line-height:1.5;margin-bottom:16px">Google's state-of-the-art facility will employ 200+ researchers focused on machine learning for African languages, agricultural AI, and healthcare diagnostics.</p>
+        <div style="display:flex;align-items:center;gap:12px">
+          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=40&h=40&fit=crop" alt="David Okonkwo" style="width:28px;height:28px;border-radius:50%;object-fit:cover">
+          <span style="font-size:12px;color:rgba(255,255,255,0.7)">David Okonkwo</span>
+          <span style="font-size:12px;color:rgba(255,255,255,0.5)">• 30 minutes ago</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Side Stories Stack -->
+    <div class="nh-hero-side">
+      <a href="article_b2.html" class="nh-card" style="display:flex;gap:16px;padding:16px;align-items:center;flex:1">
+        <img src="https://images.unsplash.com/photo-1444653614773-995cb1ef9bfa?w=200&h=150&fit=crop" alt="Flutterwave Banking" style="width:140px;height:100px;object-fit:cover;border-radius:var(--nh-radius-sm);flex-shrink:0">
+        <div>
+          <span style="display:inline-block;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;background:rgba(42,157,143,0.12);color:#2a9d8f;margin-bottom:6px">Business</span>
+          <h3 style="font-size:15px;font-weight:500;line-height:1.3;color:var(--nh-text-primary);margin-bottom:6px">Flutterwave Secures Banking License; Expands to 15 Nations</h3>
+          <span style="font-size:11px;color:var(--nh-text-muted)">Sarah Mensah • 4 hours ago</span>
+        </div>
+      </a>
+      <a href="article_a2.html" class="nh-card" style="display:flex;gap:16px;padding:16px;align-items:center;flex:1">
+        <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=200&h=150&fit=crop" alt="Coffee Exports" style="width:140px;height:100px;object-fit:cover;border-radius:var(--nh-radius-sm);flex-shrink:0">
+        <div>
+          <span style="display:inline-block;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;background:rgba(233,196,106,0.18);color:#b8860b;margin-bottom:6px">Agriculture</span>
+          <h3 style="font-size:15px;font-weight:500;line-height:1.3;color:var(--nh-text-primary);margin-bottom:6px">Ivory Coast Coffee Exports Rise 18% on Strong Demand</h3>
+          <span style="font-size:11px;color:var(--nh-text-muted)">Claire Uwimana • 3 hours ago</span>
+        </div>
+      </a>
+      <a href="article_m2.html" class="nh-card" style="display:flex;gap:16px;padding:16px;align-items:center;flex:1">
+        <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=200&h=150&fit=crop" alt="Cobalt Mining" style="width:140px;height:100px;object-fit:cover;border-radius:var(--nh-radius-sm);flex-shrink:0">
+        <div>
+          <span style="display:inline-block;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;background:rgba(107,91,149,0.12);color:#6b5b95;margin-bottom:6px">Mining</span>
+          <h3 style="font-size:15px;font-weight:500;line-height:1.3;color:var(--nh-text-primary);margin-bottom:6px">DRC Cobalt Exports Surge 40% as EV Demand Accelerates</h3>
+          <span style="font-size:11px;color:var(--nh-text-muted)">Jean-Pierre Mbelu • 3 hours ago</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- VIDEO SECTION -->
+  <div class="nh-section-header">
+    <h2 class="nh-section-title">Video</h2>
+    <a href="#" class="nh-view-all">More Video &rarr;</a>
+  </div>
+  <div class="nh-video-grid">
+    <!-- Main Video -->
+    <a href="https://www.youtube.com/watch?v=vEY_pLWuK54" target="_blank" rel="noopener noreferrer" class="nh-card nh-video-main" style="position:relative;overflow:hidden;display:block;text-decoration:none;color:inherit">
+      <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=450&fit=crop" alt="Africa Tech News Video" style="width:100%;height:320px;object-fit:cover;display:block">
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.3)">
+        <div style="width:64px;height:64px;background:var(--nh-blue);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,51,204,0.4)">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><polygon points="8,5 19,12 8,19"/></svg>
+        </div>
+      </div>
+      <div style="position:absolute;bottom:16px;left:16px;right:16px">
+        <span style="display:inline-block;padding:3px 10px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;background:rgba(0,0,0,0.7);color:white;margin-bottom:8px">12:34</span>
+        <h3 style="font-size:18px;font-weight:500;color:white;text-shadow:0 2px 4px rgba(0,0,0,0.5)">Africa's Tech Ecosystem Is Shifting – Latest News & Updates</h3>
+      </div>
+    </a>
+    <!-- Side Videos -->
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="nh-card" style="display:flex;gap:12px;padding:12px;cursor:pointer">
+        <div style="position:relative;flex-shrink:0">
+          <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?w=200&h=120&fit=crop" alt="Energy Video" style="width:120px;height:72px;object-fit:cover;border-radius:var(--nh-radius-sm)">
+          <div style="position:absolute;bottom:4px;right:4px;padding:2px 6px;background:rgba(0,0,0,0.7);border-radius:3px;font-size:10px;color:white;font-weight:500">08:15</div>
+        </div>
+        <div>
+          <h4 style="font-size:13px;font-weight:500;line-height:1.3;color:var(--nh-text-primary);margin-bottom:4px">Namibia's $10B Green Hydrogen Project Explained</h4>
+          <span style="font-size:11px;color:var(--nh-text-muted)">Energy • 2 days ago</span>
+        </div>
+      </div>
+      <div class="nh-card" style="display:flex;gap:12px;padding:12px;cursor:pointer">
+        <div style="position:relative;flex-shrink:0">
+          <img src="https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=200&h=120&fit=crop" alt="Business Video" style="width:120px;height:72px;object-fit:cover;border-radius:var(--nh-radius-sm)">
+          <div style="position:absolute;bottom:4px;right:4px;padding:2px 6px;background:rgba(0,0,0,0.7);border-radius:3px;font-size:10px;color:white;font-weight:500">15:42</div>
+        </div>
+        <div>
+          <h4 style="font-size:13px;font-weight:500;line-height:1.3;color:var(--nh-text-primary);margin-bottom:4px">Africa FinTech Revenues to Hit $65B by 2030</h4>
+          <span style="font-size:11px;color:var(--nh-text-muted)">Business • 3 days ago</span>
+        </div>
+      </div>
+      <div class="nh-card" style="display:flex;gap:12px;padding:12px;cursor:pointer">
+        <div style="position:relative;flex-shrink:0">
+          <img src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=200&h=120&fit=crop" alt="Agriculture Video" style="width:120px;height:72px;object-fit:cover;border-radius:var(--nh-radius-sm)">
+          <div style="position:absolute;bottom:4px;right:4px;padding:2px 6px;background:rgba(0,0,0,0.7);border-radius:3px;font-size:10px;color:white;font-weight:500">06:28</div>
+        </div>
+        <div>
+          <h4 style="font-size:13px;font-weight:500;line-height:1.3;color:var(--nh-text-primary);margin-bottom:4px">Egypt's Vertical Farming Revolution</h4>
+          <span style="font-size:11px;color:var(--nh-text-muted)">Agriculture • 5 days ago</span>
+        </div>
+      </div>
+      <div class="nh-card" style="display:flex;gap:12px;padding:12px;cursor:pointer">
+        <div style="position:relative;flex-shrink:0">
+          <img src="https://images.unsplash.com/photo-1605218427306-022ba6c584a5?w=200&h=120&fit=crop" alt="Mining Video" style="width:120px;height:72px;object-fit:cover;border-radius:var(--nh-radius-sm)">
+          <div style="position:absolute;bottom:4px;right:4px;padding:2px 6px;background:rgba(0,0,0,0.7);border-radius:3px;font-size:10px;color:white;font-weight:500">10:55</div>
+        </div>
+        <div>
+          <h4 style="font-size:13px;font-weight:500;line-height:1.3;color:var(--nh-text-primary);margin-bottom:4px">Botswana Diamond Sales Rebound to Pre-Pandemic Levels</h4>
+          <span style="font-size:11px;color:var(--nh-text-muted)">Mining • 1 week ago</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="nh-section-header">
+    <h2 class="nh-section-title">Latest News</h2>
+    <a href="#latest" class="nh-view-all">View All &rarr;</a>
+  </div>
+
+  <div class="nh-grid" id="latest">
+<a href="article_b2.html" class="nh-card" tabindex="0">
+  <img src="https://images.unsplash.com/photo-1444653614773-995cb1ef9bfa?w=600&h=400&fit=crop" alt="Flutterwave" loading="lazy">
+  <div class="nh-card-body">
+    <span class="nh-card-tag nh-tag-business">Business</span>
+    <h3>Flutterwave Secures Banking License; Expands to 15 Nations</h3>
+    <p>Nigerian fintech unicorn receives regulatory approval to operate across 15 African nations.</p>
+    <div class="nh-card-author">
+      <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" alt="">
+      <span>Sarah Mensah</span>
+      <span>4 hours ago</span>
+    </div>
+  </div>
+</a>
+<a href="article_t3.html" class="nh-card" tabindex="0">
+  <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&h=400&fit=crop" alt="5G Network" loading="lazy">
+  <div class="nh-card-body">
+    <span class="nh-card-tag nh-tag-tech">Technology</span>
+    <h3>South Africa Launches 5G Network in Major Cities</h3>
+    <p>MTN and Vodacom roll out next-generation mobile networks in Johannesburg, Cape Town and Durban.</p>
+    <div class="nh-card-author">
+      <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" alt="">
+      <span>Tech Desk</span>
+      <span>4 hours ago</span>
+    </div>
+  </div>
+</a>
+<a href="article_a2.html" class="nh-card" tabindex="0">
+  <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=600&h=400&fit=crop" alt="Coffee Exports" loading="lazy">
+  <div class="nh-card-body">
+    <span class="nh-card-tag nh-tag-agri">Agriculture</span>
+    <h3>Ivory Coast Coffee Exports Rise 18% on Strong Demand</h3>
+    <p>West African coffee producers see surge in international orders as global commodity prices climb.</p>
+    <div class="nh-card-author">
+      <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" alt="">
+      <span>Claire Uwimana</span>
+      <span>3 hours ago</span>
+    </div>
+  </div>
+</a>
+<a href="article_m2.html" class="nh-card" tabindex="0">
+  <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&h=600&fit=crop" alt="Cobalt Mining" loading="lazy">
+  <div class="nh-card-body">
+    <span class="nh-card-tag nh-tag-mining">Mining</span>
+    <h3>DRC Cobalt Exports Surge 40% as EV Demand Accelerates</h3>
+    <p>The Democratic Republic of Congo has seen cobalt exports surge as global electric vehicle demand accelerates.</p>
+    <div class="nh-card-author">
+      <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" alt="">
+      <span>Jean-Pierre Mbelu</span>
+      <span>3 hours ago</span>
+    </div>
+  </div>
+</a>
+  </div>
+
+<div class="nh-ad-slot" style="background:var(--nh-surface-raised);border:1px dashed var(--nh-border);border-radius:var(--nh-radius-md);padding:8px 16px;margin-bottom:36px;text-align:center;position:relative">
+  <span class="nh-ad-label">Advertisement</span>
+  <a href="https://www.globalafricanetwork.com" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none">
+    <img src="https://kimi-web-img.moonshot.cn/img/www.globalafricanetwork.com/193ed8efeffe6900234c8e904d61e19282a62cd6.jpg" 
+         alt="Digital Finance Africa 2023" 
+         style="width:100%;max-width:336px;height:auto;min-height:280px;object-fit:cover;border-radius:6px;display:block;margin:0 auto">
+  </a>
+</div>
+
+  <div class="nh-section-header">
+    <h2 class="nh-section-title">Categories</h2>
+  </div>
+
+  <div class="nh-grid" style="margin-bottom: 48px;">
+<a href="business.html" class="nh-card" tabindex="0">
+  <img src="https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&h=600&fit=crop" alt="Business" loading="lazy">
+  <div class="nh-card-body">
+    <span class="nh-card-tag nh-tag-business">Business</span>
+    <h3>Africa's FinTech Revenues Projected to Hit $65B by 2030</h3>
+    <p>Africa is currently the fastest-growing FinTech market globally, with revenues projected to expand nearly 13-fold by 2030.</p>
+    <div class="nh-card-author">
+      <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" alt="">
+      <span>Amara Okafor</span>
+      <span>2 hours ago</span>
+    </div>
+  </div>
+</a>
+<a href="technology.html" class="nh-card" tabindex="0">
+  <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop" alt="Technology" loading="lazy">
+  <div class="nh-card-body">
+    <span class="nh-card-tag nh-tag-tech">Technology</span>
+    <h3>Google Opens First African AI Research Center in Accra</h3>
+    <p>Google has officially opened its first African AI Research Center in Accra, Ghana, focusing on machine learning for African languages.</p>
+    <div class="nh-card-author">
+      <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" alt="">
+      <span>David Okonkwo</span>
+      <span>30 minutes ago</span>
+    </div>
+  </div>
+</a>
+<a href="agriculture.html" class="nh-card" tabindex="0">
+  <img src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=800&h=600&fit=crop" alt="Agriculture" loading="lazy">
+  <div class="nh-card-body">
+    <span class="nh-card-tag nh-tag-agri">Agriculture</span>
+    <h3>Egypt's Vertical Farming Revolution: Desert-to-Food</h3>
+    <p>Hydroponic and aeroponic systems are transforming Egypt's desert into productive agricultural land.</p>
+    <div class="nh-card-author">
+      <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" alt="">
+      <span>Claire Uwimana</span>
+      <span>2 hours ago</span>
+    </div>
+  </div>
+</a>
+<a href="mining.html" class="nh-card" tabindex="0">
+  <img src="https://images.unsplash.com/photo-1605218427306-022ba6c584a5?w=800&h=600&fit=crop" alt="Mining" loading="lazy">
+  <div class="nh-card-body">
+    <span class="nh-card-tag nh-tag-mining">Mining</span>
+    <h3>Botswana Diamond Sales Rebound to Pre-Pandemic Levels</h3>
+    <p>Debswana reports record sales as global luxury demand recovers and lab-grown alternatives face quality concerns.</p>
+    <div class="nh-card-author">
+      <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" alt="">
+      <span>Michael Banda</span>
+      <span>1 hour ago</span>
+    </div>
+  </div>
+</a>
+<a href="energy.html" class="nh-card" tabindex="0">
+  <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&h=600&fit=crop" alt="Energy" loading="lazy">
+  <div class="nh-card-body">
+    <span class="nh-card-tag nh-tag-energy">Energy</span>
+    <h3>Namibia Green Hydrogen Project Secures $10B Funding</h3>
+    <p>Namibia's ambitious green hydrogen project has secured $10 billion in funding from international investors.</p>
+    <div class="nh-card-author">
+      <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" alt="">
+      <span>Fatima Zahra</span>
+      <span>45 minutes ago</span>
+    </div>
+  </div>
+</a>
+  </div>
+
+
+
+  <!-- THIS WEEK IN AFRICA — WEEKLY RECAP -->
+  <div class="nh-section-header" style="margin-bottom:18px">
+    <h2 class="nh-section-title">This Week in Africa</h2>
+    <a href="weekly-recap.html" class="nh-view-all">Full Recap &rarr;</a>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:48px">
+    <!-- Story 1 -->
+    <a href="weekly-recap.html#ecowas" class="nh-card" style="padding:24px;text-decoration:none;color:inherit;display:block">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <span style="width:8px;height:8px;border-radius:50%;background:var(--nh-blue);display:inline-block"></span>
+        <span style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--nh-blue)">Politics</span>
+      </div>
+      <h3 style="font-size:16px;font-weight:500;color:var(--nh-text-primary);line-height:1.35;margin-bottom:10px">ECOWAS Lifts Sanctions on Niger, Mali & Burkina Faso</h3>
+      <p style="font-size:13px;color:var(--nh-text-secondary);line-height:1.55;margin-bottom:14px">The West African bloc formally ended economic and travel restrictions on the three junta-led nations, paving the way for renewed regional dialogue and a potential return to democratic transition timelines.</p>
+      <span style="font-size:12px;color:var(--nh-blue);font-weight:500">What happened &rarr;</span>
+    </a>
+    <!-- Story 2 -->
+    <a href="weekly-recap.html#safaricom" class="nh-card" style="padding:24px;text-decoration:none;color:inherit;display:block">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <span style="width:8px;height:8px;border-radius:50%;background:#2a9d8f;display:inline-block"></span>
+        <span style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:#2a9d8f">Business</span>
+      </div>
+      <h3 style="font-size:16px;font-weight:500;color:var(--nh-text-primary);line-height:1.35;margin-bottom:10px">Safaricom Ethiopia Hits 10 Million Subscribers</h3>
+      <p style="font-size:13px;color:var(--nh-text-secondary);line-height:1.55;margin-bottom:14px">Just 18 months after launch, Safaricom's Ethiopian unit reached the 10 million subscriber milestone, making it the fastest-growing telecom operator in East African history.</p>
+      <span style="font-size:12px;color:var(--nh-blue);font-weight:500">What happened &rarr;</span>
+    </a>
+    <!-- Story 3 -->
+    <a href="weekly-recap.html#copperbelt" class="nh-card" style="padding:24px;text-decoration:none;color:inherit;display:block">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <span style="width:8px;height:8px;border-radius:50%;background:#6b5b95;display:inline-block"></span>
+        <span style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:#6b5b95">Mining</span>
+      </div>
+      <h3 style="font-size:16px;font-weight:500;color:var(--nh-text-primary);line-height:1.35;margin-bottom:10px">Zambia-DRC Copperbelt Corridor Gets $5B Upgrade</h3>
+      <p style="font-size:13px;color:var(--nh-text-secondary);line-height:1.55;margin-bottom:14px">The African Development Bank and a consortium of Chinese and European lenders committed $5 billion to rehabilitate the Lobito Corridor, linking the Copperbelt to Angola's Atlantic port.</p>
+      <span style="font-size:12px;color:var(--nh-blue);font-weight:500">What happened &rarr;</span>
+    </a>
+  </div>
+</main>
+
+
+<div class="nh-ticker-wrap" role="complementary" aria-label="Live market ticker">
+  <div class="nh-ticker-label">Markets</div>
+  <div class="nh-ticker">
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">JSE All Share</span><span class="nh-ticker-price">110,027</span><span class="nh-ticker-change up">+0.49%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">NGX All Share</span><span class="nh-ticker-price">205,831</span><span class="nh-ticker-change up">+0.67%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">EGX 30</span><span class="nh-ticker-price">52,312</span><span class="nh-ticker-change up">+0.54%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">NSE 25</span><span class="nh-ticker-price">5,733</span><span class="nh-ticker-change up">+0.32%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">GSE Composite</span><span class="nh-ticker-price">13,270</span><span class="nh-ticker-change up">+0.87%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">BRVM Composite</span><span class="nh-ticker-price">402.18</span><span class="nh-ticker-change down">-0.46%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">LuSE All Share</span><span class="nh-ticker-price">26,943</span><span class="nh-ticker-change down">-0.41%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">ZSE All Share</span><span class="nh-ticker-price">362.68</span><span class="nh-ticker-change down">-0.06%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">JSE All Share</span><span class="nh-ticker-price">110,027</span><span class="nh-ticker-change up">+0.49%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">NGX All Share</span><span class="nh-ticker-price">205,831</span><span class="nh-ticker-change up">+0.67%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">EGX 30</span><span class="nh-ticker-price">52,312</span><span class="nh-ticker-change up">+0.54%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">NSE 25</span><span class="nh-ticker-price">5,733</span><span class="nh-ticker-change up">+0.32%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">GSE Composite</span><span class="nh-ticker-price">13,270</span><span class="nh-ticker-change up">+0.87%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">BRVM Composite</span><span class="nh-ticker-price">402.18</span><span class="nh-ticker-change down">-0.46%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">LuSE All Share</span><span class="nh-ticker-price">26,943</span><span class="nh-ticker-change down">-0.41%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">ZSE All Share</span><span class="nh-ticker-price">362.68</span><span class="nh-ticker-change down">-0.06%</span></div>
+  </div>
+</div>
+
+<div class="nh-newsletter">
+  <div class="nh-newsletter-box">
+    <div class="nh-newsletter-content">
+      <h2>Stay Ahead of African Markets</h2>
+      <p>Get curated business intelligence, market data, and breaking news delivered to your inbox every morning.</p>
+      <form class="nh-newsletter-form" onsubmit="event.preventDefault(); alert('Thank you for subscribing to NewsHub Africa!');">
+        <input type="email" placeholder="Enter your email" required aria-label="Email address">
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+    <div class="nh-stats">
+      <div class="nh-stat"><div class="nh-stat-num">250K+</div><div class="nh-stat-label">Subscribers</div></div>
+      <div class="nh-stat"><div class="nh-stat-num">54</div><div class="nh-stat-label">Countries</div></div>
+      <div class="nh-stat"><div class="nh-stat-num">Daily</div><div class="nh-stat-label">Updates</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="nh-ad-slot" style="background:var(--nh-surface-raised);border:1px dashed var(--nh-border);border-radius:var(--nh-radius-md);padding:8px 16px;margin-bottom:36px;text-align:center;position:relative;overflow:hidden">
+  <span class="nh-ad-label">Advertisement</span>
+  <a href="https://mgtix.africa" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none">
+    <img src="https://kimi-web-img.moonshot.cn/img/mgtix.africa/5220896a7b6e63fa56c581cab34917eb59925ca2" 
+         alt="Beyond Mobile Money: Fintech's Next Frontier" 
+         style="width:100%;max-width:970px;height:auto;min-height:90px;object-fit:cover;border-radius:6px;display:block;margin:0 auto">
+  </a>
+</div>
+
+<footer class="nh-footer">
+  <div class="nh-footer-inner">
+    <div class="nh-footer-top">
+      <div class="nh-footer-brand">
+        <div class="nh-brand-text">newshub <span>AFRICA</span></div>
+        <p>Your trusted source for comprehensive business, technology, agriculture, mining, and energy news across the African continent.</p>
+        <div class="nh-social">
+          <a href="https://twitter.com/ajchihiyah" target="_blank" rel="noopener noreferrer" aria-label="Twitter">𝕏</a>
+          <a href="https://www.linkedin.com/in/ashley-chihiya-610814162/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">in</a>
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="Instagram">📷</a>
+        </div>
+      </div>
+      <div class="nh-footer-col"><h4>Sections</h4><ul><li><a href="business.html">Business</a></li><li><a href="technology.html">Technology</a></li><li><a href="agriculture.html">Agriculture</a></li><li><a href="mining.html">Mining</a></li><li><a href="energy.html">Energy</a></li></ul></div>
+      <div class="nh-footer-col"><h4>Company</h4><ul><li><a href="about.html">About Us</a></li><li><a href="careers.html">Careers</a></li><li><a href="advertise.html">Advertise</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div class="nh-footer-col"><h4>Resources</h4><ul><li><a href="markets_v13_linked.html">Market Data</a></li><li><a href="newsletters.html">Newsletters</a></li><li><a href="podcasts.html">Podcasts</a></li><li><a href="events.html">Events</a></li></ul></div>
+      <div class="nh-footer-col"><h4>Legal</h4><ul><li><a href="privacy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Service</a></li><li><a href="cookies.html">Cookie Policy</a></li></ul></div>
+    </div>
+    <div class="nh-footer-bottom">
+      <span>&copy; 2026 NewsHub Africa. All rights reserved.</span>
+      <div style="display:flex;gap:16px"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="cookies.html">Cookies</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+
+function toggleTheme() {
+  const html = document.documentElement;
+  const moon = document.getElementById('nh-moon');
+  const sun = document.getElementById('nh-sun');
+  if (html.getAttribute('data-theme') === 'dark') {
+    html.removeAttribute('data-theme');
+    if (moon) moon.style.display = 'block';
+    if (sun) sun.style.display = 'none';
+  } else {
+    html.setAttribute('data-theme', 'dark');
+    if (moon) moon.style.display = 'none';
+    if (sun) sun.style.display = 'block';
+  }
+}
+
+function toggleMobileNav() {
+  const nav = document.getElementById('mobileNav');
+  const overlay = document.getElementById('mobileOverlay');
+  const btn = document.getElementById('hamburgerBtn');
+  const isOpen = nav.classList.contains('open');
+
+  if (isOpen) {
+    closeMobileNav();
+  } else {
+    nav.style.display = 'block';
+    overlay.style.display = 'block';
+    void nav.offsetWidth;
+    void overlay.offsetWidth;
+    nav.classList.add('open');
+    overlay.classList.add('open');
+    btn.classList.add('active');
+    btn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeMobileNav() {
+  const nav = document.getElementById('mobileNav');
+  const overlay = document.getElementById('mobileOverlay');
+  const btn = document.getElementById('hamburgerBtn');
+
+  nav.classList.remove('open');
+  overlay.classList.remove('open');
+  btn.classList.remove('active');
+  btn.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+
+  setTimeout(() => {
+    if (!nav.classList.contains('open')) {
+      nav.style.display = 'none';
+      overlay.style.display = 'none';
+    }
+  }, 300);
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeMobileNav();
+});
+
+
+// Live Updates Toggle
+function toggleLiveUpdates(show) {
+  var el = document.getElementById('liveUpdates');
+  if (!el) return;
+  if (show) {
+    el.classList.remove('nh-live-hidden');
+    el.setAttribute('data-live-active', 'true');
+  } else {
+    el.classList.add('nh-live-hidden');
+    el.setAttribute('data-live-active', 'false');
+  }
+}
+
+// Quote of the Day — Curated African Business Leaders (reliably fast, no external API)
+(function() {
+  var africanQuotes = [
+    { text: "The future of Africa is not in aid. It is in trade, investment, and the ingenuity of its people.", author: "Aliko Dangote" },
+    { text: "To build a successful business, you must start small and dream big.", author: "Aliko Dangote" },
+    { text: "The future we all want for ourselves is one of our own making.", author: "Tony O. Elumelu" },
+    { text: "The harder you work, the luckier you get.", author: "Mike Adenuga" },
+    { text: "Aim very high. Work very hard. Care very deeply.", author: "Odunayo Eweniyi" },
+    { text: "Done is better than perfect. Whatever you have in your hands, get going with it.", author: "Charles Igwe" },
+    { text: "True success is about a passion to create a better world.", author: "Dr. Ola Orekunrin" },
+    { text: "Failure is an opportunity to learn and to do better next time.", author: "Khanyi Dhlomo" },
+    { text: "Our problem in Africa is not skills but opportunities.", author: "Adewale Yusuf" },
+    { text: "What are you fixing? What are you making? Who are you helping?", author: "Juliana Rotich" },
+    { text: "The potential of the African market is huge.", author: "Anas Sefrioui" },
+    { text: "Teams make the whole better than the part.", author: "Hakeem Belo-Osagie" },
+    { text: "If I can change the life of one person it makes a whole difference.", author: "Victoria Kisyombe" },
+    { text: "Have a vision and passion. Be courageous, focused and disciplined.", author: "Monica Musonda" },
+    { text: "If you know how to operate in Africa, there are unbelievable opportunities.", author: "Nicky Oppenheimer" },
+    { text: "Stay focused on your dream.", author: "Lilly Alfonso" },
+    { text: "Courage and persistence are key for entrepreneurs in Africa.", author: "Gervais Djondo" },
+    { text: "Focus on making your product awesome. The money will follow.", author: "Alex Fourie" },
+    { text: "A vision on its own is not enough. Hard work is required.", author: "Strive Masiyiwa" },
+    { text: "Don't be transactional. Be genuine — trust will grow.", author: "Strive Masiyiwa" },
+    { text: "75% of Africans own phones, a revolution driven by entrepreneurs.", author: "Strive Masiyiwa" },
+    { text: "Face challenges with positive energy.", author: "Adenike Ogunlesi" },
+    { text: "Find your authentic self — everybody else is taken.", author: "Adenike Ogunlesi" },
+    { text: "Work hard and be patient.", author: "Francis Kibhisa" },
+    { text: "Constraints allow you to be innovative.", author: "Michael Jordaan" },
+    { text: "Businesses spoilt with capital make wrong decisions.", author: "Michael Jordaan" },
+    { text: "Your dream must be profitable.", author: "Olivier Madiba" },
+    { text: "In Africa there is space for innovation.", author: "Sizwe Nzima" },
+    { text: "With what you have, what can you do to achieve your goal?", author: "Heshan de Silva" },
+    { text: "Success depends on employees.", author: "Divine Ndhlukula" }
+  ];
+
+  function renderNavQuote(q) {
+    var items = document.querySelectorAll('.nav-qod-item');
+    var text = '"' + q.text + '" — ' + q.author;
+    items.forEach(function(el) { el.textContent = text; });
+  }
+
+  // Pick quote based on day of year (same quote all day, rotates daily)
+  var now = new Date();
+  var start = new Date(now.getFullYear(), 0, 0);
+  var dayOfYear = Math.floor((now - start) / 86400000);
+  var idx = dayOfYear % africanQuotes.length;
+  var quote = africanQuotes[idx];
+  renderNavQuote(quote);
+})();
+</script>
+
+</body>
+</html>

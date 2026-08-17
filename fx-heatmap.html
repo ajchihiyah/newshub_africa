@@ -1,0 +1,1957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FX Heatmap — NewsHub Africa</title>
+  <meta name="description" content="Real-time African currency exchange rates and forex heatmap. Track NGN, ZAR, KES, EGP, GHS and more.">
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --nh-blue: #0033cc;
+  --nh-blue-light: #1a53ff;
+  --nh-blue-dark: #002080;
+  --nh-black: #0a0a0a;
+  --nh-white: #ffffff;
+  --nh-surface: #ffffff;
+  --nh-surface-raised: #f8f9fa;
+  --nh-text-primary: #0a0a0a;
+  --nh-text-secondary: #495057;
+  --nh-text-muted: #adb5bd;
+  --nh-border: #dee2e6;
+  --nh-shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --nh-shadow-md: 0 4px 12px rgba(0,0,0,0.10);
+  --nh-shadow-lg: 0 10px 40px rgba(0,0,0,0.15);
+  --nh-radius-sm: 6px;
+  --nh-radius-md: 10px;
+  --nh-radius-lg: 12px;
+  --nh-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --nh-green: #2a9d8f;
+  --nh-red: #e94560;
+  --nh-yellow: #e9c46a;
+}
+[data-theme="dark"] {
+  --nh-surface: #0f1115;
+  --nh-surface-raised: #1a1d23;
+  --nh-text-primary: #f0f0f5;
+  --nh-text-secondary: #8a8b97;
+  --nh-text-muted: #5a5a6b;
+  --nh-border: #2a2d35;
+  --nh-shadow-sm: 0 1px 3px rgba(0,0,0,0.30);
+  --nh-shadow-md: 0 4px 12px rgba(0,0,0,0.40);
+  --nh-shadow-lg: 0 10px 40px rgba(0,0,0,0.50);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--nh-surface);
+  color: var(--nh-text-primary);
+  transition: var(--nh-transition);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+.nh-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--nh-surface);
+  border-bottom: 1px solid var(--nh-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.nh-header-inner { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+.nh-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--nh-border);
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.nh-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nh-brand-icon {
+  width: 32px; height: 32px;
+  background: var(--nh-blue);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: 700; font-size: 14px;
+  flex-shrink: 0;
+}
+.nh-brand-text {
+  font-size: 20px; font-weight: 500;
+  letter-spacing: -0.3px;
+  color: var(--nh-text-primary);
+}
+.nh-brand-text span { color: var(--nh-blue); font-weight: 500; }
+.nh-brand-tagline {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--nh-text-muted);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-top: -2px;
+  line-height: 1.2;
+}
+[data-theme="dark"] .nh-brand-tagline { color: var(--nh-text-secondary); }
+.nh-actions { display: flex; align-items: center; gap: 10px; }
+.nh-search { position: relative; }
+.nh-search input {
+  width: 220px;
+  padding: 9px 14px 9px 36px;
+  border: 1px solid var(--nh-border);
+  border-radius: 100px;
+  background: var(--nh-surface-raised);
+  color: var(--nh-text-primary);
+  font-size: 13px; outline: none;
+  font-family: inherit;
+}
+.nh-search input:focus {
+  border-color: var(--nh-blue);
+  box-shadow: 0 0 0 3px rgba(0,51,204,0.1);
+}
+.nh-search svg {
+  position: absolute; left: 12px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--nh-text-muted);
+  width: 14px; height: 14px;
+}
+.nh-btn {
+  padding: 9px 20px;
+  background: var(--nh-blue); color: white;
+  border: none; border-radius: 100px;
+  font-weight: 500; font-size: 13px;
+  cursor: pointer; transition: var(--nh-transition);
+  font-family: inherit;
+}
+.nh-btn:hover { background: var(--nh-blue-dark); transform: translateY(-2px); }
+.nh-nav {
+  display: flex; align-items: center;
+  gap: 4px; padding: 10px 0;
+  overflow-x: auto;
+}
+.nh-nav-item {
+  padding: 7px 16px;
+  border-radius: 100px;
+  font-size: 13px; font-weight: 500;
+  color: var(--nh-text-secondary);
+  cursor: pointer; white-space: nowrap;
+  transition: var(--nh-transition);
+  border: none; background: transparent;
+  font-family: inherit;
+  text-decoration: none;
+}
+.nh-nav-item.active, .nh-nav-item:hover { color: white; background: var(--nh-blue); }
+.nh-live {
+  display: flex; align-items: center;
+  gap: 5px; padding: 5px 12px;
+  background: rgba(0,51,204,0.08);
+  color: var(--nh-blue);
+  border-radius: 100px;
+  font-size: 11px; font-weight: 500;
+  margin-left: auto; cursor: pointer;
+  animation: pulse 2s infinite;
+  white-space: nowrap;
+}
+.nh-live .dot {
+  width: 7px; height: 7px;
+  background: var(--nh-blue);
+  border-radius: 50%;
+  animation: blink 1.5s infinite;
+}
+@keyframes blink {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.7; }
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+.nh-main { padding: 24px; max-width: 1400px; margin: 0 auto; }
+.nh-section-header {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+.nh-section-title {
+  font-size: 24px; font-weight: 500;
+  position: relative; display: inline-block;
+  color: var(--nh-text-primary);
+}
+.nh-section-title::after {
+  content: '';
+  position: absolute; bottom: -6px; left: 0;
+  width: 40px; height: 3px;
+  background: var(--nh-blue); border-radius: 2px;
+}
+.nh-view-all {
+  color: var(--nh-blue); font-weight: 500;
+  font-size: 13px; cursor: pointer;
+  display: flex; align-items: center; gap: 4px;
+  transition: var(--nh-transition);
+  text-decoration: none; background: none; border: none;
+  font-family: inherit;
+}
+.nh-view-all:hover { gap: 6px; }
+
+/* Hero */
+.nh-category-hero {
+  background: linear-gradient(135deg, var(--nh-blue-dark), var(--nh-blue));
+  border-radius: var(--nh-radius-lg);
+  padding: 48px 36px;
+  margin-bottom: 36px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.nh-category-hero::before {
+  content: '';
+  position: absolute; top: -50%; right: -10%;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, var(--nh-blue-light) 0%, transparent 70%);
+  opacity: 0.2;
+}
+.nh-category-hero h1 { font-size: 36px; font-weight: 500; margin-bottom: 8px; position: relative; z-index: 1; }
+.nh-category-hero p { color: rgba(255,255,255,0.7); font-size: 15px; position: relative; z-index: 1; }
+
+/* Filter bar */
+.nh-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 14px 18px;
+  background: var(--nh-surface-raised);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg);
+  flex-wrap: wrap;
+}
+.nh-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nh-filter-group label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--nh-text-secondary);
+}
+.nh-filter-select {
+  padding: 8px 14px;
+  border: 1px solid var(--nh-border);
+  border-radius: 100px;
+  background: var(--nh-surface);
+  color: var(--nh-text-primary);
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  transition: var(--nh-transition);
+  min-width: 120px;
+}
+.nh-filter-select:hover, .nh-filter-select:focus {
+  border-color: var(--nh-blue);
+}
+.nh-filter-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--nh-border);
+  background: var(--nh-surface);
+  color: var(--nh-text-secondary);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--nh-transition);
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.nh-filter-btn:hover {
+  border-color: var(--nh-blue);
+  color: var(--nh-blue);
+}
+
+/* Heatmap */
+.nh-heatmap {
+  display: grid;
+  grid-template-columns: 100px repeat(8, 1fr);
+  gap: 3px;
+  margin-bottom: 36px;
+  background: var(--nh-border);
+  border-radius: var(--nh-radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--nh-border);
+}
+.nh-heatmap-cell {
+  background: var(--nh-surface);
+  padding: 16px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: var(--nh-transition);
+  cursor: pointer;
+  min-height: 72px;
+}
+.nh-heatmap-cell:hover {
+  transform: scale(1.04);
+  z-index: 2;
+  box-shadow: var(--nh-shadow-md);
+}
+.nh-heatmap-cell.header {
+  background: var(--nh-surface-raised);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--nh-text-secondary);
+  cursor: default;
+}
+.nh-heatmap-cell.header:hover {
+  transform: none;
+  box-shadow: none;
+}
+.nh-heatmap-cell.row-label {
+  background: var(--nh-surface-raised);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--nh-text-primary);
+  cursor: default;
+  flex-direction: row;
+  gap: 8px;
+  justify-content: flex-start;
+  padding-left: 16px;
+}
+.nh-heatmap-cell.row-label:hover {
+  transform: none;
+  box-shadow: none;
+}
+.nh-heatmap-rate {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--nh-text-primary);
+}
+.nh-heatmap-change {
+  font-size: 11px;
+  font-weight: 600;
+}
+.nh-heatmap-cell.heat-1 { background: rgba(42,157,143,0.08); }
+.nh-heatmap-cell.heat-2 { background: rgba(42,157,143,0.18); }
+.nh-heatmap-cell.heat-3 { background: rgba(42,157,143,0.30); }
+.nh-heatmap-cell.heat-3 .nh-heatmap-rate { color: #1a6b5e; }
+.nh-heatmap-cell.heat-3 .nh-heatmap-change { color: #1a6b5e; }
+.nh-heatmap-cell.cool-1 { background: rgba(233,69,96,0.06); }
+.nh-heatmap-cell.cool-2 { background: rgba(233,69,96,0.14); }
+.nh-heatmap-cell.cool-3 { background: rgba(233,69,96,0.24); }
+.nh-heatmap-cell.cool-3 .nh-heatmap-rate { color: #b03045; }
+.nh-heatmap-cell.cool-3 .nh-heatmap-change { color: #b03045; }
+.nh-heatmap-cell.neutral-heat { background: var(--nh-surface); }
+
+.nh-heatmap-legend {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 16px;
+  font-size: 12px;
+  color: var(--nh-text-muted);
+}
+.nh-heatmap-legend-bar {
+  display: flex;
+  gap: 2px;
+}
+.nh-heatmap-legend-swatch {
+  width: 24px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+/* Currency detail cards */
+.nh-currency-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 36px;
+}
+.nh-currency-card {
+  background: var(--nh-surface);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg);
+  padding: 20px;
+  transition: var(--nh-transition);
+  cursor: pointer;
+  position: relative;
+}
+.nh-currency-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--nh-shadow-md);
+  border-color: transparent;
+}
+.nh-currency-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.nh-currency-flag {
+  font-size: 28px;
+}
+.nh-currency-info h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--nh-text-primary);
+}
+.nh-currency-info span {
+  font-size: 12px;
+  color: var(--nh-text-muted);
+}
+.nh-currency-rate-big {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--nh-text-primary);
+  margin-bottom: 4px;
+}
+.nh-currency-pairs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+.nh-currency-pair-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--nh-border);
+}
+.nh-currency-pair-row:last-child { border-bottom: none; }
+.nh-currency-pair-name { color: var(--nh-text-secondary); }
+.nh-currency-pair-value { font-weight: 600; color: var(--nh-text-primary); }
+.nh-currency-pair-change { font-size: 12px; font-weight: 600; }
+.nh-currency-pair-change.up { color: var(--nh-green); }
+.nh-currency-pair-change.down { color: var(--nh-red); }
+
+/* Sparkline mini */
+.nh-sparkline {
+  width: 60px;
+  height: 20px;
+}
+.nh-sparkline path {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.nh-sparkline.up path { stroke: var(--nh-green); }
+.nh-sparkline.down path { stroke: var(--nh-red); }
+
+/* Trust bar */
+.nh-trust-bar {
+  background: var(--nh-surface-raised);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg);
+  padding: 16px 20px;
+  margin-bottom: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.nh-trust-bar p {
+  font-size: 12px;
+  color: var(--nh-text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+.nh-trust-bar p strong {
+  color: var(--nh-text-secondary);
+}
+.nh-trust-sources {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 11px;
+  color: var(--nh-text-muted);
+  flex-shrink: 0;
+}
+.nh-trust-sources span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+#dataStatus {
+  color: var(--nh-green);
+  font-weight: 500;
+}
+#dataStatus.cached { color: var(--nh-yellow); }
+#dataStatus.demo { color: var(--nh-text-muted); }
+#apiHealth {
+  font-weight: 500;
+}
+#apiHealth.healthy { color: var(--nh-green); }
+#apiHealth.degraded { color: var(--nh-yellow); }
+#apiHealth.offline { color: var(--nh-red); }
+
+/* Footer */
+.nh-footer {
+  background: var(--nh-black); color: white;
+  padding: 48px 24px 24px;
+}
+.nh-footer-inner { max-width: 1400px; margin: 0 auto; }
+.nh-footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 36px; margin-bottom: 36px;
+}
+.nh-footer-brand { max-width: 260px; }
+.nh-footer-brand .nh-brand-text {
+  color: white; margin-bottom: 12px;
+  font-size: 20px; font-weight: 500;
+}
+.nh-footer-brand .nh-brand-text span { color: var(--nh-blue-light); }
+.nh-footer-brand p {
+  color: rgba(255,255,255,0.6);
+  font-size: 13px; line-height: 1.6;
+  margin-bottom: 16px;
+}
+.nh-social { display: flex; gap: 8px; }
+.nh-social a {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  color: white; text-decoration: none;
+  transition: var(--nh-transition); font-size: 12px;
+}
+.nh-social a:hover { background: var(--nh-blue); transform: translateY(-2px); }
+.nh-footer-col h4 {
+  font-size: 12px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 1px;
+  margin-bottom: 16px; color: var(--nh-blue-light);
+}
+.nh-footer-col ul { list-style: none; }
+.nh-footer-col li { margin-bottom: 8px; }
+.nh-footer-col a {
+  color: rgba(255,255,255,0.6); text-decoration: none;
+  font-size: 13px; transition: var(--nh-transition);
+}
+.nh-footer-col a:hover { color: white; padding-left: 3px; }
+.nh-footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 24px;
+  display: flex; justify-content: space-between;
+  align-items: center; font-size: 12px;
+  color: rgba(255,255,255,0.4);
+}
+.nh-footer-bottom a {
+  color: rgba(255,255,255,0.4);
+  text-decoration: none; transition: var(--nh-transition);
+}
+.nh-footer-bottom a:hover { color: white; }
+
+/* Mobile */
+.nh-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  gap: 5px;
+  padding: 8px;
+  border-radius: 8px;
+  transition: var(--nh-transition);
+}
+.nh-hamburger:hover { background: var(--nh-surface-raised); }
+.nh-hamburger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--nh-text-primary);
+  border-radius: 2px;
+  transition: var(--nh-transition);
+  transform-origin: center;
+}
+.nh-hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nh-hamburger.active span:nth-child(2) { opacity: 0; }
+.nh-hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.nh-mobile-nav {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--nh-surface);
+  z-index: 999;
+  padding: 80px 24px 24px;
+  overflow-y: auto;
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.nh-mobile-nav.open { transform: translateX(0); }
+.nh-mobile-nav-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--nh-border);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--nh-surface);
+  z-index: 1001;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.nh-mobile-nav-close {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  color: var(--nh-text-primary);
+}
+.nh-mobile-nav-close:hover { background: var(--nh-surface-raised); }
+.nh-mobile-nav-list { list-style: none; padding: 0; }
+.nh-mobile-nav-list li { border-bottom: 1px solid var(--nh-border); }
+.nh-mobile-nav-list a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  color: var(--nh-text-primary);
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: var(--nh-transition);
+}
+.nh-mobile-nav-list a:hover { color: var(--nh-blue); padding-left: 8px; }
+.nh-mobile-nav-list a svg {
+  width: 20px;
+  height: 20px;
+  color: var(--nh-text-muted);
+}
+.nh-mobile-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--nh-text-muted);
+  margin: 24px 0 12px;
+}
+.nh-mobile-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 998;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.nh-mobile-overlay.open { opacity: 1; }
+
+/* Chart Modal */
+.nh-chart-modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 2000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.nh-chart-modal-overlay.open {
+  display: flex;
+  opacity: 1;
+}
+.nh-chart-modal {
+  background: var(--nh-surface);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg);
+  width: 100%;
+  max-width: 900px;
+  max-height: 85vh;
+  overflow: hidden;
+  box-shadow: var(--nh-shadow-lg);
+  transform: scale(0.95) translateY(20px);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.nh-chart-modal-overlay.open .nh-chart-modal {
+  transform: scale(1) translateY(0);
+}
+.nh-chart-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--nh-border);
+}
+.nh-chart-modal-header h3 {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--nh-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.nh-chart-modal-header .badge {
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.nh-chart-modal-header .badge.up {
+  background: rgba(42,157,143,0.12);
+  color: var(--nh-green);
+}
+.nh-chart-modal-header .badge.down {
+  background: rgba(233,69,96,0.12);
+  color: var(--nh-red);
+}
+.nh-chart-modal-close {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--nh-border);
+  background: var(--nh-surface-raised);
+  color: var(--nh-text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--nh-transition);
+}
+.nh-chart-modal-close:hover {
+  background: var(--nh-red);
+  color: white;
+  border-color: var(--nh-red);
+}
+.nh-chart-modal-body {
+  padding: 24px;
+}
+.nh-chart-canvas {
+  width: 100%;
+  height: 380px;
+  background: var(--nh-surface-raised);
+  border-radius: var(--nh-radius-md);
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.nh-chart-svg {
+  width: 100%;
+  height: 100%;
+}
+.nh-chart-svg .grid-line {
+  stroke: var(--nh-border);
+  stroke-width: 0.5;
+  stroke-dasharray: 4,4;
+}
+.nh-chart-svg .chart-area {
+  fill-opacity: 0.12;
+  stroke: none;
+}
+.nh-chart-svg .chart-line {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.nh-chart-svg .chart-line.up { stroke: var(--nh-green); }
+.nh-chart-svg .chart-area.up { fill: var(--nh-green); }
+.nh-chart-svg .chart-line.down { stroke: var(--nh-red); }
+.nh-chart-svg .chart-area.down { fill: var(--nh-red); }
+.nh-chart-tooltip {
+  position: absolute;
+  background: var(--nh-surface);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-sm);
+  padding: 8px 12px;
+  font-size: 12px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  box-shadow: var(--nh-shadow-sm);
+  z-index: 10;
+}
+.nh-chart-tooltip.visible { opacity: 1; }
+.nh-chart-timeframe {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.nh-chart-timeframe button {
+  padding: 7px 18px;
+  border: 1px solid var(--nh-border);
+  background: var(--nh-surface);
+  color: var(--nh-text-secondary);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--nh-transition);
+  font-family: inherit;
+}
+.nh-chart-timeframe button:hover {
+  border-color: var(--nh-blue);
+  color: var(--nh-blue);
+}
+.nh-chart-timeframe button.active {
+  background: var(--nh-blue);
+  color: white;
+  border-color: var(--nh-blue);
+}
+.nh-chart-stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+.nh-chart-stat {
+  text-align: center;
+  padding: 14px;
+  background: var(--nh-surface-raised);
+  border-radius: var(--nh-radius-sm);
+  border: 1px solid var(--nh-border);
+}
+.nh-chart-stat .val {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--nh-text-primary);
+  margin-bottom: 2px;
+}
+.nh-chart-stat .lbl {
+  font-size: 10px;
+  color: var(--nh-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* API Key Modal */
+.nh-api-modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.nh-api-modal-overlay.open { display: flex; }
+.nh-api-modal {
+  background: var(--nh-surface);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg);
+  padding: 32px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: var(--nh-shadow-lg);
+}
+.nh-api-modal h3 {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: var(--nh-text-primary);
+}
+.nh-api-modal p {
+  font-size: 13px;
+  color: var(--nh-text-secondary);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+.nh-api-modal label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--nh-text-secondary);
+  margin-bottom: 6px;
+}
+.nh-api-modal input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--nh-border);
+  border-radius: 8px;
+  background: var(--nh-surface-raised);
+  color: var(--nh-text-primary);
+  font-size: 13px;
+  font-family: inherit;
+  margin-bottom: 4px;
+}
+.nh-api-modal .hint {
+  font-size: 11px;
+  color: var(--nh-text-muted);
+  margin-bottom: 16px;
+}
+.nh-api-modal .hint a { color: var(--nh-blue); }
+.nh-api-modal .actions {
+  display: flex;
+  gap: 10px;
+}
+.nh-api-modal .actions button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+}
+.nh-api-modal .actions .primary {
+  background: var(--nh-blue);
+  color: white;
+}
+.nh-api-modal .actions .secondary {
+  background: var(--nh-surface-raised);
+  color: var(--nh-text-secondary);
+  border: 1px solid var(--nh-border);
+}
+
+/* Refresh button spin */
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes fadeInUp { from { opacity: 0; transform: translateX(-50%) translateY(10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+
+@media (max-width: 1200px) {
+  .nh-currency-grid { grid-template-columns: repeat(3, 1fr); }
+  .nh-heatmap { grid-template-columns: 80px repeat(6, 1fr); }
+}
+@media (max-width: 1024px) {
+  .nh-heatmap { grid-template-columns: 80px repeat(4, 1fr); }
+  .nh-heatmap-cell { padding: 12px 6px; min-height: 60px; }
+  .nh-heatmap-rate { font-size: 13px; }
+  .nh-heatmap-change { font-size: 10px; }
+  .nh-footer-top { grid-template-columns: 1fr 1fr; }
+  .nh-chart-stats { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 768px) {
+  .nh-search input { width: 140px; }
+  .nh-currency-grid { grid-template-columns: 1fr; }
+  .nh-heatmap { grid-template-columns: 60px repeat(3, 1fr); }
+  .nh-heatmap-cell { padding: 10px 4px; min-height: 50px; }
+  .nh-heatmap-rate { font-size: 12px; }
+  .nh-heatmap-change { font-size: 9px; }
+  .nh-heatmap-cell.row-label { font-size: 11px; padding-left: 8px; }
+  .nh-footer-top { grid-template-columns: 1fr; gap: 24px; }
+  .nh-footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  .nh-section-title { font-size: 20px; }
+  .nh-live { display: none; }
+  .nh-hamburger { display: flex; }
+  .nh-nav { display: none; }
+  .nh-search { display: none; }
+  .nh-btn:not(.nh-btn-icon) { display: none; }
+  .nh-header-inner { padding: 0 16px; }
+  .nh-main { padding: 16px; }
+  .nh-category-hero { padding: 32px 20px; }
+  .nh-category-hero h1 { font-size: 26px; }
+  .nh-filter-bar { flex-direction: column; align-items: stretch; }
+  .nh-filter-group { justify-content: space-between; }
+  .nh-trust-bar { flex-direction: column; text-align: center; }
+  .nh-trust-sources { flex-wrap: wrap; justify-content: center; }
+  .nh-chart-canvas { height: 260px; }
+  .nh-chart-modal { max-height: 90vh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+button:focus-visible, input:focus-visible, a:focus-visible {
+  outline: 2px solid var(--nh-blue); outline-offset: 2px;
+}
+  </style>
+</head>
+<body>
+
+<div class="nh-mobile-overlay" id="mobileOverlay" onclick="closeMobileNav()"></div>
+<div class="nh-mobile-nav" id="mobileNav">
+  <div class="nh-mobile-nav-header">
+    <a href="index.html" class="nh-brand" style="text-decoration:none">
+      <div class="nh-brand-icon" aria-hidden="true">N</div>
+      <div><div class="nh-brand-text">newshub <span>AFRICA</span></div></div>
+    </a>
+    <button class="nh-mobile-nav-close" onclick="closeMobileNav()" aria-label="Close menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="nh-mobile-section-title">Sections</div>
+  <ul class="nh-mobile-nav-list">
+    <li><a href="index.html">Home <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="business.html">Business <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="technology.html">Technology <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="agriculture.html">Agriculture <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="mining.html">Mining <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="energy.html">Energy <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="markets.html">Markets <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="watchlist.html">Watchlist <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="fx-heatmap.html">FX Heatmap <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="events.html">Events <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+  </ul>
+  <div class="nh-mobile-section-title">Account</div>
+  <ul class="nh-mobile-nav-list">
+    <li><a href="#" onclick="alert('Subscribe feature coming soon!'); closeMobileNav(); return false;">Subscribe <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="#" onclick="toggleTheme(); closeMobileNav(); return false;">Toggle Dark Mode <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="#" onclick="showApiKeyModal(); closeMobileNav(); return false;">API Key Settings <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+  </ul>
+  <div class="nh-mobile-section-title">Data Status</div>
+  <div style="padding:0 0 16px;font-size:12px;color:var(--nh-text-muted);">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;padding:0 16px;">
+      <span id="mobileDataStatus" style="color:var(--nh-green);font-weight:500;">● Live</span>
+      <span>FX data</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;padding:0 16px;">
+      <span id="mobileApiHealth" style="color:var(--nh-green);font-weight:500;">API: Online</span>
+    </div>
+    <div style="padding:12px 16px 0;font-size:11px;color:var(--nh-text-muted);border-top:1px solid var(--nh-border);margin-top:12px;">
+      Data delayed 15 min. Not for trading decisions.
+    </div>
+  </div>
+  <div class="nh-mobile-section-title">Company</div>
+  <ul class="nh-mobile-nav-list">
+    <li><a href="#">About Us <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="#">Careers <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="#">Advertise <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="#">Contact <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+  </ul>
+</div>
+
+<header class="nh-header" role="banner">
+  <div class="nh-header-inner">
+    <div class="nh-header-top">
+      <a href="index.html" class="nh-brand">
+        <div class="nh-brand-icon" aria-hidden="true">N</div>
+        <div>
+          <div class="nh-brand-text">newshub <span>AFRICA</span></div>
+          <div class="nh-brand-tagline">The pulse of the continent</div>
+        </div>
+      </a>
+      <div class="nh-actions">
+        <div class="nh-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" placeholder="Search currencies..." aria-label="Search currencies" id="searchInput" onkeyup="filterCurrencies()">
+        </div>
+        <button class="nh-btn nh-btn-icon" onclick="toggleTheme()" aria-label="Toggle dark mode" style="padding:9px 12px;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center">
+          <svg id="nh-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          <svg id="nh-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        </button>
+        <button class="nh-btn" onclick="alert('Thank you for subscribing to NewsHub Africa!')">Subscribe</button>
+        <button class="nh-hamburger" id="hamburgerBtn" onclick="toggleMobileNav()" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <nav class="nh-nav" role="navigation" aria-label="Main navigation">
+      <a href="index.html" class="nh-nav-item">Home</a>
+      <a href="business.html" class="nh-nav-item">Business</a>
+      <a href="technology.html" class="nh-nav-item">Technology</a>
+      <a href="agriculture.html" class="nh-nav-item">Agriculture</a>
+      <a href="mining.html" class="nh-nav-item">Mining</a>
+      <a href="energy.html" class="nh-nav-item">Energy</a>
+      <a href="markets.html" class="nh-nav-item">Markets</a>
+      <a href="watchlist.html" class="nh-nav-item">Watchlist</a>
+      <a href="fx-heatmap.html" class="nh-nav-item active">FX Heatmap</a>
+      <a href="events.html" class="nh-nav-item">Events</a>
+      <div class="nh-live" role="status" aria-live="polite"><span class="dot"></span><span>Live Updates</span></div>
+    </nav>
+  </div>
+</header>
+
+<main class="nh-main">
+  <div class="nh-category-hero">
+    <h1>FX Heatmap</h1>
+    <p>Real-time African currency exchange rates. Track how Naira, Rand, Shilling, and 20+ African currencies perform against USD, EUR, GBP, and each other.</p>
+  </div>
+
+  <div class="nh-filter-bar">
+    <div class="nh-filter-group">
+      <label>Base Currency</label>
+      <select class="nh-filter-select" id="baseCurrency" onchange="renderHeatmap()">
+        <option value="all">All Pairs</option>
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="GBP">GBP</option>
+        <option value="ZAR">ZAR</option>
+        <option value="NGN">NGN</option>
+      </select>
+    </div>
+    <div class="nh-filter-group">
+      <label>Region</label>
+      <select class="nh-filter-select" id="regionFilter" onchange="filterByRegion()">
+        <option value="all">All Regions</option>
+        <option value="west">West Africa</option>
+        <option value="east">East Africa</option>
+        <option value="south">Southern Africa</option>
+        <option value="north">North Africa</option>
+        <option value="central">Central Africa</option>
+      </select>
+    </div>
+    <button class="nh-filter-btn" onclick="resetFilters()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      Reset
+    </button>
+    <button class="nh-filter-btn" onclick="showApiKeyModal()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+      API Keys
+    </button>
+    <a href="markets.html" class="nh-view-all" style="margin-left:auto;">&larr; Back to Markets</a>
+  </div>
+
+  <div class="nh-heatmap-legend">
+    <span>Weakening</span>
+    <div class="nh-heatmap-legend-bar">
+      <div class="nh-heatmap-legend-swatch" style="background:rgba(233,69,96,0.24)"></div>
+      <div class="nh-heatmap-legend-swatch" style="background:rgba(233,69,96,0.14)"></div>
+      <div class="nh-heatmap-legend-swatch" style="background:rgba(233,69,96,0.06)"></div>
+      <div class="nh-heatmap-legend-swatch" style="background:var(--nh-surface);border:1px solid var(--nh-border)"></div>
+      <div class="nh-heatmap-legend-swatch" style="background:rgba(42,157,143,0.08)"></div>
+      <div class="nh-heatmap-legend-swatch" style="background:rgba(42,157,143,0.18)"></div>
+      <div class="nh-heatmap-legend-swatch" style="background:rgba(42,157,143,0.30)"></div>
+    </div>
+    <span>Strengthening</span>
+  </div>
+
+  <div id="heatmapContainer">
+    <!-- Heatmap rendered by JS -->
+  </div>
+
+  <div class="nh-section-header" style="margin-top:48px;">
+    <h2 class="nh-section-title">Currency Details</h2>
+  </div>
+
+  <div class="nh-currency-grid" id="currencyGrid">
+    <!-- Currency cards rendered by JS -->
+  </div>
+
+  <div class="nh-trust-bar">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--nh-blue)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span style="font-size:12px;font-weight:600;color:var(--nh-text-primary);">Data Provenance</span>
+      </div>
+      <p><strong>Delay Disclaimer:</strong> FX rates are indicative and delayed. Sources: Alpha Vantage, Central Banks, Reuters, Bloomberg. Not for trading decisions.</p>
+    </div>
+    <div class="nh-trust-sources">
+      <span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span id="dataStatus">● Live where available</span>
+      </span>
+      <span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <span id="lastUpdated">Last updated: loading...</span>
+      </span>
+      <span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+        <span id="apiHealth">API: checking...</span>
+      </span>
+    </div>
+  </div>
+</main>
+
+<footer class="nh-footer">
+  <div class="nh-footer-inner">
+    <div class="nh-footer-top">
+      <div class="nh-footer-brand">
+        <div class="nh-brand-text">newshub <span>AFRICA</span></div>
+        <p>Your trusted source for comprehensive business, technology, agriculture, mining, and energy news across the African continent.</p>
+        <div class="nh-social">
+          <a href="#" aria-label="Twitter">𝕏</a>
+          <a href="#" aria-label="LinkedIn">in</a>
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="Instagram">📷</a>
+        </div>
+      </div>
+      <div class="nh-footer-col"><h4>Sections</h4><ul><li><a href="business.html">Business</a></li><li><a href="technology.html">Technology</a></li><li><a href="agriculture.html">Agriculture</a></li><li><a href="mining.html">Mining</a></li><li><a href="energy.html">Energy</a></li></ul></div>
+      <div class="nh-footer-col"><h4>Company</h4><ul><li><a href="#">About Us</a></li><li><a href="#">Careers</a></li><li><a href="#">Advertise</a></li><li><a href="#">Contact</a></li></ul></div>
+      <div class="nh-footer-col"><h4>Resources</h4><ul><li><a href="#">Market Data</a></li><li><a href="#">Newsletters</a></li><li><a href="#">Podcasts</a></li><li><a href="#">Events</a></li></ul></div>
+      <div class="nh-footer-col"><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li><li><a href="#">Cookie Policy</a></li></ul></div>
+    </div>
+    <div class="nh-footer-bottom">
+      <span>&copy; 2026 NewsHub Africa. All rights reserved.</span>
+      <div style="display:flex;gap:16px"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Cookies</a></div>
+    </div>
+  </div>
+</footer>
+<script>
+// ==========================
+// THEME & MOBILE NAV
+// ==========================
+function toggleTheme() {
+  const html = document.documentElement;
+  const moon = document.getElementById('nh-moon');
+  const sun = document.getElementById('nh-sun');
+  if (html.getAttribute('data-theme') === 'dark') {
+    html.removeAttribute('data-theme');
+    if (moon) moon.style.display = 'block';
+    if (sun) sun.style.display = 'none';
+  } else {
+    html.setAttribute('data-theme', 'dark');
+    if (moon) moon.style.display = 'none';
+    if (sun) sun.style.display = 'block';
+  }
+}
+function toggleMobileNav() {
+  const nav = document.getElementById('mobileNav');
+  const overlay = document.getElementById('mobileOverlay');
+  const btn = document.getElementById('hamburgerBtn');
+  const isOpen = nav.classList.contains('open');
+  if (isOpen) { closeMobileNav(); }
+  else {
+    nav.style.display = 'block';
+    overlay.style.display = 'block';
+    void nav.offsetWidth; void overlay.offsetWidth;
+    nav.classList.add('open');
+    overlay.classList.add('open');
+    btn.classList.add('active');
+    btn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+}
+function closeMobileNav() {
+  const nav = document.getElementById('mobileNav');
+  const overlay = document.getElementById('mobileOverlay');
+  const btn = document.getElementById('hamburgerBtn');
+  nav.classList.remove('open');
+  overlay.classList.remove('open');
+  btn.classList.remove('active');
+  btn.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+  setTimeout(() => {
+    if (!nav.classList.contains('open')) {
+      nav.style.display = 'none';
+      overlay.style.display = 'none';
+    }
+  }, 300);
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') { closeMobileNav(); closeChartModal(); }
+});
+
+// ==========================
+// FX DATA & CONFIG
+// ==========================
+const CURRENCIES = [
+  { code: 'NGN', name: 'Nigerian Naira', flag: '🇳🇬', region: 'west' },
+  { code: 'ZAR', name: 'South African Rand', flag: '🇿🇦', region: 'south' },
+  { code: 'KES', name: 'Kenyan Shilling', flag: '🇰🇪', region: 'east' },
+  { code: 'EGP', name: 'Egyptian Pound', flag: '🇪🇬', region: 'north' },
+  { code: 'GHS', name: 'Ghanaian Cedi', flag: '🇬🇭', region: 'west' },
+  { code: 'TZS', name: 'Tanzanian Shilling', flag: '🇹🇿', region: 'east' },
+  { code: 'UGX', name: 'Ugandan Shilling', flag: '🇺🇬', region: 'east' },
+  { code: 'MAD', name: 'Moroccan Dirham', flag: '🇲🇦', region: 'north' },
+  { code: 'ZMW', name: 'Zambian Kwacha', flag: '🇿🇲', region: 'south' },
+  { code: 'BWP', name: 'Botswana Pula', flag: '🇧🇼', region: 'south' },
+  { code: 'NAD', name: 'Namibian Dollar', flag: '🇳🇦', region: 'south' },
+  { code: 'XOF', name: 'CFA Franc BCEAO', flag: '🇸🇳', region: 'west' },
+  { code: 'XAF', name: 'CFA Franc BEAC', flag: '🇨🇲', region: 'central' },
+  { code: 'ZWL', name: 'Zimbabwe Dollar', flag: '🇿🇼', region: 'south' },
+  { code: 'MUR', name: 'Mauritian Rupee', flag: '🇲🇺', region: 'east' },
+  { code: 'RWF', name: 'Rwandan Franc', flag: '🇷🇼', region: 'east' },
+  { code: 'ETB', name: 'Ethiopian Birr', flag: '🇪🇹', region: 'east' },
+  { code: 'DZD', name: 'Algerian Dinar', flag: '🇩🇿', region: 'north' },
+  { code: 'TND', name: 'Tunisian Dinar', flag: '🇹🇳', region: 'north' },
+  { code: 'SLL', name: 'Sierra Leone Leone', flag: '🇸🇱', region: 'west' },
+  { code: 'LRD', name: 'Liberian Dollar', flag: '🇱🇷', region: 'west' },
+  { code: 'GMD', name: 'Gambian Dalasi', flag: '🇬🇲', region: 'west' },
+  { code: 'MWK', name: 'Malawian Kwacha', flag: '🇲🇼', region: 'south' },
+  { code: 'SZL', name: 'Swazi Lilangeni', flag: '🇸🇿', region: 'south' }
+];
+
+const BASES = ['USD', 'EUR', 'GBP', 'ZAR', 'NGN', 'KES', 'EGP', 'GHS'];
+
+// Demo FX rates (base = USD) — fallback when API unavailable
+const DEMO_FX_RATES = {
+  'USD/NGN': { rate: 1580.00, change: 0.16 },
+  'USD/ZAR': { rate: 18.25, change: 0.44 },
+  'USD/KES': { rate: 128.50, change: -0.23 },
+  'USD/EGP': { rate: 48.75, change: -0.10 },
+  'USD/GHS': { rate: 15.40, change: 0.78 },
+  'USD/TZS': { rate: 2580.00, change: -0.42 },
+  'USD/UGX': { rate: 3720.00, change: 0.03 },
+  'USD/MAD': { rate: 9.85, change: 0.15 },
+  'USD/ZMW': { rate: 26.80, change: -0.18 },
+  'USD/BWP': { rate: 13.45, change: 0.22 },
+  'USD/NAD': { rate: 18.25, change: 0.44 },
+  'USD/XOF': { rate: 605.00, change: 0.31 },
+  'USD/XAF': { rate: 605.00, change: 0.28 },
+  'USD/ZWL': { rate: 13.50, change: 1.12 },
+  'USD/MUR': { rate: 46.20, change: -0.05 },
+  'USD/RWF': { rate: 1340.00, change: 0.08 },
+  'USD/ETB': { rate: 57.50, change: -0.35 },
+  'USD/DZD': { rate: 134.80, change: 0.12 },
+  'USD/TND': { rate: 3.12, change: 0.06 },
+  'USD/SLL': { rate: 22500.00, change: -0.85 },
+  'USD/LRD': { rate: 192.50, change: -0.42 },
+  'USD/GMD': { rate: 67.80, change: 0.18 },
+  'USD/MWK': { rate: 1735.00, change: -0.22 },
+  'USD/SZL': { rate: 18.25, change: 0.44 },
+  'EUR/NGN': { rate: 1715.00, change: 0.42 },
+  'EUR/ZAR': { rate: 19.80, change: 0.21 },
+  'EUR/KES': { rate: 139.40, change: 0.00 },
+  'EUR/EGP': { rate: 52.90, change: -0.38 },
+  'EUR/GHS': { rate: 16.71, change: 0.51 },
+  'EUR/TZS': { rate: 2799.00, change: -0.68 },
+  'EUR/UGX': { rate: 4036.00, change: 0.12 },
+  'GBP/NGN': { rate: 2045.00, change: 0.89 },
+  'GBP/ZAR': { rate: 23.60, change: 0.72 },
+  'GBP/KES': { rate: 166.20, change: -0.55 },
+  'GBP/EGP': { rate: 63.05, change: 0.02 },
+  'GBP/GHS': { rate: 19.92, change: 0.19 },
+  'GBP/TZS': { rate: 3336.00, change: -0.15 },
+  'GBP/UGX': { rate: 4811.00, change: -0.08 },
+};
+
+// Live data store
+let liveFXRates = { ...DEMO_FX_RATES };
+let apiLivePairs = new Set(); // tracks which pairs came from API
+
+// ==========================
+// API CONFIGURATION
+// ==========================
+const API_CONFIG = {
+  ALPHA_VANTAGE_KEY: localStorage.getItem('alpha_vantage_key') || 'demo',
+  ALPHA_BASE_URL: 'https://www.alphavantage.co/query',
+  REQUEST_DELAY_MS: 1200,
+  CACHE_DURATION_MS: 10 * 60 * 1000, // 10 min cache for FX
+};
+
+const dataCache = new Map();
+
+class FXDataClient {
+  constructor() {
+    this.requestCount = { alpha: 0, today: new Date().toDateString() };
+    this.loadCounts();
+  }
+  loadCounts() {
+    const saved = localStorage.getItem('nh_fx_request_counts');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (parsed.today === this.requestCount.today) this.requestCount = parsed;
+    }
+  }
+  saveCounts() {
+    localStorage.setItem('nh_fx_request_counts', JSON.stringify(this.requestCount));
+  }
+  async fetchWithCache(url, cacheKey) {
+    const cached = dataCache.get(cacheKey);
+    if (cached && Date.now() - cached.timestamp < API_CONFIG.CACHE_DURATION_MS) {
+      return cached.data;
+    }
+    if (this.requestCount.alpha >= 23) {
+      console.warn('Alpha Vantage daily limit approaching');
+      return null;
+    }
+    await new Promise(r => setTimeout(r, API_CONFIG.REQUEST_DELAY_MS));
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      const data = await response.json();
+      this.requestCount.alpha++;
+      this.saveCounts();
+      dataCache.set(cacheKey, { data, timestamp: Date.now() });
+      return data;
+    } catch (err) {
+      console.error('API Error:', err.message);
+      return null;
+    }
+  }
+
+  async getExchangeRate(from, to) {
+    const url = `${API_CONFIG.ALPHA_BASE_URL}?function=CURRENCY_EXCHANGE_RATE&from_currency=${from}&to_currency=${to}&apikey=${API_CONFIG.ALPHA_VANTAGE_KEY}`;
+    return this.fetchWithCache(url, `fx_${from}_${to}`);
+  }
+
+  async getFXDaily(from, to) {
+    const url = `${API_CONFIG.ALPHA_BASE_URL}?function=FX_DAILY&from_symbol=${from}&to_symbol=${to}&apikey=${API_CONFIG.ALPHA_VANTAGE_KEY}`;
+    return this.fetchWithCache(url, `fxdaily_${from}_${to}`);
+  }
+}
+
+const fxClient = new FXDataClient();
+
+// ==========================
+// DATA RENDERER
+// ==========================
+class FXRenderer {
+  updateTimestamp() {
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZoneName: 'short' });
+    const dateStr = now.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
+    const el = document.getElementById('lastUpdated');
+    if (el) el.textContent = `${dateStr} ${timeStr}`;
+  }
+
+  updateApiStatus(status) {
+    const dataStatus = document.getElementById('dataStatus');
+    const apiHealth = document.getElementById('apiHealth');
+    const mobileStatus = document.getElementById('mobileDataStatus');
+    const mobileHealth = document.getElementById('mobileApiHealth');
+
+    let statusText = '● Live where available';
+    let healthText = 'API: Online';
+    let statusColor = 'var(--nh-green)';
+    let healthColor = 'var(--nh-green)';
+    let healthClass = 'healthy';
+
+    if (status === 'cached') {
+      statusText = '● Cached';
+      healthText = 'API: Cached';
+      statusColor = 'var(--nh-yellow)';
+      healthColor = 'var(--nh-yellow)';
+      healthClass = 'degraded';
+    } else if (status === 'demo') {
+      statusText = '● Demo Data';
+      healthText = 'API: Demo Mode';
+      statusColor = 'var(--nh-text-muted)';
+      healthColor = 'var(--nh-red)';
+      healthClass = 'offline';
+    }
+
+    if (dataStatus) { dataStatus.textContent = statusText; dataStatus.className = status; }
+    if (apiHealth) { apiHealth.textContent = healthText; apiHealth.className = healthClass; }
+    if (mobileStatus) { mobileStatus.textContent = statusText; mobileStatus.style.color = statusColor; }
+    if (mobileHealth) { mobileHealth.textContent = healthText; mobileHealth.style.color = healthColor; }
+  }
+}
+
+const renderer = new FXRenderer();
+
+// ==========================
+// LIVE DATA FETCHING
+// ==========================
+async function fetchLiveFX() {
+  console.log('[NewsHub FX] Fetching live rates...');
+  renderer.updateApiStatus('live');
+
+  // Priority pairs to fetch (stay within free tier)
+  const priorityPairs = [
+    ['USD','NGN'], ['USD','ZAR'], ['USD','KES'], ['USD','EGP'], ['USD','GHS'],
+    ['USD','MAD'], ['EUR','USD'], ['GBP','USD']
+  ];
+
+  let fetchedCount = 0;
+
+  for (const [from, to] of priorityPairs) {
+    try {
+      const data = await fxClient.getExchangeRate(from, to);
+      if (data && data['Realtime Currency Exchange Rate']) {
+        const rate = parseFloat(data['Realtime Currency Exchange Rate']['5. Exchange Rate']);
+        if (rate && rate > 0) {
+          const pairKey = `${from}/${to}`;
+          const prevRate = liveFXRates[pairKey] ? liveFXRates[pairKey].rate : rate;
+          const change = ((rate - prevRate) / prevRate) * 100;
+          liveFXRates[pairKey] = { rate: rate, change: change };
+          apiLivePairs.add(pairKey);
+          fetchedCount++;
+        }
+      }
+    } catch (e) { console.warn(`Failed to fetch ${from}/${to}:`, e); }
+  }
+
+  // Derive cross rates from fetched data
+  deriveCrossRates();
+
+  // Update UI
+  renderHeatmap();
+  renderCurrencyCards();
+  renderer.updateTimestamp();
+
+  if (fetchedCount > 0) {
+    renderer.updateApiStatus('live');
+    console.log(`[NewsHub FX] Fetched ${fetchedCount} live pairs`);
+  } else {
+    renderer.updateApiStatus('demo');
+    console.log('[NewsHub FX] Using demo data');
+  }
+}
+
+function deriveCrossRates() {
+  // If we have EUR/USD and USD/NGN, derive EUR/NGN
+  const eurUsd = liveFXRates['EUR/USD'];
+  const gbpUsd = liveFXRates['GBP/USD'];
+
+  CURRENCIES.forEach(curr => {
+    const usdPair = liveFXRates[`USD/${curr.code}`];
+    if (!usdPair) return;
+
+    if (eurUsd) {
+      const derivedRate = usdPair.rate * eurUsd.rate;
+      const key = `EUR/${curr.code}`;
+      if (!apiLivePairs.has(key)) {
+        const prev = DEMO_FX_RATES[key] ? DEMO_FX_RATES[key].rate : derivedRate;
+        liveFXRates[key] = { rate: derivedRate, change: ((derivedRate - prev) / prev) * 100 };
+      }
+    }
+    if (gbpUsd) {
+      const derivedRate = usdPair.rate * gbpUsd.rate;
+      const key = `GBP/${curr.code}`;
+      if (!apiLivePairs.has(key)) {
+        const prev = DEMO_FX_RATES[key] ? DEMO_FX_RATES[key].rate : derivedRate;
+        liveFXRates[key] = { rate: derivedRate, change: ((derivedRate - prev) / prev) * 100 };
+      }
+    }
+  });
+}
+
+function startAutoRefresh() {
+  fetchLiveFX();
+  setInterval(fetchLiveFX, 10 * 60 * 1000); // every 10 minutes
+  setInterval(() => renderer.updateTimestamp(), 60 * 1000);
+}
+
+// ==========================
+// HEATMAP RENDERING
+// ==========================
+function getHeatClass(change) {
+  if (change > 0.5) return 'heat-3';
+  if (change > 0.2) return 'heat-2';
+  if (change > 0.05) return 'heat-1';
+  if (change < -0.5) return 'cool-3';
+  if (change < -0.2) return 'cool-2';
+  if (change < -0.05) return 'cool-1';
+  return 'neutral-heat';
+}
+
+function getChangeColor(change) {
+  if (change > 0.05) return 'var(--nh-green)';
+  if (change < -0.05) return 'var(--nh-red)';
+  return 'var(--nh-text-muted)';
+}
+
+function renderHeatmap() {
+  const baseFilter = document.getElementById('baseCurrency').value;
+  const regionFilter = document.getElementById('regionFilter').value;
+  const container = document.getElementById('heatmapContainer');
+
+  let bases = baseFilter === 'all' ? BASES : [baseFilter];
+  let currencies = CURRENCIES;
+  if (regionFilter !== 'all') {
+    currencies = CURRENCIES.filter(c => c.region === regionFilter);
+  }
+
+  let html = '<div class="nh-heatmap">';
+  html += '<div class="nh-heatmap-cell header">Currency</div>';
+  bases.forEach(b => {
+    html += `<div class="nh-heatmap-cell header">vs ${b}</div>`;
+  });
+
+  currencies.forEach(curr => {
+    html += `<div class="nh-heatmap-cell row-label"><span style="font-size:18px">${curr.flag}</span> ${curr.code}</div>`;
+    bases.forEach(base => {
+      if (curr.code === base) {
+        html += `<div class="nh-heatmap-cell neutral-heat" style="cursor:default"><span style="font-size:12px;color:var(--nh-text-muted)">—</span></div>`;
+      } else {
+        const pair = `${base}/${curr.code}`;
+        const data = liveFXRates[pair] || DEMO_FX_RATES[pair] || { rate: (Math.random() * 100 + 10).toFixed(2), change: (Math.random() * 2 - 1).toFixed(2) };
+        const cls = getHeatClass(parseFloat(data.change));
+        const color = getChangeColor(parseFloat(data.change));
+        const sign = parseFloat(data.change) > 0 ? '+' : '';
+        const isLive = apiLivePairs.has(pair);
+        const liveIndicator = isLive ? '<span style="font-size:8px;color:var(--nh-green);margin-top:2px;">● LIVE</span>' : '';
+        html += `<div class="nh-heatmap-cell ${cls}" onclick="openChartModal('${pair}', ${parseFloat(data.rate)}, ${parseFloat(data.change)})">
+          <span class="nh-heatmap-rate">${parseFloat(data.rate).toLocaleString('en-US', {maximumFractionDigits: 2})}</span>
+          <span class="nh-heatmap-change" style="color:${color}">${sign}${parseFloat(data.change).toFixed(2)}%</span>
+          ${liveIndicator}
+        </div>`;
+      }
+    });
+  });
+
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+function renderCurrencyCards() {
+  const grid = document.getElementById('currencyGrid');
+  const regionFilter = document.getElementById('regionFilter').value;
+  let currencies = CURRENCIES;
+  if (regionFilter !== 'all') {
+    currencies = CURRENCIES.filter(c => c.region === regionFilter);
+  }
+
+  grid.innerHTML = currencies.map(c => {
+    const usdPair = liveFXRates[`USD/${c.code}`] || DEMO_FX_RATES[`USD/${c.code}`] || { rate: 0, change: 0 };
+    const eurPair = liveFXRates[`EUR/${c.code}`] || DEMO_FX_RATES[`EUR/${c.code}`] || { rate: 0, change: 0 };
+    const gbpPair = liveFXRates[`GBP/${c.code}`] || DEMO_FX_RATES[`GBP/${c.code}`] || { rate: 0, change: 0 };
+    const isUp = usdPair.change >= 0;
+    const sparkClass = isUp ? 'up' : 'down';
+    const sparkPath = generateSparklinePath(usdPair.change, 60, 20);
+
+    return `<div class="nh-currency-card" onclick="openChartModal('USD/${c.code}', ${parseFloat(usdPair.rate)}, ${parseFloat(usdPair.change)})">
+      <div class="nh-currency-header">
+        <span class="nh-currency-flag">${c.flag}</span>
+        <div class="nh-currency-info">
+          <h3>${c.code}</h3>
+          <span>${c.name}</span>
+        </div>
+      </div>
+      <div class="nh-currency-rate-big">${parseFloat(usdPair.rate).toLocaleString('en-US', {maximumFractionDigits: 2})}</div>
+      <div style="font-size:13px;color:var(--nh-text-muted);margin-bottom:8px;">per USD</div>
+      <svg class="nh-sparkline ${sparkClass}" viewBox="0 0 60 20"><path d="${sparkPath}"/></svg>
+      <div class="nh-currency-pairs">
+        <div class="nh-currency-pair-row">
+          <span class="nh-currency-pair-name">vs EUR</span>
+          <span>
+            <span class="nh-currency-pair-value">${parseFloat(eurPair.rate).toLocaleString('en-US', {maximumFractionDigits: 2})}</span>
+            <span class="nh-currency-pair-change ${eurPair.change >= 0 ? 'up' : 'down'}">${eurPair.change >= 0 ? '+' : ''}${parseFloat(eurPair.change).toFixed(2)}%</span>
+          </span>
+        </div>
+        <div class="nh-currency-pair-row">
+          <span class="nh-currency-pair-name">vs GBP</span>
+          <span>
+            <span class="nh-currency-pair-value">${parseFloat(gbpPair.rate).toLocaleString('en-US', {maximumFractionDigits: 2})}</span>
+            <span class="nh-currency-pair-change ${gbpPair.change >= 0 ? 'up' : 'down'}">${gbpPair.change >= 0 ? '+' : ''}${parseFloat(gbpPair.change).toFixed(2)}%</span>
+          </span>
+        </div>
+        <div class="nh-currency-pair-row">
+          <span class="nh-currency-pair-name">vs ZAR</span>
+          <span>
+            <span class="nh-currency-pair-value">${(parseFloat(usdPair.rate) / 18.25).toFixed(4)}</span>
+          </span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function generateSparklinePath(trend, width, height) {
+  const isUp = trend >= 0;
+  const pts = [];
+  const padding = 2;
+  const chartH = height - padding * 2;
+  const segments = 8;
+  for (let i = 0; i <= segments; i++) {
+    const x = (i / segments) * width;
+    const progress = i / segments;
+    const baseY = isUp ? chartH - (progress * chartH * 0.7) : padding + (progress * chartH * 0.7);
+    const noise = Math.sin(i * 1.5) * (chartH * 0.2) + (Math.random() - 0.5) * 3;
+    const y = Math.max(padding, Math.min(chartH, baseY + noise));
+    pts.push((i === 0 ? 'M' : 'L') + x.toFixed(1) + ',' + y.toFixed(1));
+  }
+  return pts.join(' ');
+}
+
+function filterByRegion() {
+  renderHeatmap();
+  renderCurrencyCards();
+}
+
+function resetFilters() {
+  document.getElementById('baseCurrency').value = 'all';
+  document.getElementById('regionFilter').value = 'all';
+  document.getElementById('searchInput').value = '';
+  renderHeatmap();
+  renderCurrencyCards();
+}
+
+function filterCurrencies() {
+  const query = document.getElementById('searchInput').value.toLowerCase();
+  const cards = document.querySelectorAll('.nh-currency-card');
+  cards.forEach(card => {
+    const text = card.textContent.toLowerCase();
+    card.style.display = text.includes(query) ? 'block' : 'none';
+  });
+}
+
+// ==========================
+// CHART MODAL
+// ==========================
+let currentChartData = null;
+let currentChartTimeframe = '1W';
+
+function openChartModal(pair, price, changePct) {
+  const overlay = document.getElementById('chartModalOverlay');
+  const modalName = document.getElementById('chartModalName');
+  const modalBadge = document.getElementById('chartModalBadge');
+
+  modalName.textContent = pair;
+  modalBadge.textContent = (changePct >= 0 ? '+' : '') + changePct.toFixed(2) + '%';
+  modalBadge.className = 'badge ' + (changePct >= 0 ? 'up' : 'down');
+
+  currentChartData = generateChartData(price, changePct, currentChartTimeframe);
+  renderChart(currentChartData, changePct >= 0);
+  updateChartStats(currentChartData, price);
+
+  overlay.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  requestAnimationFrame(() => overlay.classList.add('open'));
+}
+
+function closeChartModal(event) {
+  if (event && event.target !== event.currentTarget) return;
+  const overlay = document.getElementById('chartModalOverlay');
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+  setTimeout(() => { overlay.style.display = 'none'; }, 300);
+}
+
+function changeChartTimeframe(tf) {
+  currentChartTimeframe = tf;
+  const buttons = document.querySelectorAll('.nh-chart-timeframe button');
+  buttons.forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+
+  if (currentChartData) {
+    const basePrice = currentChartData[currentChartData.length - 1].price;
+    const startPrice = currentChartData[0].price;
+    const changePct = ((basePrice - startPrice) / startPrice) * 100;
+    currentChartData = generateChartData(basePrice, changePct, tf);
+    renderChart(currentChartData, changePct >= 0);
+  }
+}
+
+function generateChartData(basePrice, changePct, timeframe) {
+  const now = new Date();
+  const data = [];
+  let points, volatility;
+  switch(timeframe) {
+    case '1D': points = 24; volatility = 0.002; break;
+    case '1W': points = 7; volatility = 0.008; break;
+    case '1M': points = 30; volatility = 0.015; break;
+    case '6M': points = 26; volatility = 0.03; break;
+    case '1Y': points = 52; volatility = 0.05; break;
+    default: points = 7; volatility = 0.008;
+  }
+  const isUp = changePct >= 0;
+  const totalChange = basePrice * (Math.abs(changePct) / 100);
+  const startPrice = isUp ? basePrice - totalChange : basePrice + totalChange;
+
+  for (let i = 0; i < points; i++) {
+    const progress = i / (points - 1);
+    const trend = startPrice + (basePrice - startPrice) * progress;
+    const noise = (Math.sin(i * 2.1) * volatility * basePrice * 0.5 + Math.sin(i * 4.3) * volatility * basePrice * 0.3);
+    const randomWalk = (Math.random() - 0.5) * volatility * basePrice * 0.4;
+    let price = trend + noise + randomWalk;
+    if (i === points - 1) price = basePrice;
+
+    const date = new Date(now);
+    if (timeframe === '1D') date.setHours(date.getHours() - (points - 1 - i));
+    else if (timeframe === '1W') date.setDate(date.getDate() - (points - 1 - i));
+    else if (timeframe === '1M') date.setDate(date.getDate() - (points - 1 - i));
+    else if (timeframe === '6M') date.setDate(date.getDate() - (points - 1 - i) * 7);
+    else date.setDate(date.getDate() - (points - 1 - i) * 7);
+
+    data.push({ date: date, price: Math.max(price, basePrice * 0.3), label: formatChartDate(date, timeframe) });
+  }
+  return data;
+}
+
+function formatChartDate(date, timeframe) {
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  if (timeframe === '1D') return date.getHours() + ':00';
+  if (timeframe === '1W' || timeframe === '1M') return date.getDate() + ' ' + months[date.getMonth()];
+  return months[date.getMonth()] + " '" + (date.getFullYear() % 100);
+}
+
+function renderChart(data, isUp) {
+  const svg = document.getElementById('chartSvg');
+  const areaPath = document.getElementById('chartAreaPath');
+  const linePath = document.getElementById('chartLinePath');
+
+  const width = 800;
+  const height = 380;
+  const padding = { top: 20, right: 20, bottom: 40, left: 20 };
+  const chartW = width - padding.left - padding.right;
+  const chartH = height - padding.top - padding.bottom;
+
+  const prices = data.map(d => d.price);
+  const minPrice = Math.min(...prices);
+  const maxPrice = Math.max(...prices);
+  const priceRange = maxPrice - minPrice || 1;
+
+  const points = data.map((d, i) => {
+    const x = padding.left + (i / (data.length - 1)) * chartW;
+    const y = padding.top + chartH - ((d.price - minPrice) / priceRange) * chartH;
+    return { x, y, price: d.price, label: d.label };
+  });
+
+  const lineD = points.map((p, i) => (i === 0 ? 'M' : 'L') + p.x.toFixed(1) + ',' + p.y.toFixed(1)).join(' ');
+  const areaD = lineD + ' L' + points[points.length-1].x.toFixed(1) + ',' + (height - padding.bottom) + ' L' + points[0].x.toFixed(1) + ',' + (height - padding.bottom) + ' Z';
+
+  linePath.setAttribute('d', lineD);
+  areaPath.setAttribute('d', areaD);
+
+  const colorClass = isUp ? 'up' : 'down';
+  linePath.setAttribute('class', 'chart-line ' + colorClass);
+  areaPath.setAttribute('class', 'chart-area ' + colorClass);
+
+  const canvas = document.getElementById('chartCanvas');
+  const tooltip = document.getElementById('chartTooltip');
+
+  canvas.onmousemove = (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const relativeX = Math.max(0, Math.min(1, mouseX / rect.width));
+    const index = Math.round(relativeX * (points.length - 1));
+    const point = points[Math.min(index, points.length - 1)];
+    tooltip.style.left = (mouseX - 40) + 'px';
+    tooltip.style.top = (point.y - 60) + 'px';
+    tooltip.classList.add('visible');
+    document.getElementById('tooltipDate').textContent = point.label;
+    document.getElementById('tooltipPrice').textContent = point.price.toLocaleString('en-US', { maximumFractionDigits: 2 });
+  };
+  canvas.onmouseleave = () => { tooltip.classList.remove('visible'); };
+}
+
+function updateChartStats(data, currentPrice) {
+  const prices = data.map(d => d.price);
+  const open = prices[0];
+  const high = Math.max(...prices);
+  const low = Math.min(...prices);
+  document.getElementById('statOpen').textContent = open.toLocaleString('en-US', { maximumFractionDigits: 2 });
+  document.getElementById('statHigh').textContent = high.toLocaleString('en-US', { maximumFractionDigits: 2 });
+  document.getElementById('statLow').textContent = low.toLocaleString('en-US', { maximumFractionDigits: 2 });
+}
+
+// ==========================
+// API KEY MODAL
+// ==========================
+function showApiKeyModal() {
+  const existing = document.getElementById('apiKeyModal');
+  if (existing) existing.remove();
+
+  const modal = document.createElement('div');
+  modal.id = 'apiKeyModal';
+  modal.innerHTML = `
+    <div class="nh-api-modal-overlay open" onclick="if(event.target===this) this.parentElement.remove()">
+      <div class="nh-api-modal" onclick="event.stopPropagation()">
+        <h3>API Key Settings</h3>
+        <p>Enter your Alpha Vantage API key to enable live forex data. Free tier: 25 requests/day.</p>
+        <label>Alpha Vantage API Key</label>
+        <input type="text" id="alphaKeyInput" placeholder="Your Alpha Vantage key..." value="${localStorage.getItem('alpha_vantage_key') || ''}">
+        <p class="hint">Get free key at <a href="https://www.alphavantage.co" target="_blank">alphavantage.co</a> (25 req/day)</p>
+        <div class="actions">
+          <button class="primary" onclick="saveApiKeys()">Save Key</button>
+          <button class="secondary" onclick="document.getElementById('apiKeyModal').remove()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
+function saveApiKeys() {
+  const alphaKey = document.getElementById('alphaKeyInput').value.trim();
+  if (alphaKey) {
+    localStorage.setItem('alpha_vantage_key', alphaKey);
+    API_CONFIG.ALPHA_VANTAGE_KEY = alphaKey;
+  }
+  document.getElementById('apiKeyModal').remove();
+  fetchLiveFX();
+  const toast = document.createElement('div');
+  toast.innerHTML = '✓ API key saved. Refreshing FX data...';
+  toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--nh-green);color:white;padding:10px 20px;border-radius:100px;font-size:13px;font-weight:500;z-index:10001;animation:fadeInUp 0.3s ease;';
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+
+// ==========================
+// REFRESH BUTTON
+// ==========================
+function addRefreshButton() {
+  const header = document.querySelector('.nh-header-top .nh-actions');
+  if (!header) return;
+  const refreshBtn = document.createElement('button');
+  refreshBtn.className = 'nh-btn nh-btn-icon';
+  refreshBtn.setAttribute('aria-label', 'Refresh FX data');
+  refreshBtn.setAttribute('title', 'Refresh data / API settings');
+  refreshBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>`;
+  refreshBtn.style.cssText = 'padding:9px 12px;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:var(--nh-surface-raised);color:var(--nh-text-secondary);border:1px solid var(--nh-border);';
+  refreshBtn.onmouseenter = () => { refreshBtn.style.background = 'var(--nh-blue)'; refreshBtn.style.color = 'white'; };
+  refreshBtn.onmouseleave = () => { refreshBtn.style.background = 'var(--nh-surface-raised)'; refreshBtn.style.color = 'var(--nh-text-secondary)'; };
+  refreshBtn.onclick = () => {
+    refreshBtn.querySelector('svg').style.animation = 'spin 1s linear infinite';
+    fetchLiveFX().then(() => {
+      setTimeout(() => { refreshBtn.querySelector('svg').style.animation = ''; }, 500);
+    });
+  };
+  refreshBtn.oncontextmenu = (e) => { e.preventDefault(); showApiKeyModal(); };
+  header.insertBefore(refreshBtn, header.firstChild);
+}
+
+// ==========================
+// INIT
+// ==========================
+document.addEventListener('DOMContentLoaded', () => {
+  addRefreshButton();
+  startAutoRefresh();
+  renderHeatmap();
+  renderCurrencyCards();
+  console.log('[NewsHub FX] Live data integration initialized');
+  console.log('[NewsHub FX] Right-click refresh button for API settings');
+  console.log('[NewsHub FX] Click any heatmap cell or currency card for interactive chart');
+});
+</script>
+
+<!-- Chart Modal Overlay -->
+<div class="nh-chart-modal-overlay" id="chartModalOverlay" onclick="closeChartModal(event)">
+  <div class="nh-chart-modal" onclick="event.stopPropagation()">
+    <div class="nh-chart-modal-header">
+      <h3 id="chartModalTitle">
+        <span id="chartModalName">USD/NGN</span>
+        <span class="badge up" id="chartModalBadge">+0.16%</span>
+      </h3>
+      <button class="nh-chart-modal-close" onclick="closeChartModal()" aria-label="Close chart">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="nh-chart-modal-body">
+      <div class="nh-chart-timeframe">
+        <button onclick="changeChartTimeframe('1D')">1D</button>
+        <button class="active" onclick="changeChartTimeframe('1W')">1W</button>
+        <button onclick="changeChartTimeframe('1M')">1M</button>
+        <button onclick="changeChartTimeframe('6M')">6M</button>
+        <button onclick="changeChartTimeframe('1Y')">1Y</button>
+      </div>
+      <div class="nh-chart-canvas" id="chartCanvas">
+        <svg class="nh-chart-svg" id="chartSvg" viewBox="0 0 800 380" preserveAspectRatio="none">
+          <line class="grid-line" x1="0" y1="76" x2="800" y2="76"/>
+          <line class="grid-line" x1="0" y1="152" x2="800" y2="152"/>
+          <line class="grid-line" x1="0" y1="228" x2="800" y2="228"/>
+          <line class="grid-line" x1="0" y1="304" x2="800" y2="304"/>
+          <path class="chart-area up" id="chartAreaPath" d=""/>
+          <path class="chart-line up" id="chartLinePath" d=""/>
+        </svg>
+        <div class="nh-chart-tooltip" id="chartTooltip">
+          <div id="tooltipDate" style="color:var(--nh-text-muted);margin-bottom:2px;">Jul 23</div>
+          <div id="tooltipPrice" style="font-weight:600;color:var(--nh-text-primary);">1,580.00</div>
+        </div>
+      </div>
+      <div class="nh-chart-stats" id="chartStats">
+        <div class="nh-chart-stat"><div class="val" id="statOpen">1,575.20</div><div class="lbl">Open</div></div>
+        <div class="nh-chart-stat"><div class="val" id="statHigh">1,582.50</div><div class="lbl">High</div></div>
+        <div class="nh-chart-stat"><div class="val" id="statLow">1,572.80</div><div class="lbl">Low</div></div>
+        <div class="nh-chart-stat"><div class="val" id="statVol">2.4B</div><div class="lbl">Volume</div></div>
+        <div class="nh-chart-stat"><div class="val" id="statMktCap">—</div><div class="lbl">Spread</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

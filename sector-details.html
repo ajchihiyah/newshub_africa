@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sector Details — NewsHub Africa Markets</title>
+  <meta name="description" content="Deep-dive sector analysis for African banking, telecom, mining, energy, cement, and technology sectors.">
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --nh-blue: #0033cc; --nh-blue-light: #1a53ff; --nh-blue-dark: #002080;
+  --nh-black: #0a0a0a; --nh-white: #ffffff; --nh-surface: #ffffff;
+  --nh-surface-raised: #f8f9fa; --nh-text-primary: #0a0a0a;
+  --nh-text-secondary: #495057; --nh-text-muted: #adb5bd;
+  --nh-border: #dee2e6; --nh-shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --nh-shadow-md: 0 4px 12px rgba(0,0,0,0.10); --nh-shadow-lg: 0 10px 40px rgba(0,0,0,0.15);
+  --nh-radius-sm: 6px; --nh-radius-md: 10px; --nh-radius-lg: 12px;
+  --nh-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --nh-green: #2a9d8f; --nh-red: #e94560; --nh-yellow: #e9c46a;
+}
+[data-theme="dark"] {
+  --nh-surface: #0f1115; --nh-surface-raised: #1a1d23;
+  --nh-text-primary: #f0f0f5; --nh-text-secondary: #8a8b97;
+  --nh-text-muted: #5a5a6b; --nh-border: #2a2d35;
+  --nh-shadow-sm: 0 1px 3px rgba(0,0,0,0.30); --nh-shadow-md: 0 4px 12px rgba(0,0,0,0.40);
+  --nh-shadow-lg: 0 10px 40px rgba(0,0,0,0.50);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Google Sans','Roboto',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background: var(--nh-surface); color: var(--nh-text-primary);
+  transition: var(--nh-transition); overflow-x: hidden; line-height: 1.6;
+}
+.nh-header { position: sticky; top: 0; z-index: 1000; background: var(--nh-surface);
+  border-bottom: 1px solid var(--nh-border); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+.nh-header-inner { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+.nh-header-top { display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 0; border-bottom: 1px solid var(--nh-border); gap: 16px; flex-wrap: wrap; }
+.nh-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nh-brand-icon { width: 32px; height: 32px; background: var(--nh-blue); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; color: white;
+  font-weight: 700; font-size: 14px; flex-shrink: 0; }
+.nh-brand-text { font-size: 20px; font-weight: 500; letter-spacing: -0.3px; color: var(--nh-text-primary); }
+.nh-brand-text span { color: var(--nh-blue); font-weight: 500; }
+.nh-brand-tagline { font-size: 11px; font-weight: 400; color: var(--nh-text-muted);
+  letter-spacing: 0.8px; text-transform: uppercase; margin-top: -2px; line-height: 1.2; }
+.nh-actions { display: flex; align-items: center; gap: 10px; }
+.nh-search { position: relative; }
+.nh-search input { width: 220px; padding: 9px 14px 9px 36px; border: 1px solid var(--nh-border);
+  border-radius: 100px; background: var(--nh-surface-raised); color: var(--nh-text-primary);
+  font-size: 13px; outline: none; font-family: inherit; }
+.nh-search input:focus { border-color: var(--nh-blue); box-shadow: 0 0 0 3px rgba(0,51,204,0.1); }
+.nh-search svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  color: var(--nh-text-muted); width: 14px; height: 14px; }
+.nh-btn { padding: 9px 20px; background: var(--nh-blue); color: white; border: none;
+  border-radius: 100px; font-weight: 500; font-size: 13px; cursor: pointer;
+  transition: var(--nh-transition); font-family: inherit; }
+.nh-btn:hover { background: var(--nh-blue-dark); transform: translateY(-2px); }
+.nh-nav { display: flex; align-items: center; gap: 4px; padding: 10px 0; overflow-x: auto; }
+.nh-nav-item { padding: 7px 16px; border-radius: 100px; font-size: 13px; font-weight: 500;
+  color: var(--nh-text-secondary); cursor: pointer; white-space: nowrap;
+  transition: var(--nh-transition); border: none; background: transparent;
+  font-family: inherit; text-decoration: none; }
+.nh-nav-item.active, .nh-nav-item:hover { color: white; background: var(--nh-blue); }
+.nh-live { display: flex; align-items: center; gap: 5px; padding: 5px 12px;
+  background: rgba(0,51,204,0.08); color: var(--nh-blue); border-radius: 100px;
+  font-size: 11px; font-weight: 500; margin-left: auto; cursor: pointer;
+  animation: pulse 2s infinite; white-space: nowrap; }
+.nh-live .dot { width: 7px; height: 7px; background: var(--nh-blue); border-radius: 50%;
+  animation: blink 1.5s infinite; }
+@keyframes blink { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.3);opacity:0.7} }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.02)} }
+.nh-main { padding: 24px; max-width: 1400px; margin: 0 auto; }
+.nh-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.nh-section-title { font-size: 24px; font-weight: 500; position: relative; display: inline-block; color: var(--nh-text-primary); }
+.nh-section-title::after { content: ''; position: absolute; bottom: -6px; left: 0; width: 40px; height: 3px; background: var(--nh-blue); border-radius: 2px; }
+.nh-view-all { color: var(--nh-blue); font-weight: 500; font-size: 13px; cursor: pointer;
+  display: flex; align-items: center; gap: 4px; transition: var(--nh-transition);
+  text-decoration: none; background: none; border: none; font-family: inherit; }
+.nh-view-all:hover { gap: 6px; }
+.nh-footer { background: var(--nh-black); color: white; padding: 48px 24px 24px; }
+.nh-footer-inner { max-width: 1400px; margin: 0 auto; }
+.nh-footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 36px; margin-bottom: 36px; }
+.nh-footer-brand { max-width: 260px; }
+.nh-footer-brand .nh-brand-text { color: white; margin-bottom: 12px; font-size: 20px; font-weight: 500; }
+.nh-footer-brand .nh-brand-text span { color: var(--nh-blue-light); }
+.nh-footer-brand p { color: rgba(255,255,255,0.6); font-size: 13px; line-height: 1.6; margin-bottom: 16px; }
+.nh-social { display: flex; gap: 8px; }
+.nh-social a { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center; color: white;
+  text-decoration: none; transition: var(--nh-transition); font-size: 12px; }
+.nh-social a:hover { background: var(--nh-blue); transform: translateY(-2px); }
+.nh-footer-col h4 { font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px;
+  margin-bottom: 16px; color: var(--nh-blue-light); }
+.nh-footer-col ul { list-style: none; }
+.nh-footer-col li { margin-bottom: 8px; }
+.nh-footer-col a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 13px; transition: var(--nh-transition); }
+.nh-footer-col a:hover { color: white; padding-left: 3px; }
+.nh-footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px;
+  display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: rgba(255,255,255,0.4); }
+.nh-footer-bottom a { color: rgba(255,255,255,0.4); text-decoration: none; transition: var(--nh-transition); }
+.nh-footer-bottom a:hover { color: white; }
+
+/* ===== SECTOR DETAILS PAGE STYLES ===== */
+.nh-sector-hero { background: linear-gradient(135deg, var(--nh-blue-dark), var(--nh-blue));
+  border-radius: var(--nh-radius-lg); padding: 48px 36px; margin-bottom: 36px; color: white;
+  position: relative; overflow: hidden; }
+.nh-sector-hero::before { content: ''; position: absolute; top: -50%; right: -10%;
+  width: 400px; height: 400px; background: radial-gradient(circle, var(--nh-blue-light) 0%, transparent 70%); opacity: 0.2; }
+.nh-sector-hero-inner { position: relative; z-index: 1; }
+.nh-sector-breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 16px; }
+.nh-sector-breadcrumb a { color: rgba(255,255,255,0.9); text-decoration: none; transition: var(--nh-transition); }
+.nh-sector-breadcrumb a:hover { color: white; }
+.nh-sector-hero h1 { font-size: 42px; font-weight: 500; margin-bottom: 8px; line-height: 1.15; }
+.nh-sector-hero p { color: rgba(255,255,255,0.75); font-size: 16px; max-width: 600px; line-height: 1.6; }
+.nh-sector-hero-stats { display: flex; gap: 32px; margin-top: 28px; }
+.nh-sector-hero-stat { display: flex; flex-direction: column; }
+.nh-sector-hero-stat .val { font-size: 32px; font-weight: 500; color: white; }
+.nh-sector-hero-stat .lbl { font-size: 12px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.8px; }
+.nh-sector-hero-stat .change { font-size: 14px; font-weight: 600; margin-top: 4px; }
+.nh-sector-hero-stat .change.up { color: #4ecdc4; }
+.nh-sector-hero-stat .change.down { color: #ff6b81; }
+
+.nh-sector-tabs { display: flex; gap: 4px; margin-bottom: 36px; padding: 6px;
+  background: var(--nh-surface-raised); border: 1px solid var(--nh-border);
+  border-radius: 100px; width: fit-content; overflow-x: auto; max-width: 100%; }
+.nh-sector-tab { padding: 10px 22px; border-radius: 100px; font-size: 13px; font-weight: 500;
+  color: var(--nh-text-secondary); cursor: pointer; white-space: nowrap;
+  transition: var(--nh-transition); border: none; background: transparent;
+  font-family: inherit; display: flex; align-items: center; gap: 6px; }
+.nh-sector-tab:hover { color: var(--nh-blue); }
+.nh-sector-tab.active { background: var(--nh-blue); color: white; box-shadow: var(--nh-shadow-sm); }
+
+.nh-sector-overview { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 36px; }
+.nh-sector-chart-card { background: var(--nh-surface); border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg); padding: 28px; transition: var(--nh-transition); }
+.nh-sector-chart-card:hover { box-shadow: var(--nh-shadow-md); border-color: transparent; }
+.nh-sector-chart-card h3 { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--nh-text-secondary); margin-bottom: 20px; }
+.nh-sector-big-chart { width: 100%; height: 320px; background: var(--nh-surface-raised);
+  border-radius: var(--nh-radius-md); position: relative; overflow: hidden; }
+
+.nh-sector-info-card { background: var(--nh-surface); border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg); padding: 28px; transition: var(--nh-transition); }
+.nh-sector-info-card:hover { box-shadow: var(--nh-shadow-md); border-color: transparent; }
+.nh-sector-info-card h3 { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--nh-text-secondary); margin-bottom: 20px; }
+.nh-sector-info-card p { font-size: 14px; color: var(--nh-text-secondary); line-height: 1.7; margin-bottom: 16px; }
+.nh-sector-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.nh-sector-metric { background: var(--nh-surface-raised); border-radius: var(--nh-radius-sm);
+  padding: 14px; text-align: center; border: 1px solid var(--nh-border); }
+.nh-sector-metric .val { font-size: 18px; font-weight: 600; color: var(--nh-text-primary); margin-bottom: 2px; }
+.nh-sector-metric .lbl { font-size: 10px; color: var(--nh-text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+.nh-breakdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 36px; }
+.nh-breakdown-card { background: var(--nh-surface); border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg); padding: 24px; text-align: center; transition: var(--nh-transition); }
+.nh-breakdown-card:hover { box-shadow: var(--nh-shadow-md); border-color: transparent; }
+.nh-breakdown-card .period { font-size: 12px; color: var(--nh-text-muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; font-weight: 500; }
+.nh-breakdown-card .return { font-size: 28px; font-weight: 500; color: var(--nh-text-primary); margin-bottom: 4px; }
+.nh-breakdown-card .return.up { color: var(--nh-green); }
+.nh-breakdown-card .return.down { color: var(--nh-red); }
+.nh-breakdown-card .vs-index { font-size: 12px; color: var(--nh-text-muted); }
+
+.nh-sector-table-wrap { background: var(--nh-surface); border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg); overflow: hidden; margin-bottom: 36px; }
+.nh-sector-table-wrap .nh-section-header { padding: 24px 24px 0; }
+.nh-sector-table { width: 100%; border-collapse: collapse; }
+.nh-sector-table th { background: var(--nh-surface-raised); padding: 14px 18px; text-align: left;
+  font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+  color: var(--nh-text-secondary); border-bottom: 1px solid var(--nh-border);
+  cursor: pointer; user-select: none; position: relative; padding-right: 24px; }
+.nh-sector-table th:hover { background: var(--nh-border); }
+.nh-sector-table th .sort-icon { position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  width: 12px; height: 12px; opacity: 0.3; transition: var(--nh-transition); }
+.nh-sector-table th.sort-asc .sort-icon, .nh-sector-table th.sort-desc .sort-icon { opacity: 1; color: var(--nh-blue); }
+.nh-sector-table th.sort-asc .sort-icon { transform: translateY(-50%) rotate(180deg); }
+.nh-sector-table td { padding: 14px 18px; font-size: 14px; border-bottom: 1px solid var(--nh-border); color: var(--nh-text-primary); }
+.nh-sector-table tr:last-child td { border-bottom: none; }
+.nh-sector-table tr:hover td { background: var(--nh-surface-raised); }
+
+.nh-stock-cell { display: flex; align-items: center; gap: 12px; }
+.nh-stock-logo { width: 36px; height: 36px; border-radius: var(--nh-radius-sm);
+  display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: white; flex-shrink: 0; }
+.nh-stock-info { display: flex; flex-direction: column; }
+.nh-stock-info .name { font-weight: 600; font-size: 14px; }
+.nh-stock-info .ticker { font-size: 11px; color: var(--nh-text-muted); }
+.nh-change-badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 600; }
+.nh-change-badge.up { background: rgba(42,157,143,0.12); color: var(--nh-green); }
+.nh-change-badge.down { background: rgba(233,69,96,0.12); color: var(--nh-red); }
+.nh-mini-spark { width: 80px; height: 28px; display: block; }
+.nh-mini-spark path { fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.nh-mini-spark.up path { stroke: var(--nh-green); }
+.nh-mini-spark.down path { stroke: var(--nh-red); }
+
+.nh-valuation-table { width: 100%; border-collapse: collapse; margin-bottom: 36px; }
+.nh-valuation-table th, .nh-valuation-table td { padding: 12px 18px; text-align: left; font-size: 14px; border-bottom: 1px solid var(--nh-border); }
+.nh-valuation-table th { background: var(--nh-surface-raised); font-size: 12px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.5px; color: var(--nh-text-secondary); }
+.nh-valuation-table td { color: var(--nh-text-primary); }
+.nh-valuation-table tr:last-child td { border-bottom: none; }
+
+.nh-sector-news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 36px; }
+.nh-sector-news-card { background: var(--nh-surface); border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg); overflow: hidden; transition: var(--nh-transition);
+  cursor: pointer; text-decoration: none; color: inherit; display: block; }
+.nh-sector-news-card:hover { transform: translateY(-5px); box-shadow: var(--nh-shadow-lg); border-color: transparent; }
+.nh-sector-news-card img { width: 100%; height: 160px; object-fit: cover; display: block; }
+.nh-sector-news-card-body { padding: 18px; }
+.nh-sector-news-card .tag { display: inline-block; padding: 3px 8px; border-radius: 4px;
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.nh-sector-news-card h4 { font-size: 15px; font-weight: 500; line-height: 1.35; margin-bottom: 8px; color: var(--nh-text-primary); }
+.nh-sector-news-card .meta { font-size: 12px; color: var(--nh-text-muted); }
+
+.nh-timeframe-toggle { display: flex; gap: 4px; }
+.nh-timeframe-toggle button { padding: 6px 14px; border: 1px solid var(--nh-border); background: var(--nh-surface);
+  color: var(--nh-text-secondary); border-radius: 100px; font-size: 12px; font-weight: 500;
+  cursor: pointer; transition: var(--nh-transition); font-family: inherit; }
+.nh-timeframe-toggle button:hover { border-color: var(--nh-blue); color: var(--nh-blue); }
+.nh-timeframe-toggle button.active { background: var(--nh-blue); color: white; border-color: var(--nh-blue); }
+
+@media (max-width: 1024px) {
+  .nh-sector-overview { grid-template-columns: 1fr; }
+  .nh-sector-news-grid { grid-template-columns: repeat(2, 1fr); }
+  .nh-breakdown-grid { grid-template-columns: repeat(2, 1fr); }
+  .nh-footer-top { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .nh-sector-hero { padding: 32px 20px; }
+  .nh-sector-hero h1 { font-size: 28px; }
+  .nh-sector-hero-stats { flex-wrap: wrap; gap: 20px; }
+  .nh-sector-tabs { border-radius: var(--nh-radius-md); }
+  .nh-sector-news-grid { grid-template-columns: 1fr; }
+  .nh-breakdown-grid { grid-template-columns: 1fr 1fr; }
+  .nh-sector-metrics { grid-template-columns: 1fr; }
+  .nh-search input { width: 140px; }
+  .nh-footer-top { grid-template-columns: 1fr; gap: 24px; }
+  .nh-footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  .nh-sector-table th, .nh-sector-table td { padding: 10px 12px; font-size: 12px; }
+  .nh-stock-logo { width: 28px; height: 28px; font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid var(--nh-blue); outline-offset: 2px; }
+  </style>
+</head>
+<body>
+
+<header class="nh-header" role="banner">
+  <div class="nh-header-inner">
+    <div class="nh-header-top">
+      <a href="index.html" class="nh-brand">
+        <div class="nh-brand-icon" aria-hidden="true">N</div>
+        <div>
+          <div class="nh-brand-text">newshub <span>AFRICA</span></div>
+          <div class="nh-brand-tagline">The pulse of the continent</div>
+        </div>
+      </a>
+      <div class="nh-actions">
+        <div class="nh-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" placeholder="Search news..." aria-label="Search news">
+        </div>
+        <button class="nh-btn nh-btn-icon" onclick="toggleTheme()" aria-label="Toggle dark mode" style="padding:9px 12px;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center">
+          <svg id="nh-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          <svg id="nh-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        </button>
+        <button class="nh-btn" onclick="alert('Thank you for subscribing to NewsHub Africa!')">Subscribe</button>
+      </div>
+    </div>
+    <nav class="nh-nav" role="navigation" aria-label="Main navigation">
+      <a href="index.html" class="nh-nav-item">Home</a>
+      <a href="business.html" class="nh-nav-item">Business</a>
+      <a href="technology.html" class="nh-nav-item">Technology</a>
+      <a href="agriculture.html" class="nh-nav-item">Agriculture</a>
+      <a href="mining.html" class="nh-nav-item">Mining</a>
+      <a href="energy.html" class="nh-nav-item">Energy</a>
+      <a href="markets.html" class="nh-nav-item active">Markets</a>
+      <a href="events.html" class="nh-nav-item">Events</a>
+      <div class="nh-live" role="status" aria-live="polite"><span class="dot"></span><span>Live Updates</span></div>
+    </nav>
+  </div>
+</header>
+
+<main class="nh-main">
+
+  <!-- Sector Hero -->
+  <div class="nh-sector-hero" id="sectorHero">
+    <div class="nh-sector-hero-inner">
+      <div class="nh-sector-breadcrumb">
+        <a href="markets.html">Markets</a>
+        <span>/</span>
+        <a href="markets.html#sectors">Sectors</a>
+        <span>/</span>
+        <span id="breadcrumbName">African Banking</span>
+      </div>
+      <h1 id="sectorTitle">African Banking</h1>
+      <p id="sectorDesc">Comprehensive coverage of Africa's banking sector, spanning tier-1 lenders across Nigeria, South Africa, Kenya, Egypt, Morocco, and Ghana.</p>
+      <div class="nh-sector-hero-stats">
+        <div class="nh-sector-hero-stat">
+          <span class="lbl">Sector Index</span>
+          <span class="val" id="heroIndex">1,284.50</span>
+          <span class="change up" id="heroChange">+1.42% today</span>
+        </div>
+        <div class="nh-sector-hero-stat">
+          <span class="lbl">Market Cap</span>
+          <span class="val" id="heroMktCap">$84.2B</span>
+        </div>
+        <div class="nh-sector-hero-stat">
+          <span class="lbl">P/E Ratio</span>
+          <span class="val" id="heroPE">8.4x</span>
+        </div>
+        <div class="nh-sector-hero-stat">
+          <span class="lbl">Dividend Yield</span>
+          <span class="val" id="heroDiv">5.8%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sector Tabs -->
+  <div class="nh-sector-tabs" id="sectorTabs">
+    <button class="nh-sector-tab active" data-sector="banking" onclick="switchSector('banking')"><span>🏦</span> Banking</button>
+    <button class="nh-sector-tab" data-sector="telecom" onclick="switchSector('telecom')"><span>📡</span> Telecom</button>
+    <button class="nh-sector-tab" data-sector="mining" onclick="switchSector('mining')"><span>⛏️</span> Mining</button>
+    <button class="nh-sector-tab" data-sector="energy" onclick="switchSector('energy')"><span>⚡</span> Energy</button>
+    <button class="nh-sector-tab" data-sector="cement" onclick="switchSector('cement')"><span>🏗️</span> Cement</button>
+    <button class="nh-sector-tab" data-sector="tech" onclick="switchSector('tech')"><span>💻</span> Technology</button>
+  </div>
+
+  <!-- Overview: Chart + Info -->
+  <div class="nh-sector-overview">
+    <div class="nh-sector-chart-card">
+      <div class="nh-section-header" style="margin-bottom:16px;">
+        <h3 style="margin:0;font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--nh-text-secondary);">Sector Performance</h3>
+        <div class="nh-timeframe-toggle">
+          <button class="active" onclick="setChartTimeframe(this,'1M')">1M</button>
+          <button onclick="setChartTimeframe(this,'3M')">3M</button>
+          <button onclick="setChartTimeframe(this,'6M')">6M</button>
+          <button onclick="setChartTimeframe(this,'1Y')">1Y</button>
+          <button onclick="setChartTimeframe(this,'YTD')">YTD</button>
+        </div>
+      </div>
+      <div class="nh-sector-big-chart" id="sectorChartContainer">
+        <svg id="sectorBigChart" width="100%" height="100%" viewBox="0 0 800 320" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="chartGradUp" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="rgba(42,157,143,0.2)"/><stop offset="100%" stop-color="rgba(42,157,143,0)"/>
+            </linearGradient>
+            <linearGradient id="chartGradDown" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="rgba(233,69,96,0.2)"/><stop offset="100%" stop-color="rgba(233,69,96,0)"/>
+            </linearGradient>
+          </defs>
+          <line stroke="var(--nh-border)" stroke-width="0.5" stroke-dasharray="4,4" x1="0" y1="64" x2="800" y2="64"/>
+          <line stroke="var(--nh-border)" stroke-width="0.5" stroke-dasharray="4,4" x1="0" y1="128" x2="800" y2="128"/>
+          <line stroke="var(--nh-border)" stroke-width="0.5" stroke-dasharray="4,4" x1="0" y1="192" x2="800" y2="192"/>
+          <line stroke="var(--nh-border)" stroke-width="0.5" stroke-dasharray="4,4" x1="0" y1="256" x2="800" y2="256"/>
+          <path id="sectorAreaPath" fill="url(#chartGradUp)" d=""/>
+          <path id="sectorLinePath" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke="var(--nh-green)" d=""/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="nh-sector-info-card">
+      <h3>Sector Overview</h3>
+      <p id="sectorOverviewText">Africa's banking sector has demonstrated remarkable resilience, with tier-1 lenders posting double-digit ROE across major markets. Nigerian banks lead in digital transformation, while South African majors maintain the continent's deepest capital markets access.</p>
+      <div class="nh-sector-metrics">
+        <div class="nh-sector-metric"><div class="val" id="metricStocks">24</div><div class="lbl">Stocks Tracked</div></div>
+        <div class="nh-sector-metric"><div class="val" id="metricExchanges">8</div><div class="lbl">Exchanges</div></div>
+        <div class="nh-sector-metric"><div class="val" id="metricAvgPE">8.4x</div><div class="lbl">Avg P/E</div></div>
+        <div class="nh-sector-metric"><div class="val" id="metricAvgYield">5.8%</div><div class="lbl">Avg Yield</div></div>
+        <div class="nh-sector-metric"><div class="val" id="metricAvgROE">18.2%</div><div class="lbl">Avg ROE</div></div>
+        <div class="nh-sector-metric"><div class="val" id="metricNPL">4.1%</div><div class="lbl">Avg NPL</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Performance Breakdown -->
+  <div class="nh-section-header">
+    <h2 class="nh-section-title">Performance Breakdown</h2>
+  </div>
+  <div class="nh-breakdown-grid" id="breakdownGrid">
+    <div class="nh-breakdown-card"><div class="period">1 Day</div><div class="return up" id="ret1d">+1.42%</div><div class="vs-index">vs All-Share +0.49%</div></div>
+    <div class="nh-breakdown-card"><div class="period">1 Week</div><div class="return up" id="ret1w">+2.18%</div><div class="vs-index">vs All-Share +1.12%</div></div>
+    <div class="nh-breakdown-card"><div class="period">1 Month</div><div class="return up" id="ret1m">+5.64%</div><div class="vs-index">vs All-Share +3.21%</div></div>
+    <div class="nh-breakdown-card"><div class="period">YTD</div><div class="return up" id="retytd">+18.40%</div><div class="vs-index">vs All-Share +12.85%</div></div>
+  </div>
+
+  <!-- Constituents Table -->
+  <div class="nh-sector-table-wrap">
+    <div class="nh-section-header">
+      <h2 class="nh-section-title">Sector Constituents</h2>
+      <div class="nh-timeframe-toggle">
+        <button class="active" onclick="setTableTimeframe(this,'today')">Today</button>
+        <button onclick="setTableTimeframe(this,'ytd')">YTD</button>
+      </div>
+    </div>
+    <table class="nh-sector-table" id="constituentsTable">
+      <thead>
+        <tr>
+          <th onclick="sortConstituents(0)">Company <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></th>
+          <th onclick="sortConstituents(1)">Exchange <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></th>
+          <th onclick="sortConstituents(2)">Price <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></th>
+          <th onclick="sortConstituents(3)">Change <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></th>
+          <th onclick="sortConstituents(4)">% Chg <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></th>
+          <th>5D Trend</th>
+          <th onclick="sortConstituents(6)">Mkt Cap <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></th>
+          <th onclick="sortConstituents(7)">P/E <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></th>
+          <th onclick="sortConstituents(8)">Div Yield <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></th>
+        </tr>
+      </thead>
+      <tbody id="constituentsBody"></tbody>
+    </table>
+  </div>
+
+  <!-- Valuation Comparison -->
+  <div class="nh-section-header">
+    <h2 class="nh-section-title">Valuation Comparison</h2>
+  </div>
+  <table class="nh-valuation-table" id="valuationTable">
+    <thead>
+      <tr>
+        <th>Company</th><th>P/E (TTM)</th><th>P/B</th><th>EV/EBITDA</th><th>ROE</th><th>NPL Ratio</th><th>CAR</th><th>Price vs 52W High</th>
+      </tr>
+    </thead>
+    <tbody id="valuationBody"></tbody>
+  </table>
+
+  <!-- Sector News -->
+  <div class="nh-section-header">
+    <h2 class="nh-section-title">Sector News</h2>
+    <a href="#" class="nh-view-all">All News &rarr;</a>
+  </div>
+  <div class="nh-sector-news-grid" id="newsGrid"></div>
+
+</main>
+
+<footer class="nh-footer">
+  <div class="nh-footer-inner">
+    <div class="nh-footer-top">
+      <div class="nh-footer-brand">
+        <div class="nh-brand-text">newshub <span>AFRICA</span></div>
+        <p>Your trusted source for comprehensive business, technology, agriculture, mining, and energy news across the African continent.</p>
+        <div class="nh-social">
+          <a href="#" aria-label="Twitter">X</a>
+          <a href="#" aria-label="LinkedIn">in</a>
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="Instagram">IG</a>
+        </div>
+      </div>
+      <div class="nh-footer-col"><h4>Sections</h4><ul><li><a href="business.html">Business</a></li><li><a href="technology.html">Technology</a></li><li><a href="agriculture.html">Agriculture</a></li><li><a href="mining.html">Mining</a></li><li><a href="energy.html">Energy</a></li></ul></div>
+      <div class="nh-footer-col"><h4>Company</h4><ul><li><a href="#">About Us</a></li><li><a href="#">Careers</a></li><li><a href="#">Advertise</a></li><li><a href="#">Contact</a></li></ul></div>
+      <div class="nh-footer-col"><h4>Resources</h4><ul><li><a href="#">Market Data</a></li><li><a href="#">Newsletters</a></li><li><a href="#">Podcasts</a></li><li><a href="#">Events</a></li></ul></div>
+      <div class="nh-footer-col"><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li><li><a href="#">Cookie Policy</a></li></ul></div>
+    </div>
+    <div class="nh-footer-bottom">
+      <span>&copy; 2026 NewsHub Africa. All rights reserved.</span>
+      <div style="display:flex;gap:16px"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Cookies</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ==========================
+// SECTOR DATA
+// ==========================
+const SECTOR_DATA = {
+  banking: {
+    name: 'African Banking',
+    desc: "Comprehensive coverage of Africa's banking sector, spanning tier-1 lenders across Nigeria, South Africa, Kenya, Egypt, Morocco, and Ghana.",
+    overview: "Africa's banking sector has demonstrated remarkable resilience, with tier-1 lenders posting double-digit ROE across major markets. Nigerian banks lead in digital transformation, while South African majors maintain the continent's deepest capital markets access. Egyptian banks benefit from high interest rate spreads, and Kenyan lenders show strong asset quality.",
+    index: '1,284.50', change: '+1.42%', isUp: true, mktCap: '$84.2B', pe: '8.4x', divYield: '5.8%',
+    metrics: { stocks: 24, exchanges: 8, avgPE: '8.4x', avgYield: '5.8%', avgROE: '18.2%', avgNPL: '4.1%' },
+    returns: { d: '+1.42%', w: '+2.18%', m: '+5.64%', ytd: '+18.40%' },
+    color: '#0033cc',
+    constituents: [
+      { name: 'GTBank', ticker: 'GTCO', exchange: 'NGX', country: 'NG', price: 48.75, change: 0.70, changePct: 1.45, mktCap: 'N1.44T', pe: 4.2, yield: 8.5, pb: 0.9, evEbitda: 2.1, roe: 22.4, npl: 3.8, car: 24.5, vs52w: -12, logo: 'G', logoBg: 'linear-gradient(135deg,#c53030,#e53e3e)', trend: 'up' },
+      { name: 'Zenith Bank', ticker: 'ZENITHBANK', exchange: 'NGX', country: 'NG', price: 42.10, change: 0.50, changePct: 1.20, mktCap: 'N1.32T', pe: 3.8, yield: 9.2, pb: 0.8, evEbitda: 1.9, roe: 24.1, npl: 3.2, car: 26.8, vs52w: -8, logo: 'Z', logoBg: 'linear-gradient(135deg,#2b6cb0,#3182ce)', trend: 'up' },
+      { name: 'FirstRand', ticker: 'FSR', exchange: 'JSE', country: 'ZA', price: 72.35, change: 0.46, changePct: 0.64, mktCap: 'R402B', pe: 11.2, yield: 4.8, pb: 1.8, evEbitda: 8.5, roe: 16.8, npl: 3.5, car: 18.2, vs52w: 5, logo: 'F', logoBg: 'linear-gradient(135deg,#1a365d,#2b6cb0)', trend: 'up' },
+      { name: 'Standard Bank', ticker: 'SBK', exchange: 'JSE', country: 'ZA', price: 185.20, change: -0.80, changePct: -0.43, mktCap: 'R298B', pe: 10.8, yield: 5.2, pb: 1.6, evEbitda: 7.2, roe: 15.4, npl: 3.9, car: 17.5, vs52w: 8, logo: 'S', logoBg: 'linear-gradient(135deg,#2d3748,#4a5568)', trend: 'down' },
+      { name: 'Equity Group', ticker: 'EQTY', exchange: 'NSE', country: 'KE', price: 52.00, change: -0.65, changePct: -1.24, mktCap: 'KES196B', pe: 6.5, yield: 6.8, pb: 1.2, evEbitda: 4.1, roe: 19.2, npl: 7.8, car: 19.5, vs52w: -15, logo: 'E', logoBg: 'linear-gradient(135deg,#c05621,#dd6b20)', trend: 'down' },
+      { name: 'KCB Group', ticker: 'KCB', exchange: 'NSE', country: 'KE', price: 38.20, change: 0.30, changePct: 0.78, mktCap: 'KES122B', pe: 5.2, yield: 7.5, pb: 1.0, evEbitda: 3.5, roe: 20.1, npl: 8.2, car: 20.8, vs52w: -22, logo: 'K', logoBg: 'linear-gradient(135deg,#276749,#38a169)', trend: 'up' },
+      { name: 'Commercial Int. Bank', ticker: 'COMI', exchange: 'EGX', country: 'EG', price: 72.30, change: 1.10, changePct: 1.54, mktCap: 'EGP412B', pe: 7.8, yield: 5.5, pb: 1.4, evEbitda: 5.2, roe: 18.5, npl: 2.8, car: 22.1, vs52w: 12, logo: 'C', logoBg: 'linear-gradient(135deg,#2c5282,#4299e1)', trend: 'up' },
+      { name: 'Attijariwafa Bank', ticker: 'ATW', exchange: 'Casablanca', country: 'MA', price: 385.00, change: 2.50, changePct: 0.65, mktCap: 'MAD96B', pe: 12.5, yield: 4.2, pb: 2.1, evEbitda: 9.8, roe: 14.2, npl: 4.1, car: 16.5, vs52w: 3, logo: 'A', logoBg: 'linear-gradient(135deg,#744210,#975a16)', trend: 'up' },
+      { name: 'Ecobank Trans.', ticker: 'ETIT', exchange: 'BRVM', country: 'GH', price: 5850, change: 75, changePct: 1.30, mktCap: 'CFA1.2T', pe: 5.5, yield: 6.2, pb: 0.9, evEbitda: 3.8, roe: 17.8, npl: 5.5, car: 21.2, vs52w: -5, logo: 'E', logoBg: 'linear-gradient(135deg,#276749,#38a169)', trend: 'up' },
+      { name: 'NMB Bank', ticker: 'NMB', exchange: 'DSE', country: 'TZ', price: 4120, change: 35, changePct: 0.85, mktCap: 'TZS1.1T', pe: 8.2, yield: 4.8, pb: 1.3, evEbitda: 5.5, roe: 16.5, npl: 4.2, car: 19.8, vs52w: 18, logo: 'N', logoBg: 'linear-gradient(135deg,#2b6cb0,#4299e1)', trend: 'up' },
+    ],
+    news: [
+      { tag: 'Banking', tagColor: 'rgba(42,157,143,0.12)', tagText: '#2a9d8f', title: 'Nigerian Banks Post Record H1 2026 Profits on FX Gains', meta: '3 hours ago', img: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=400&h=260&fit=crop' },
+      { tag: 'Policy', tagColor: 'rgba(38,70,83,0.12)', tagText: '#264653', title: 'CBN Raises Reserve Requirements, Banking Stocks Rally', meta: '6 hours ago', img: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=260&fit=crop' },
+      { tag: 'Earnings', tagColor: 'rgba(233,196,106,0.18)', tagText: '#b8860b', title: 'FirstRand Beats Estimates with 14% Rise in Headline EPS', meta: '12 hours ago', img: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=260&fit=crop' },
+    ]
+  },
+
+  telecom: {
+    name: 'African Telecom',
+    desc: "From mobile money to 5G rollout, track the continent's telecommunications giants. Coverage includes MTN, Airtel, Safaricom, Maroc Telecom, and emerging data centre plays.",
+    overview: "Africa's telecom sector is the backbone of the continent's digital economy. Mobile money platforms process over $1 trillion annually. MTN and Airtel are expanding fintech offerings, while Safaricom leads in East African data revenue. 5G spectrum auctions are underway in South Africa, Nigeria, and Kenya.",
+    index: '2,845.20', change: '+0.89%', isUp: true, mktCap: '$62.8B', pe: '14.2x', divYield: '4.2%',
+    metrics: { stocks: 18, exchanges: 10, avgPE: '14.2x', avgYield: '4.2%', avgROE: '22.5%', avgNPL: '—' },
+    returns: { d: '+0.89%', w: '+1.45%', m: '+3.82%', ytd: '+12.30%' },
+    color: '#2a9d8f',
+    constituents: [
+      { name: 'MTN Group', ticker: 'MTN', exchange: 'JSE', country: 'ZA', price: 185.40, change: 3.20, changePct: 1.76, mktCap: 'R348B', pe: 14.5, yield: 4.8, pb: 3.2, evEbitda: 8.5, roe: 24.2, npl: 0, car: 0, vs52w: 15, logo: 'M', logoBg: 'linear-gradient(135deg,#ffcc00,#ff9500)', trend: 'up' },
+      { name: 'Safaricom', ticker: 'SCOM', exchange: 'NSE', country: 'KE', price: 38.75, change: 0.85, changePct: 2.24, mktCap: 'KES1.55T', pe: 16.2, yield: 3.5, pb: 4.1, evEbitda: 10.2, roe: 26.5, npl: 0, car: 0, vs52w: -5, logo: 'S', logoBg: 'linear-gradient(135deg,#38a169,#2f855a)', trend: 'up' },
+      { name: 'Airtel Africa', ticker: 'AAF', exchange: 'LSE', country: 'NG', price: 1.12, change: -0.01, changePct: -0.89, mktCap: 'GBP4.2B', pe: 12.8, yield: 3.2, pb: 2.8, evEbitda: 7.5, roe: 21.8, npl: 0, car: 0, vs52w: -18, logo: 'A', logoBg: 'linear-gradient(135deg,#e53e3e,#c53030)', trend: 'down' },
+      { name: 'Telecom Egypt', ticker: 'ETEL', exchange: 'EGX', country: 'EG', price: 38.50, change: 0.35, changePct: 0.92, mktCap: 'EGP68B', pe: 10.5, yield: 5.2, pb: 2.1, evEbitda: 5.8, roe: 18.4, npl: 0, car: 0, vs52w: 8, logo: 'T', logoBg: 'linear-gradient(135deg,#2b6cb0,#63b3ed)', trend: 'up' },
+      { name: 'Maroc Telecom', ticker: 'IAM', exchange: 'Casablanca', country: 'MA', price: 142.60, change: -0.60, changePct: -0.42, mktCap: 'MAD125B', pe: 15.8, yield: 4.5, pb: 3.5, evEbitda: 9.2, roe: 20.1, npl: 0, car: 0, vs52w: -2, logo: 'M', logoBg: 'linear-gradient(135deg,#2c5282,#3182ce)', trend: 'down' },
+      { name: 'MTC Namibia', ticker: 'MTC', exchange: 'NSX', country: 'NA', price: 8.40, change: 0.06, changePct: 0.72, mktCap: 'NAD16.8B', pe: 13.2, yield: 5.5, pb: 2.8, evEbitda: 7.1, roe: 19.5, npl: 0, car: 0, vs52w: 12, logo: 'M', logoBg: 'linear-gradient(135deg,#ffcc00,#ff9500)', trend: 'up' },
+      { name: 'Sonatel', ticker: 'SNTS', exchange: 'BRVM', country: 'SN', price: 16200, change: 90, changePct: 0.55, mktCap: 'CFA3.2T', pe: 11.5, yield: 6.8, pb: 2.4, evEbitda: 6.2, roe: 22.1, npl: 0, car: 0, vs52w: 5, logo: 'S', logoBg: 'linear-gradient(135deg,#2c5282,#4299e1)', trend: 'up' },
+      { name: 'Econet Wireless', ticker: 'ECONET', exchange: 'ZSE', country: 'ZW', price: 485.50, change: 5.40, changePct: 1.12, mktCap: 'ZWL52B', pe: 8.5, yield: 2.5, pb: 1.8, evEbitda: 4.5, roe: 16.2, npl: 0, car: 0, vs52w: -35, logo: 'E', logoBg: 'linear-gradient(135deg,#c53030,#e53e3e)', trend: 'up' },
+    ],
+    news: [
+      { tag: 'Telecom', tagColor: 'rgba(38,70,83,0.12)', tagText: '#264653', title: 'MTN Nigeria Hits 100M Mobile Money Users Milestone', meta: '2 hours ago', img: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=260&fit=crop' },
+      { tag: '5G', tagColor: 'rgba(42,157,143,0.12)', tagText: '#2a9d8f', title: 'South Africa Awards Additional 5G Spectrum Bands', meta: '5 hours ago', img: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&h=260&fit=crop' },
+      { tag: 'Fintech', tagColor: 'rgba(244,162,97,0.18)', tagText: '#c77733', title: 'Safaricom M-PESA Revenue Crosses KES 150B Annually', meta: '8 hours ago', img: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=400&h=260&fit=crop' },
+    ]
+  },
+
+  mining: {
+    name: 'African Mining',
+    desc: "Track the extractive giants driving Africa's commodity exports. From PGM producers in South Africa to gold miners in Ghana and copper plays in Zambia and DRC.",
+    overview: "African mining faces headwinds from softening Chinese demand and energy constraints in South Africa. However, gold prices near all-time highs support margins for Ghanaian and Tanzanian producers. Copper exposure through Zambia and DRC is attracting renewed ESG-focused investment.",
+    index: '4,521.80', change: '-0.64%', isUp: false, mktCap: '$128.5B', pe: '11.8x', divYield: '6.2%',
+    metrics: { stocks: 22, exchanges: 7, avgPE: '11.8x', avgYield: '6.2%', avgROE: '14.5%', avgNPL: '—' },
+    returns: { d: '-0.64%', w: '-1.82%', m: '-3.45%', ytd: '+3.20%' },
+    color: '#6b5b95',
+    constituents: [
+      { name: 'Anglo American', ticker: 'AGL', exchange: 'JSE', country: 'ZA', price: 620.50, change: -8.20, changePct: -1.30, mktCap: 'R832B', pe: 12.5, yield: 5.8, pb: 1.8, evEbitda: 6.2, roe: 15.2, npl: 0, car: 0, vs52w: -8, logo: 'A', logoBg: 'linear-gradient(135deg,#2d3748,#4a5568)', trend: 'down' },
+      { name: 'Sibanye-Stillwater', ticker: 'SSW', exchange: 'JSE', country: 'ZA', price: 18.45, change: -0.35, changePct: -1.86, mktCap: 'R52B', pe: 8.2, yield: 8.5, pb: 0.9, evEbitda: 4.1, roe: 11.5, npl: 0, car: 0, vs52w: -25, logo: 'S', logoBg: 'linear-gradient(135deg,#1a365d,#2c5282)', trend: 'down' },
+      { name: 'Gold Fields', ticker: 'GFI', exchange: 'JSE', country: 'ZA', price: 285.20, change: 2.80, changePct: 0.99, mktCap: 'R248B', pe: 14.2, yield: 3.2, pb: 2.5, evEbitda: 7.8, roe: 18.5, npl: 0, car: 0, vs52w: 22, logo: 'G', logoBg: 'linear-gradient(135deg,#b7791f,#d69e2e)', trend: 'up' },
+      { name: 'Impala Platinum', ticker: 'IMP', exchange: 'JSE', country: 'ZA', price: 62.30, change: -1.20, changePct: -1.89, mktCap: 'R48B', pe: 6.5, yield: 9.2, pb: 0.7, evEbitda: 3.2, roe: 10.2, npl: 0, car: 0, vs52w: -35, logo: 'I', logoBg: 'linear-gradient(135deg,#4a5568,#718096)', trend: 'down' },
+      { name: 'Northam Platinum', ticker: 'NPH', exchange: 'JSE', country: 'ZA', price: 95.80, change: -0.80, changePct: -0.83, mktCap: 'R38B', pe: 7.8, yield: 7.5, pb: 0.8, evEbitda: 3.8, roe: 10.8, npl: 0, car: 0, vs52w: -18, logo: 'N', logoBg: 'linear-gradient(135deg,#2d3748,#4a5568)', trend: 'down' },
+      { name: 'Endeavour Mining', ticker: 'EDV', exchange: 'LSE', country: 'BF', price: 22.40, change: 0.45, changePct: 2.05, mktCap: 'GBP5.5B', pe: 10.2, yield: 2.8, pb: 1.5, evEbitda: 4.5, roe: 16.8, npl: 0, car: 0, vs52w: 18, logo: 'E', logoBg: 'linear-gradient(135deg,#975a16,#d69e2e)', trend: 'up' },
+      { name: 'Zijin Mining (DRC)', ticker: '2899', exchange: 'HKEX', country: 'CD', price: 18.85, change: 0.25, changePct: 1.35, mktCap: 'HKD485B', pe: 15.8, yield: 3.5, pb: 3.2, evEbitda: 8.5, roe: 22.1, npl: 0, car: 0, vs52w: 35, logo: 'Z', logoBg: 'linear-gradient(135deg,#c53030,#e53e3e)', trend: 'up' },
+    ],
+    news: [
+      { tag: 'Mining', tagColor: 'rgba(107,91,149,0.12)', tagText: '#6b5b95', title: 'Platinum Prices Hit 5-Year Low on Weak Auto Demand', meta: '1 hour ago', img: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400&h=260&fit=crop' },
+      { tag: 'Gold', tagColor: 'rgba(233,196,106,0.18)', tagText: '#b8860b', title: 'Ghana Gold Output Rises 12% in H1 2026', meta: '4 hours ago', img: 'https://images.unsplash.com/photo-1610375461246-83df859d849d?w=400&h=260&fit=crop' },
+      { tag: 'Copper', tagColor: 'rgba(42,157,143,0.12)', tagText: '#2a9d8f', title: 'DRC Copper Exports Surge on New Kamoa-Kakula Phase', meta: '7 hours ago', img: 'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=400&h=260&fit=crop' },
+    ]
+  },
+
+  energy: {
+    name: 'African Energy',
+    desc: 'From oil majors to renewable pioneers, track the companies powering Africa. Coverage includes integrated oil, independent producers, and the energy transition plays.',
+    overview: "Africa's energy sector is at an inflection point. Nigeria's Dangote Refinery has transformed the regional downstream market, while South Africa's Sasol pivots towards green hydrogen. East African LNG projects in Mozambique and Tanzania are reaching FID. Solar and wind capacity additions are accelerating across the Sahel.",
+    index: '3,128.40', change: '+0.92%', isUp: true, mktCap: '$45.2B', pe: '9.5x', divYield: '7.2%',
+    metrics: { stocks: 16, exchanges: 6, avgPE: '9.5x', avgYield: '7.2%', avgROE: '16.8%', avgNPL: '—' },
+    returns: { d: '+0.92%', w: '+1.65%', m: '+4.20%', ytd: '+8.50%' },
+    color: '#c77733',
+    constituents: [
+      { name: 'Sasol', ticker: 'SOL', exchange: 'JSE', country: 'ZA', price: 425.80, change: 3.90, changePct: 0.92, mktCap: 'R268B', pe: 8.5, yield: 6.8, pb: 1.2, evEbitda: 4.8, roe: 14.2, npl: 0, car: 0, vs52w: 12, logo: 'S', logoBg: 'linear-gradient(135deg,#2b6cb0,#4299e1)', trend: 'up' },
+      { name: 'Seplat Energy', ticker: 'SEPLAT', exchange: 'NGX', country: 'NG', price: 2850.00, change: -15.00, changePct: -0.52, mktCap: 'N1.67T', pe: 6.2, yield: 9.5, pb: 1.0, evEbitda: 3.2, roe: 18.5, npl: 0, car: 0, vs52w: 8, logo: 'S', logoBg: 'linear-gradient(135deg,#744210,#975a16)', trend: 'down' },
+      { name: 'TotalEnergies EP', ticker: 'EC', exchange: 'BRVM', country: 'CI', price: 42500, change: 380, changePct: 0.90, mktCap: 'CFA8.5T', pe: 11.2, yield: 5.2, pb: 1.8, evEbitda: 5.5, roe: 16.5, npl: 0, car: 0, vs52w: 15, logo: 'T', logoBg: 'linear-gradient(135deg,#c53030,#e53e3e)', trend: 'up' },
+      { name: 'Energean (Morocco)', ticker: 'ENOG', exchange: 'LSE', country: 'MA', price: 12.85, change: 0.15, changePct: 1.18, mktCap: 'GBP2.3B', pe: 7.8, yield: 4.5, pb: 1.4, evEbitda: 4.2, roe: 19.2, npl: 0, car: 0, vs52w: 25, logo: 'E', logoBg: 'linear-gradient(135deg,#2c5282,#4299e1)', trend: 'up' },
+      { name: 'African Oil Corp', ticker: 'AOI', exchange: 'NASDAQ', country: 'KE', price: 2.45, change: -0.05, changePct: -2.00, mktCap: 'USD145M', pe: 0, yield: 0, pb: 0.8, evEbitda: 2.1, roe: -5.2, npl: 0, car: 0, vs52w: -45, logo: 'A', logoBg: 'linear-gradient(135deg,#276749,#38a169)', trend: 'down' },
+      { name: 'Kibo Energy', ticker: 'KIBO', exchange: 'AIM', country: 'TZ', price: 0.45, change: 0.02, changePct: 4.65, mktCap: 'GBP18M', pe: 0, yield: 0, pb: 1.5, evEbitda: 0, roe: -12.5, npl: 0, car: 0, vs52w: -60, logo: 'K', logoBg: 'linear-gradient(135deg,#975a16,#d69e2e)', trend: 'up' },
+    ],
+    news: [
+      { tag: 'Oil', tagColor: 'rgba(244,162,97,0.18)', tagText: '#c77733', title: 'Dangote Refinery Hits 650K bpd Capacity, Displaces Imports', meta: '2 hours ago', img: 'https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?w=400&h=260&fit=crop' },
+      { tag: 'LNG', tagColor: 'rgba(42,157,143,0.12)', tagText: '#2a9d8f', title: 'Mozambique LNG Project Secures Final Investment Decision', meta: '5 hours ago', img: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=400&h=260&fit=crop' },
+      { tag: 'Renewables', tagColor: 'rgba(38,70,83,0.12)', tagText: '#264653', title: 'Kenya Crosses 1GW Geothermal Milestone', meta: '9 hours ago', img: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=400&h=260&fit=crop' },
+    ]
+  },
+
+  cement: {
+    name: 'African Cement',
+    desc: 'Infrastructure growth drives demand for cement across the continent. Track the major producers from Nigeria to Morocco, Egypt, and South Africa.',
+    overview: "Cement demand in Africa is recovering as infrastructure spending accelerates. Nigerian producers benefit from FX harmonisation and government road projects. North African exporters are expanding into Sub-Saharan markets. Clinker substitution and alternative fuels are key ESG themes.",
+    index: '2,156.30', change: '+1.85%', isUp: true, mktCap: '$28.5B', pe: '10.2x', divYield: '6.8%',
+    metrics: { stocks: 12, exchanges: 7, avgPE: '10.2x', avgYield: '6.8%', avgROE: '15.2%', avgNPL: '—' },
+    returns: { d: '+1.85%', w: '+3.20%', m: '+7.50%', ytd: '+22.40%' },
+    color: '#8b5a2b',
+    constituents: [
+      { name: 'Dangote Cement', ticker: 'DANGCEM', exchange: 'NGX', country: 'NG', price: 450.20, change: 12.50, changePct: 2.86, mktCap: 'N7.66T', pe: 10.5, yield: 6.2, pb: 3.8, evEbitda: 8.2, roe: 38.5, npl: 0, car: 0, vs52w: 18, logo: 'D', logoBg: 'linear-gradient(135deg,#3182ce,#2b6cb0)', trend: 'up' },
+      { name: 'Lafarge Africa', ticker: 'WAPCO', exchange: 'NGX', country: 'NG', price: 32.80, change: 0.45, changePct: 1.39, mktCap: 'N528B', pe: 8.2, yield: 7.5, pb: 2.1, evEbitda: 5.8, roe: 28.2, npl: 0, car: 0, vs52w: 12, logo: 'L', logoBg: 'linear-gradient(135deg,#c53030,#e53e3e)', trend: 'up' },
+      { name: 'BUA Cement', ticker: 'BUACEMENT', exchange: 'NGX', country: 'NG', price: 95.20, change: 1.80, changePct: 1.93, mktCap: 'N3.22T', pe: 12.5, yield: 4.8, pb: 4.2, evEbitda: 9.5, roe: 35.8, npl: 0, car: 0, vs52w: 25, logo: 'B', logoBg: 'linear-gradient(135deg,#2f855a,#38a169)', trend: 'up' },
+      { name: 'LafargeHolcim Maroc', ticker: 'LHM', exchange: 'Casablanca', country: 'MA', price: 1420.00, change: 15.00, changePct: 1.07, mktCap: 'MAD42B', pe: 11.8, yield: 5.5, pb: 2.8, evEbitda: 7.2, roe: 24.5, npl: 0, car: 0, vs52w: 8, logo: 'L', logoBg: 'linear-gradient(135deg,#744210,#975a16)', trend: 'up' },
+      { name: 'Suez Cement', ticker: 'SCEM', exchange: 'EGX', country: 'EG', price: 12.45, change: -0.15, changePct: -1.19, mktCap: 'EGP8.5B', pe: 7.5, yield: 8.2, pb: 1.2, evEbitda: 4.5, roe: 16.8, npl: 0, car: 0, vs52w: -15, logo: 'S', logoBg: 'linear-gradient(135deg,#2c5282,#4299e1)', trend: 'down' },
+      { name: 'PPC Ltd', ticker: 'PPC', exchange: 'JSE', country: 'ZA', price: 3.85, change: 0.05, changePct: 1.32, mktCap: 'R6.2B', pe: 5.2, yield: 0, pb: 0.6, evEbitda: 2.8, roe: 12.5, npl: 0, car: 0, vs52w: 35, logo: 'P', logoBg: 'linear-gradient(135deg,#2d3748,#4a5568)', trend: 'up' },
+    ],
+    news: [
+      { tag: 'Cement', tagColor: 'rgba(107,91,149,0.12)', tagText: '#6b5b95', title: 'Dangote Cement Expands into Zimbabwe with 1.5M Tonne Plant', meta: '3 hours ago', img: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&h=260&fit=crop' },
+      { tag: 'Infra', tagColor: 'rgba(42,157,143,0.12)', tagText: '#2a9d8f', title: 'Nigeria Allocates N1.2T for Road Construction in 2026 Budget', meta: '6 hours ago', img: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=400&h=260&fit=crop' },
+      { tag: 'ESG', tagColor: 'rgba(233,196,106,0.18)', tagText: '#b8860b', title: 'BUA Cement Commissions 70MW Solar Plant at Sokoto Factory', meta: '10 hours ago', img: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=400&h=260&fit=crop' },
+    ]
+  },
+
+  tech: {
+    name: 'African Technology',
+    desc: 'From fintech unicorns to e-commerce platforms and software services, track the digital transformation of the continent.',
+    overview: "Africa's tech ecosystem is maturing rapidly. Fintech dominates venture funding, with Nigeria, Kenya, and Egypt leading. E-commerce is expanding beyond major cities, and cloud infrastructure investments are accelerating. The sector trades at premium valuations reflecting strong growth prospects.",
+    index: '1,845.60', change: '+1.24%', isUp: true, mktCap: '$18.5B', pe: '28.5x', divYield: '0.8%',
+    metrics: { stocks: 14, exchanges: 6, avgPE: '28.5x', avgYield: '0.8%', avgROE: '12.5%', avgNPL: '—' },
+    returns: { d: '+1.24%', w: '+2.85%', m: '+6.40%', ytd: '+15.80%' },
+    color: '#264653',
+    constituents: [
+      { name: 'Naspers', ticker: 'NPN', exchange: 'JSE', country: 'ZA', price: 3245.00, change: 59.00, changePct: 1.85, mktCap: 'R1.4T', pe: 35.2, yield: 0.4, pb: 4.5, evEbitda: 18.5, roe: 8.2, npl: 0, car: 0, vs52w: 22, logo: 'N', logoBg: 'linear-gradient(135deg,#1a365d,#2c5282)', trend: 'up' },
+      { name: 'Prosus', ticker: 'PRX', exchange: 'JSE', country: 'ZA', price: 1425.80, change: 28.50, changePct: 2.04, mktCap: 'R620B', pe: 32.5, yield: 0.3, pb: 3.8, evEbitda: 16.2, roe: 7.8, npl: 0, car: 0, vs52w: 28, logo: 'P', logoBg: 'linear-gradient(135deg,#2b6cb0,#4299e1)', trend: 'up' },
+      { name: 'Egyptian GDRs (SWVL)', ticker: 'SWVL', exchange: 'NASDAQ', country: 'EG', price: 4.25, change: 0.08, changePct: 1.92, mktCap: 'USD85M', pe: 0, yield: 0, pb: 2.5, evEbitda: -8.5, roe: -45.2, npl: 0, car: 0, vs52w: -65, logo: 'S', logoBg: 'linear-gradient(135deg,#c53030,#e53e3e)', trend: 'up' },
+      { name: 'Jumia Technologies', ticker: 'JMIA', exchange: 'NYSE', country: 'NG', price: 8.45, change: -0.25, changePct: -2.87, mktCap: 'USD850M', pe: 0, yield: 0, pb: 4.2, evEbitda: -12.5, roe: -68.5, npl: 0, car: 0, vs52w: -40, logo: 'J', logoBg: 'linear-gradient(135deg,#975a16,#d69e2e)', trend: 'down' },
+      { name: 'Andela (private)', ticker: 'ANDE', exchange: 'Private', country: 'NG', price: 0, change: 0, changePct: 0, mktCap: 'USD1.5B', pe: 0, yield: 0, pb: 0, evEbitda: 0, roe: 0, npl: 0, car: 0, vs52w: 0, logo: 'A', logoBg: 'linear-gradient(135deg,#2f855a,#38a169)', trend: 'neutral' },
+      { name: 'Flutterwave (private)', ticker: 'FLUT', exchange: 'Private', country: 'NG', price: 0, change: 0, changePct: 0, mktCap: 'USD3.2B', pe: 0, yield: 0, pb: 0, evEbitda: 0, roe: 0, npl: 0, car: 0, vs52w: 0, logo: 'F', logoBg: 'linear-gradient(135deg,#3182ce,#63b3ed)', trend: 'neutral' },
+    ],
+    news: [
+      { tag: 'Fintech', tagColor: 'rgba(38,70,83,0.12)', tagText: '#264653', title: 'Flutterwave Secures Pan-African Payment Licence in 12 Countries', meta: '1 hour ago', img: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=400&h=260&fit=crop' },
+      { tag: 'VC', tagColor: 'rgba(42,157,143,0.12)', tagText: '#2a9d8f', title: 'African Tech Startups Raise $2.8B in H1 2026, Up 18% YoY', meta: '4 hours ago', img: 'https://images.unsplash.com/photo-1553729459-efe14ef6055d?w=400&h=260&fit=crop' },
+      { tag: 'E-commerce', tagColor: 'rgba(244,162,97,0.18)', tagText: '#c77733', title: 'Jumia Partners with DHL for Same-Day Delivery in Lagos', meta: '8 hours ago', img: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400&h=260&fit=crop' },
+    ]
+  }
+};
+
+let currentSector = 'banking';
+let currentSort = { col: -1, dir: 'asc' };
+
+// ==========================
+// RENDER FUNCTIONS
+// ==========================
+function renderSector(sectorKey) {
+  const data = SECTOR_DATA[sectorKey];
+  if (!data) return;
+  currentSector = sectorKey;
+
+  // Hero
+  document.getElementById('breadcrumbName').textContent = data.name;
+  document.getElementById('sectorTitle').textContent = data.name;
+  document.getElementById('sectorDesc').textContent = data.desc;
+  document.getElementById('heroIndex').textContent = data.index;
+  const hc = document.getElementById('heroChange');
+  hc.textContent = data.change + ' today';
+  hc.className = 'change ' + (data.isUp ? 'up' : 'down');
+  document.getElementById('heroMktCap').textContent = data.mktCap;
+  document.getElementById('heroPE').textContent = data.pe;
+  document.getElementById('heroDiv').textContent = data.divYield;
+
+  // Overview
+  document.getElementById('sectorOverviewText').textContent = data.overview;
+  document.getElementById('metricStocks').textContent = data.metrics.stocks;
+  document.getElementById('metricExchanges').textContent = data.metrics.exchanges;
+  document.getElementById('metricAvgPE').textContent = data.metrics.avgPE;
+  document.getElementById('metricAvgYield').textContent = data.metrics.avgYield;
+  document.getElementById('metricAvgROE').textContent = data.metrics.avgROE;
+  document.getElementById('metricNPL').textContent = data.metrics.avgNPL;
+
+  // Breakdown
+  const r = data.returns;
+  document.getElementById('ret1d').textContent = r.d;
+  document.getElementById('ret1d').className = 'return ' + (r.d.includes('+') ? 'up' : 'down');
+  document.getElementById('ret1w').textContent = r.w;
+  document.getElementById('ret1w').className = 'return ' + (r.w.includes('+') ? 'up' : 'down');
+  document.getElementById('ret1m').textContent = r.m;
+  document.getElementById('ret1m').className = 'return ' + (r.m.includes('+') ? 'up' : 'down');
+  document.getElementById('retytd').textContent = r.ytd;
+  document.getElementById('retytd').className = 'return ' + (r.ytd.includes('+') ? 'up' : 'down');
+
+  // Constituents
+  renderConstituents(data.constituents);
+
+  // Valuation
+  renderValuation(data.constituents);
+
+  // News
+  renderNews(data.news);
+
+  // Chart
+  renderSectorChart(data.isUp);
+
+  // Tabs
+  document.querySelectorAll('.nh-sector-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.sector === sectorKey);
+  });
+}
+
+function renderConstituents(stocks) {
+  const tbody = document.getElementById('constituentsBody');
+  tbody.innerHTML = stocks.map(s => {
+    const isUp = s.changePct >= 0;
+    const sign = isUp ? '+' : '';
+    const sparkPoints = generateSparklinePoints(s.trend, 80, 28);
+    return `<tr>
+      <td><div class="nh-stock-cell"><div class="nh-stock-logo" style="background:${s.logoBg}">${s.logo}</div><div class="nh-stock-info"><span class="name">${s.name}</span><span class="ticker">${s.ticker}</span></div></div></td>
+      <td>${s.exchange}</td>
+      <td>${formatPrice(s.price)}</td>
+      <td style="color:${isUp?'var(--nh-green)':'var(--nh-red)'}">${sign}${s.change.toFixed(2)}</td>
+      <td><span class="nh-change-badge ${isUp?'up':'down'}">${sign}${s.changePct.toFixed(2)}%</span></td>
+      <td><svg class="nh-mini-spark ${isUp?'up':'down'}" viewBox="0 0 80 28"><path d="${sparkPoints}"/></svg></td>
+      <td>${s.mktCap}</td>
+      <td>${s.pe > 0 ? s.pe.toFixed(1) + 'x' : 'N/A'}</td>
+      <td>${s.yield > 0 ? s.yield.toFixed(1) + '%' : 'N/A'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderValuation(stocks) {
+  const tbody = document.getElementById('valuationBody');
+  tbody.innerHTML = stocks.map(s => {
+    const vs52wColor = s.vs52w > 0 ? 'var(--nh-green)' : (s.vs52w < 0 ? 'var(--nh-red)' : 'var(--nh-text-muted)');
+    return `<tr>
+      <td><strong>${s.name}</strong></td>
+      <td>${s.pe > 0 ? s.pe.toFixed(1) + 'x' : 'N/A'}</td>
+      <td>${s.pb > 0 ? s.pb.toFixed(1) + 'x' : 'N/A'}</td>
+      <td>${s.evEbitda > 0 ? s.evEbitda.toFixed(1) + 'x' : 'N/A'}</td>
+      <td>${s.roe !== 0 ? s.roe.toFixed(1) + '%' : 'N/A'}</td>
+      <td>${s.npl > 0 ? s.npl.toFixed(1) + '%' : '—'}</td>
+      <td>${s.car > 0 ? s.car.toFixed(1) + '%' : '—'}</td>
+      <td style="color:${vs52wColor};font-weight:600">${s.vs52w > 0 ? '+' : ''}${s.vs52w}%</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderNews(newsItems) {
+  const grid = document.getElementById('newsGrid');
+  grid.innerHTML = newsItems.map(n => `
+    <a href="#" class="nh-sector-news-card">
+      <img src="${n.img}" alt="${n.title}" loading="lazy">
+      <div class="nh-sector-news-card-body">
+        <span class="tag" style="background:${n.tagColor};color:${n.tagText}">${n.tag}</span>
+        <h4>${n.title}</h4>
+        <div class="meta">${n.meta}</div>
+      </div>
+    </a>
+  `).join('');
+}
+
+function renderSectorChart(isUp) {
+  const areaPath = document.getElementById('sectorAreaPath');
+  const linePath = document.getElementById('sectorLinePath');
+  const color = isUp ? 'var(--nh-green)' : 'var(--nh-red)';
+
+  const points = [];
+  const areaPoints = [];
+  const segments = 30;
+  const seed = currentSector.length;
+
+  for (let i = 0; i <= segments; i++) {
+    const x = (i / segments) * 800;
+    const baseY = isUp
+      ? 260 - (i / segments) * 200
+      : 60 + (i / segments) * 200;
+    const noise = Math.sin(i * 0.8 + seed) * 30 + Math.sin(i * 2.1) * 15 + (Math.random() - 0.5) * 20;
+    const y = Math.max(20, Math.min(300, baseY + noise));
+    points.push((i === 0 ? 'M' : 'L') + x.toFixed(1) + ',' + y.toFixed(1));
+    areaPoints.push({ x, y });
+  }
+
+  linePath.setAttribute('d', points.join(' '));
+  linePath.setAttribute('stroke', color);
+
+  const areaD = points.join(' ') + ' L800,300 L0,300 Z';
+  areaPath.setAttribute('d', areaD);
+  areaPath.setAttribute('fill', isUp ? 'url(#chartGradUp)' : 'url(#chartGradDown)');
+}
+
+function generateSparklinePoints(trend, w, h) {
+  const pts = [];
+  const segments = 10;
+  const isUp = trend === 'up';
+  for (let i = 0; i <= segments; i++) {
+    const x = (i / segments) * w;
+    const baseY = isUp ? h * 0.75 - (i / segments) * h * 0.5 : h * 0.25 + (i / segments) * h * 0.5;
+    const noise = Math.sin(i * 1.5) * (h * 0.15) + (Math.random() - 0.5) * 4;
+    const y = Math.max(2, Math.min(h - 2, baseY + noise));
+    pts.push((i === 0 ? 'M' : 'L') + x.toFixed(1) + ',' + y.toFixed(1));
+  }
+  return pts.join(' ');
+}
+
+function formatPrice(p) {
+  if (p >= 1000) return p.toLocaleString('en-US', { maximumFractionDigits: 2 });
+  return p.toFixed(2);
+}
+
+// ==========================
+// INTERACTION
+// ==========================
+function switchSector(key) {
+  renderSector(key);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function setChartTimeframe(btn, tf) {
+  btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  // Regenerate chart with timeframe-appropriate volatility
+  const data = SECTOR_DATA[currentSector];
+  renderSectorChart(data.isUp);
+}
+
+function setTableTimeframe(btn, tf) {
+  btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  // In a real app, this would fetch different data
+}
+
+function sortConstituents(col) {
+  const data = SECTOR_DATA[currentSector];
+  if (!data) return;
+
+  if (currentSort.col === col) {
+    currentSort.dir = currentSort.dir === 'asc' ? 'desc' : 'asc';
+  } else {
+    currentSort.col = col;
+    currentSort.dir = 'desc';
+  }
+
+  // Update header state
+  document.querySelectorAll('#constituentsTable th').forEach(th => th.classList.remove('sort-asc', 'sort-desc'));
+  const headers = document.querySelectorAll('#constituentsTable th');
+  if (headers[col]) headers[col].classList.add(currentSort.dir === 'asc' ? 'sort-asc' : 'sort-desc');
+
+  const sorted = [...data.constituents].sort((a, b) => {
+    let av, bv;
+    switch(col) {
+      case 0: av = a.name.toLowerCase(); bv = b.name.toLowerCase(); break;
+      case 1: av = a.exchange; bv = b.exchange; break;
+      case 2: av = a.price; bv = b.price; break;
+      case 3: av = a.change; bv = b.change; break;
+      case 4: av = a.changePct; bv = b.changePct; break;
+      case 6: av = parseMktCap(a.mktCap); bv = parseMktCap(b.mktCap); break;
+      case 7: av = a.pe; bv = b.pe; break;
+      case 8: av = a.yield; bv = b.yield; break;
+      default: av = a.name; bv = b.name;
+    }
+    if (typeof av === 'string') {
+      return currentSort.dir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
+    }
+    return currentSort.dir === 'asc' ? av - bv : bv - av;
+  });
+
+  renderConstituents(sorted);
+}
+
+function parseMktCap(str) {
+  const num = parseFloat(str.replace(/[^0-9.]/g, '')) || 0;
+  if (str.includes('T')) return num * 1e12;
+  if (str.includes('B')) return num * 1e9;
+  if (str.includes('M')) return num * 1e6;
+  return num;
+}
+
+function toggleTheme() {
+  const html = document.documentElement;
+  const moon = document.getElementById('nh-moon');
+  const sun = document.getElementById('nh-sun');
+  if (html.getAttribute('data-theme') === 'dark') {
+    html.removeAttribute('data-theme');
+    if (moon) moon.style.display = 'block';
+    if (sun) sun.style.display = 'none';
+  } else {
+    html.setAttribute('data-theme', 'dark');
+    if (moon) moon.style.display = 'none';
+    if (sun) sun.style.display = 'block';
+  }
+}
+
+// ==========================
+// INIT
+// ==========================
+document.addEventListener('DOMContentLoaded', () => {
+  // Check URL param for sector
+  const params = new URLSearchParams(window.location.search);
+  const sector = params.get('sector') || 'banking';
+  renderSector(sector);
+});
+</script>
+
+</body>
+</html>

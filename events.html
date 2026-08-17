@@ -1,0 +1,2599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Events & Conferences — NewsHub Africa</title>
+  <meta name="description" content="Comprehensive business, technology, agriculture, mining, and energy news across the African continent.">
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+
+:root {
+  --nh-blue: #0033cc;
+  --nh-blue-light: #1a53ff;
+  --nh-blue-dark: #002080;
+  --nh-black: #0a0a0a;
+  --nh-white: #ffffff;
+  --nh-surface: #ffffff;
+  --nh-surface-raised: #f8f9fa;
+  --nh-text-primary: #0a0a0a;
+  --nh-text-secondary: #495057;
+  --nh-text-muted: #adb5bd;
+  --nh-border: #dee2e6;
+  --nh-shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --nh-shadow-md: 0 4px 12px rgba(0,0,0,0.10);
+  --nh-shadow-lg: 0 10px 40px rgba(0,0,0,0.15);
+  --nh-radius-sm: 6px;
+  --nh-radius-md: 10px;
+  --nh-radius-lg: 12px;
+  --nh-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] {
+  --nh-surface: #0f1115;
+  --nh-surface-raised: #1a1d23;
+  --nh-text-primary: #f0f0f5;
+  --nh-text-secondary: #8a8b97;
+  --nh-text-muted: #5a5a6b;
+  --nh-border: #2a2d35;
+  --nh-shadow-sm: 0 1px 3px rgba(0,0,0,0.30);
+  --nh-shadow-md: 0 4px 12px rgba(0,0,0,0.40);
+  --nh-shadow-lg: 0 10px 40px rgba(0,0,0,0.50);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--nh-surface);
+  color: var(--nh-text-primary);
+  transition: var(--nh-transition);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+.nh-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--nh-surface);
+  border-bottom: 1px solid var(--nh-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.nh-header-inner { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+
+.nh-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--nh-border);
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.nh-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+
+.nh-brand-icon {
+  width: 32px; height: 32px;
+  background: var(--nh-blue);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: 700; font-size: 14px;
+  flex-shrink: 0;
+}
+
+.nh-brand-text {
+  font-size: 20px; font-weight: 500;
+  letter-spacing: -0.3px;
+  color: var(--nh-text-primary);
+}
+
+.nh-brand-text span { color: var(--nh-blue); font-weight: 500; }
+
+.nh-brand-tagline {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--nh-text-muted);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-top: -2px;
+  line-height: 1.2;
+}
+[data-theme="dark"] .nh-brand-tagline { color: var(--nh-text-secondary); }
+
+.nh-actions { display: flex; align-items: center; gap: 10px; }
+
+.nh-search { position: relative; }
+
+.nh-search input {
+  width: 220px;
+  padding: 9px 14px 9px 36px;
+  border: 1px solid var(--nh-border);
+  border-radius: 100px;
+  background: var(--nh-surface-raised);
+  color: var(--nh-text-primary);
+  font-size: 13px; outline: none;
+  font-family: inherit;
+}
+
+.nh-search input:focus {
+  border-color: var(--nh-blue);
+  box-shadow: 0 0 0 3px rgba(0,51,204,0.1);
+}
+
+.nh-search svg {
+  position: absolute; left: 12px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--nh-text-muted);
+  width: 14px; height: 14px;
+}
+
+.nh-btn {
+  padding: 9px 20px;
+  background: var(--nh-blue); color: white;
+  border: none; border-radius: 100px;
+  font-weight: 500; font-size: 13px;
+  cursor: pointer; transition: var(--nh-transition);
+  font-family: inherit;
+}
+
+.nh-btn:hover { background: var(--nh-blue-dark); transform: translateY(-2px); }
+
+.nh-nav {
+  display: flex; align-items: center;
+  gap: 4px; padding: 10px 0;
+  overflow-x: auto;
+}
+
+.nh-nav-item {
+  padding: 7px 16px;
+  border-radius: 100px;
+  font-size: 13px; font-weight: 500;
+  color: var(--nh-text-secondary);
+  cursor: pointer; white-space: nowrap;
+  transition: var(--nh-transition);
+  border: none; background: transparent;
+  font-family: inherit;
+  text-decoration: none;
+}
+
+.nh-nav-item.active, .nh-nav-item:hover { color: white; background: var(--nh-blue); }
+
+.nh-live {
+  display: flex; align-items: center;
+  gap: 5px; padding: 5px 12px;
+  background: rgba(0,51,204,0.08);
+  color: var(--nh-blue);
+  border-radius: 100px;
+  font-size: 11px; font-weight: 500;
+  margin-left: auto; cursor: pointer;
+  animation: pulse 2s infinite;
+  white-space: nowrap;
+}
+
+.nh-live .dot {
+  width: 7px; height: 7px;
+  background: var(--nh-blue);
+  border-radius: 50%;
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.7; }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.nh-main { padding: 24px; max-width: 1400px; margin: 0 auto; }
+
+.nh-breaking {
+  display: flex; align-items: center;
+  gap: 10px; padding: 10px 18px;
+  background: linear-gradient(90deg, var(--nh-blue), var(--nh-blue-light));
+  color: white; border-radius: 10px;
+  margin-bottom: 20px;
+  font-size: 13px; font-weight: 500;
+  overflow: hidden; position: relative;
+}
+
+.nh-breaking::before {
+  content: '';
+  position: absolute; top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+.nh-breaking-label {
+  background: white; color: var(--nh-blue);
+  padding: 3px 10px; border-radius: 4px;
+  font-weight: 700; font-size: 10px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  z-index: 1; flex-shrink: 0;
+}
+
+.nh-breaking-ticker {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  mask-image: linear-gradient(90deg, transparent, black 5%, black 95%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 5%, black 95%, transparent);
+}
+.nh-breaking-track {
+  display: flex;
+  gap: 60px;
+  width: max-content;
+  animation: breaking-scroll 30s linear infinite;
+  will-change: transform;
+}
+.nh-breaking-track:hover { animation-play-state: paused; }
+.nh-breaking-text {
+  white-space: nowrap;
+  flex-shrink: 0;
+  z-index: 1;
+}
+@keyframes breaking-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.nh-section-header {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.nh-section-title {
+  font-size: 24px; font-weight: 500;
+  position: relative; display: inline-block;
+  color: var(--nh-text-primary);
+}
+
+.nh-section-title::after {
+  content: '';
+  position: absolute; bottom: -6px; left: 0;
+  width: 40px; height: 3px;
+  background: var(--nh-blue); border-radius: 2px;
+}
+
+.nh-view-all {
+  color: var(--nh-blue); font-weight: 500;
+  font-size: 13px; cursor: pointer;
+  display: flex; align-items: center; gap: 4px;
+  transition: var(--nh-transition);
+  text-decoration: none; background: none; border: none;
+  font-family: inherit;
+}
+
+.nh-view-all:hover { gap: 6px; }
+
+.nh-card {
+  background: var(--nh-surface);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg);
+  overflow: hidden;
+  transition: var(--nh-transition);
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.nh-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--nh-shadow-lg);
+  border-color: transparent;
+}
+
+.nh-card img {
+  width: 100%; height: 180px;
+  object-fit: cover; display: block;
+  transition: transform 0.5s ease;
+}
+
+.nh-card:hover img { transform: scale(1.08); }
+
+.nh-card-body { padding: 18px; }
+
+.nh-card-tag {
+  display: inline-block;
+  padding: 3px 8px; border-radius: 4px;
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.nh-tag-business { background: rgba(42,157,143,0.12); color: #2a9d8f; }
+.nh-tag-tech { background: rgba(38,70,83,0.12); color: #264653; }
+.nh-tag-agri { background: rgba(233,196,106,0.18); color: #b8860b; }
+.nh-tag-mining { background: rgba(107,91,149,0.12); color: #6b5b95; }
+.nh-tag-energy { background: rgba(244,162,97,0.18); color: #c77733; }
+
+[data-theme="dark"] .nh-tag-business { background: rgba(42,157,143,0.2); color: #4ecdc4; }
+[data-theme="dark"] .nh-tag-tech { background: rgba(100,200,255,0.12); color: #64c8ff; }
+[data-theme="dark"] .nh-tag-agri { background: rgba(233,196,106,0.15); color: #e9c46a; }
+[data-theme="dark"] .nh-tag-mining { background: rgba(107,91,149,0.2); color: #9b8ec7; }
+[data-theme="dark"] .nh-tag-energy { background: rgba(244,162,97,0.15); color: #f4a261; }
+
+.nh-card h3 {
+  font-size: 16px; font-weight: 500;
+  line-height: 1.3; margin-bottom: 8px;
+  color: var(--nh-text-primary);
+}
+
+.nh-card p {
+  font-size: 13px; color: var(--nh-text-secondary);
+  line-height: 1.5; margin-bottom: 12px;
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+
+.nh-card-author {
+  display: flex; align-items: center; gap: 6px;
+}
+
+.nh-card-author img {
+  width: 24px; height: 24px;
+  border-radius: 50%; object-fit: cover;
+}
+
+.nh-card-author span { font-size: 11px; color: var(--nh-text-muted); margin-left: auto; }
+
+.nh-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 36px; }
+
+.nh-article-page { max-width: 800px; margin: 0 auto; padding: 32px 24px; }
+
+.nh-article-header { margin-bottom: 24px; }
+
+.nh-article-header img {
+  width: 100%; height: 400px;
+  object-fit: cover; border-radius: var(--nh-radius-lg);
+  margin-bottom: 24px;
+}
+
+.nh-article-tag {
+  display: inline-block;
+  padding: 4px 12px; border-radius: 4px;
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+.nh-article-title {
+  font-size: 32px; font-weight: 500;
+  line-height: 1.2; margin-bottom: 16px;
+  color: var(--nh-text-primary);
+}
+
+.nh-article-meta {
+  display: flex; gap: 16px;
+  font-size: 13px; color: var(--nh-text-muted);
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--nh-border);
+}
+
+.nh-article-body {
+  font-size: 16px; line-height: 1.8;
+  color: var(--nh-text-secondary);
+}
+
+.nh-article-body p { margin-bottom: 20px; }
+
+.nh-article-body h3 {
+  font-size: 20px; font-weight: 500;
+  color: var(--nh-text-primary);
+  margin: 32px 0 16px;
+}
+
+.nh-article-body ul {
+  margin: 16px 0 16px 24px;
+  color: var(--nh-text-secondary);
+}
+
+.nh-article-body li { margin-bottom: 8px; }
+
+.nh-back-link {
+  display: inline-flex; align-items: center;
+  gap: 6px; color: var(--nh-blue);
+  font-weight: 500; font-size: 14px;
+  text-decoration: none; margin-bottom: 24px;
+  transition: var(--nh-transition);
+}
+
+.nh-back-link:hover { gap: 10px; }
+
+.nh-ticker-wrap {
+  background: var(--nh-black); color: white;
+  padding: 12px 0; overflow: hidden;
+  position: relative; margin-bottom: 32px;
+}
+
+.nh-ticker-label {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  background: var(--nh-black); padding: 0 18px;
+  display: flex; align-items: center;
+  font-weight: 700; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 1px;
+  z-index: 10;
+  border-right: 1px solid rgba(255,255,255,0.1);
+}
+
+.nh-ticker {
+  display: flex; gap: 36px;
+  padding-left: 120px;
+  animation: ticker 30s linear infinite;
+  white-space: nowrap;
+}
+
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.nh-ticker-item {
+  display: flex; align-items: center;
+  gap: 6px; font-size: 13px;
+}
+
+.nh-ticker-symbol { font-weight: 700; color: var(--nh-blue-light); }
+.nh-ticker-price { font-weight: 500; }
+.nh-ticker-change { font-size: 11px; padding: 2px 6px; border-radius: 4px; }
+.nh-ticker-change.up { background: rgba(42,157,143,0.2); color: #4ecdc4; }
+.nh-ticker-change.down { background: rgba(233,69,96,0.15); color: #e94560; }
+
+.nh-footer {
+  background: var(--nh-black); color: white;
+  padding: 48px 24px 24px;
+}
+
+.nh-footer-inner { max-width: 1400px; margin: 0 auto; }
+
+.nh-footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 36px; margin-bottom: 36px;
+}
+
+.nh-footer-brand { max-width: 260px; }
+
+.nh-footer-brand .nh-brand-text {
+  color: white; margin-bottom: 12px;
+  font-size: 20px; font-weight: 500;
+}
+
+.nh-footer-brand .nh-brand-text span { color: var(--nh-blue-light); }
+
+.nh-footer-brand p {
+  color: rgba(255,255,255,0.6);
+  font-size: 13px; line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.nh-social { display: flex; gap: 8px; }
+
+.nh-social a {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  color: white; text-decoration: none;
+  transition: var(--nh-transition); font-size: 12px;
+}
+
+.nh-social a:hover { background: var(--nh-blue); transform: translateY(-2px); }
+
+.nh-footer-col h4 {
+  font-size: 12px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 1px;
+  margin-bottom: 16px; color: var(--nh-blue-light);
+}
+
+.nh-footer-col ul { list-style: none; }
+.nh-footer-col li { margin-bottom: 8px; }
+
+.nh-footer-col a {
+  color: rgba(255,255,255,0.6); text-decoration: none;
+  font-size: 13px; transition: var(--nh-transition);
+}
+
+.nh-footer-col a:hover { color: white; padding-left: 3px; }
+
+.nh-footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 24px;
+  display: flex; justify-content: space-between;
+  align-items: center; font-size: 12px;
+  color: rgba(255,255,255,0.4);
+}
+
+.nh-footer-bottom a {
+  color: rgba(255,255,255,0.4);
+  text-decoration: none; transition: var(--nh-transition);
+}
+
+.nh-footer-bottom a:hover { color: white; }
+
+.nh-newsletter { max-width: 1400px; margin: 0 auto 48px; padding: 0 24px; }
+
+.nh-newsletter-box {
+  background: linear-gradient(135deg, var(--nh-blue-dark), var(--nh-blue));
+  border-radius: var(--nh-radius-lg); padding: 36px;
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 36px;
+  position: relative; overflow: hidden;
+}
+
+.nh-newsletter-box::before {
+  content: '';
+  position: absolute; top: -50%; right: -10%;
+  width: 350px; height: 350px;
+  background: radial-gradient(circle, var(--nh-blue-light) 0%, transparent 70%);
+  opacity: 0.15;
+}
+
+.nh-newsletter-content { position: relative; z-index: 1; max-width: 420px; }
+
+.nh-newsletter-content h2 {
+  font-size: 24px; color: white;
+  margin-bottom: 8px; font-weight: 500;
+}
+
+.nh-newsletter-content p {
+  color: rgba(255,255,255,0.7);
+  font-size: 14px; line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.nh-newsletter-form { display: flex; gap: 8px; }
+
+.nh-newsletter-form input {
+  flex: 1; padding: 11px 16px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.1);
+  color: white; font-size: 13px; outline: none;
+  font-family: inherit;
+}
+
+.nh-newsletter-form input::placeholder { color: rgba(255,255,255,0.5); }
+.nh-newsletter-form input:focus { border-color: white; background: rgba(255,255,255,0.15); }
+
+.nh-newsletter-form button {
+  padding: 11px 22px; background: white;
+  color: var(--nh-blue); border: none;
+  border-radius: 10px; font-weight: 500;
+  font-size: 13px; cursor: pointer;
+  transition: var(--nh-transition);
+  white-space: nowrap; font-family: inherit;
+}
+
+.nh-newsletter-form button:hover { background: var(--nh-gray-100); transform: translateY(-2px); }
+
+.nh-stats { display: flex; gap: 24px; position: relative; z-index: 1; }
+
+.nh-stat { text-align: center; }
+
+.nh-stat-num { font-size: 28px; font-weight: 500; color: white; }
+
+.nh-stat-label { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+
+.nh-ad-slot { position: relative; }
+.nh-ad-label {
+  font-size: 10px;
+  color: var(--nh-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: absolute;
+  top: 4px;
+  left: 8px;
+  z-index: 1;
+  background: var(--nh-surface-raised);
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+.nh-ad-slot img {
+  display: block;
+  margin: 0 auto;
+  border-radius: 6px;
+  transition: transform 0.3s ease;
+}
+.nh-ad-slot a:hover img { transform: scale(1.02); }
+
+/* Mobile Navigation */
+.nh-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  gap: 5px;
+  padding: 8px;
+  border-radius: 8px;
+  transition: var(--nh-transition);
+}
+
+.nh-hamburger:hover { background: var(--nh-surface-raised); }
+
+.nh-hamburger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--nh-text-primary);
+  border-radius: 2px;
+  transition: var(--nh-transition);
+  transform-origin: center;
+}
+
+.nh-hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nh-hamburger.active span:nth-child(2) { opacity: 0; }
+.nh-hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.nh-mobile-nav {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--nh-surface);
+  z-index: 999;
+  padding: 80px 24px 24px;
+  overflow-y: auto;
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nh-mobile-nav.open { transform: translateX(0); }
+
+.nh-mobile-nav-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--nh-border);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--nh-surface);
+  z-index: 1001;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.nh-mobile-nav-close {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  color: var(--nh-text-primary);
+}
+
+.nh-mobile-nav-close:hover { background: var(--nh-surface-raised); }
+
+.nh-mobile-nav-list { list-style: none; padding: 0; }
+.nh-mobile-nav-list li { border-bottom: 1px solid var(--nh-border); }
+
+.nh-mobile-nav-list a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  color: var(--nh-text-primary);
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: var(--nh-transition);
+}
+
+.nh-mobile-nav-list a:hover { color: var(--nh-blue); padding-left: 8px; }
+
+.nh-mobile-nav-list a svg {
+  width: 20px;
+  height: 20px;
+  color: var(--nh-text-muted);
+}
+
+.nh-mobile-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--nh-text-muted);
+  margin: 24px 0 12px;
+}
+
+.nh-mobile-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 998;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.nh-mobile-overlay.open { opacity: 1; }
+
+/* Hero Grid */
+.nh-hero-grid { display:grid; grid-template-columns:1.2fr 1fr; gap:24px; margin-bottom:40px; }
+.nh-hero-main { display:flex; flex-direction:column; min-height:480px; position:relative; overflow:hidden; }
+.nh-hero-main img { width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; z-index:0; }
+.nh-hero-side { display:flex; flex-direction:column; gap:18px; }
+
+/* Video Grid */
+.nh-video-grid { display:grid; grid-template-columns:2fr 1fr; gap:18px; margin-bottom:40px; }
+
+/* Category Page Styles */
+.nh-category-hero {
+  background: linear-gradient(135deg, var(--nh-blue-dark), var(--nh-blue));
+  border-radius: var(--nh-radius-lg);
+  padding: 48px 36px;
+  margin-bottom: 36px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.nh-category-hero::before {
+  content: '';
+  position: absolute; top: -50%; right: -10%;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, var(--nh-blue-light) 0%, transparent 70%);
+  opacity: 0.2;
+}
+.nh-category-hero h1 { font-size: 36px; font-weight: 500; margin-bottom: 8px; position: relative; z-index: 1; }
+.nh-category-hero p { color: rgba(255,255,255,0.7); font-size: 15px; position: relative; z-index: 1; }
+
+.nh-featured-row { display: grid; grid-template-columns: 1.5fr 1fr; gap: 24px; margin-bottom: 36px; }
+
+.nh-featured-large { position: relative; overflow: hidden; border-radius: var(--nh-radius-lg); min-height: 400px; display: block; text-decoration: none; color: inherit; }
+.nh-featured-large img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
+.nh-featured-large .overlay {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.85));
+  padding: 32px; color: white;
+}
+
+.nh-featured-stack { display: flex; flex-direction: column; gap: 16px; }
+.nh-featured-stack .nh-card { display: flex; gap: 16px; padding: 16px; align-items: center; flex: 1; }
+.nh-featured-stack .nh-card img { width: 120px; height: 90px; object-fit: cover; border-radius: var(--nh-radius-sm); flex-shrink: 0; }
+
+/* Events Page */
+.nh-events-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 36px; }
+.nh-event-card {
+  background: var(--nh-surface);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg);
+  overflow: hidden;
+  transition: var(--nh-transition);
+}
+.nh-event-card:hover { transform: translateY(-5px); box-shadow: var(--nh-shadow-lg); border-color: transparent; }
+.nh-event-card img { width: 100%; height: 200px; object-fit: cover; display: block; }
+.nh-event-card-body { padding: 20px; }
+.nh-event-date {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 12px; border-radius: 100px;
+  background: rgba(0,51,204,0.08); color: var(--nh-blue);
+  font-size: 12px; font-weight: 500; margin-bottom: 10px;
+}
+.nh-event-card h3 { font-size: 17px; font-weight: 500; line-height: 1.3; margin-bottom: 8px; color: var(--nh-text-primary); }
+.nh-event-card p { font-size: 13px; color: var(--nh-text-secondary); line-height: 1.5; margin-bottom: 12px; }
+.nh-event-location { font-size: 12px; color: var(--nh-text-muted); display: flex; align-items: center; gap: 4px; }
+
+/* Markets Page */
+.nh-market-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 36px;
+  background: var(--nh-surface);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg);
+  overflow: hidden;
+}
+.nh-market-table th {
+  background: var(--nh-surface-raised);
+  padding: 14px 18px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--nh-text-secondary);
+  border-bottom: 1px solid var(--nh-border);
+}
+.nh-market-table td {
+  padding: 14px 18px;
+  font-size: 14px;
+  border-bottom: 1px solid var(--nh-border);
+  color: var(--nh-text-primary);
+}
+.nh-market-table tr:last-child td { border-bottom: none; }
+.nh-market-table tr:hover td { background: var(--nh-surface-raised); }
+
+.nh-market-index {
+  background: var(--nh-surface);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg);
+  padding: 24px;
+  text-align: center;
+  transition: var(--nh-transition);
+}
+.nh-market-index:hover { box-shadow: var(--nh-shadow-md); border-color: transparent; }
+.nh-market-index h4 { font-size: 13px; color: var(--nh-text-secondary); margin-bottom: 8px; font-weight: 500; }
+.nh-market-index .value { font-size: 28px; font-weight: 500; color: var(--nh-text-primary); margin-bottom: 4px; }
+.nh-market-index .change { font-size: 13px; font-weight: 500; padding: 3px 10px; border-radius: 100px; display: inline-block; }
+.nh-market-index .change.up { background: rgba(42,157,143,0.12); color: #2a9d8f; }
+.nh-market-index .change.down { background: rgba(233,69,96,0.12); color: #e94560; }
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .nh-grid { grid-template-columns: repeat(2, 1fr); }
+  .nh-footer-top { grid-template-columns: 1fr 1fr; }
+  .nh-hero-grid { grid-template-columns: 1fr; }
+  .nh-video-grid { grid-template-columns: 1fr; }
+  .nh-featured-row { grid-template-columns: 1fr; }
+  .nh-events-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .nh-search input { width: 140px; }
+  .nh-grid { grid-template-columns: 1fr; }
+  .nh-newsletter-box { flex-direction: column; text-align: center; padding: 24px 16px; }
+  .nh-newsletter-form { flex-direction: column; }
+  .nh-stats { justify-content: center; }
+  .nh-footer-top { grid-template-columns: 1fr; gap: 24px; }
+  .nh-footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  .nh-section-title { font-size: 20px; }
+  .nh-ticker-label { display: none; }
+  .nh-ticker-wrap { padding-left: 16px; }
+  .nh-live { display: none; }
+  .nh-article-title { font-size: 24px; }
+  .nh-article-header img { height: 240px; }
+  .nh-hamburger { display: flex; }
+  .nh-nav { display: none; }
+  .nh-search { display: none; }
+  .nh-btn:not(.nh-btn-icon) { display: none; }
+  .nh-header-inner { padding: 0 16px; }
+  .nh-main { padding: 16px; }
+  .nh-hero-main { min-height: 320px; }
+  .nh-hero-main h2 { font-size: 20px; }
+  .nh-hero-main p { font-size: 13px; }
+  .nh-hero-side { gap: 12px; }
+  .nh-hero-side .nh-card { padding: 12px; }
+  .nh-hero-side img { width: 100px; height: 75px; }
+  .nh-hero-side h3 { font-size: 14px; }
+  .nh-video-main img { height: 200px; }
+  .nh-ad-slot img { width: 100% !important; }
+  .nh-category-hero { padding: 32px 20px; }
+  .nh-category-hero h1 { font-size: 26px; }
+  .nh-events-grid { grid-template-columns: 1fr; }
+  .nh-featured-stack .nh-card { flex-direction: column; }
+  .nh-featured-stack .nh-card img { width: 100%; height: 160px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .nh-ticker { animation: none; }
+  .nh-breaking-track { animation: none; }
+}
+
+button:focus-visible, input:focus-visible, a:focus-visible {
+  outline: 2px solid var(--nh-blue); outline-offset: 2px;
+}
+
+  /* ── Events Filter Bar ─────────────────────────────────────────── */
+.filter-bar-container {
+  background: var(--nh-surface);
+  border: 1px solid var(--nh-border);
+  border-radius: var(--nh-radius-lg);
+  padding: 16px 20px;
+  margin-bottom: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--nh-text-muted);
+  white-space: nowrap;
+}
+
+.filter-pills {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.filter-pill {
+  padding: 7px 16px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--nh-transition);
+  border: 1px solid var(--nh-border);
+  background: var(--nh-surface-raised);
+  color: var(--nh-text-secondary);
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.filter-pill:hover {
+  border-color: var(--nh-blue);
+  color: var(--nh-blue);
+  background: rgba(0,51,204,0.05);
+}
+
+.filter-pill.active {
+  background: var(--nh-blue);
+  color: white;
+  border-color: var(--nh-blue);
+  box-shadow: 0 2px 8px rgba(0,51,204,0.25);
+}
+
+.filter-divider {
+  width: 1px;
+  height: 28px;
+  background: var(--nh-border);
+  margin: 0 4px;
+}
+
+.filter-select-wrap {
+  position: relative;
+}
+
+.filter-select-wrap select {
+  appearance: none;
+  padding: 8px 32px 8px 14px;
+  border: 1px solid var(--nh-border);
+  border-radius: 100px;
+  background: var(--nh-surface-raised);
+  color: var(--nh-text-primary);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: var(--nh-transition);
+  min-width: 140px;
+}
+
+.filter-select-wrap select:focus {
+  border-color: var(--nh-blue);
+  box-shadow: 0 0 0 3px rgba(0,51,204,0.1);
+  outline: none;
+}
+
+.filter-select-wrap::after {
+  content: '';
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid var(--nh-text-muted);
+  pointer-events: none;
+}
+
+.filter-search {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+  max-width: 320px;
+  margin-left: auto;
+}
+
+.filter-search input {
+  width: 100%;
+  padding: 9px 14px 9px 36px;
+  border: 1px solid var(--nh-border);
+  border-radius: 100px;
+  background: var(--nh-surface-raised);
+  color: var(--nh-text-primary);
+  font-size: 13px;
+  outline: none;
+  font-family: inherit;
+  transition: var(--nh-transition);
+}
+
+.filter-search input:focus {
+  border-color: var(--nh-blue);
+  box-shadow: 0 0 0 3px rgba(0,51,204,0.1);
+}
+
+.filter-search input::placeholder {
+  color: var(--nh-text-muted);
+}
+
+.filter-search svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--nh-text-muted);
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+}
+
+.filter-clear {
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--nh-transition);
+  border: 1px solid var(--nh-border);
+  background: transparent;
+  color: var(--nh-text-muted);
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.filter-clear:hover {
+  border-color: #e94560;
+  color: #e94560;
+  background: rgba(233,69,96,0.05);
+}
+
+.filter-results-count {
+  font-size: 12px;
+  color: var(--nh-text-muted);
+  margin-left: 4px;
+  white-space: nowrap;
+}
+
+.filter-results-count strong {
+  color: var(--nh-blue);
+  font-weight: 600;
+}
+
+.nh-event-card.hidden {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .filter-bar-container {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+  .filter-divider { display: none; }
+  .filter-search {
+    max-width: 100%;
+    margin-left: 0;
+    width: 100%;
+    order: -1;
+  }
+  .filter-group { width: 100%; }
+  .filter-pills {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .filter-pills::-webkit-scrollbar { display: none; }
+  .filter-select-wrap select { min-width: 120px; }
+}
+
+/* ── Countdown Badges ──────────────────────────────────────────── */
+.nh-countdown-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  animation: badge-pulse 2s ease-in-out infinite;
+}
+
+@keyframes badge-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+.nh-countdown-badge.urgent {
+  background: rgba(233,69,96,0.12);
+  color: #e94560;
+  border: 1px solid rgba(233,69,96,0.2);
+}
+
+.nh-countdown-badge.soon {
+  background: rgba(244,162,97,0.15);
+  color: #c77733;
+  border: 1px solid rgba(244,162,97,0.25);
+}
+
+.nh-countdown-badge.upcoming {
+  background: rgba(42,157,143,0.12);
+  color: #2a9d8f;
+  border: 1px solid rgba(42,157,143,0.2);
+}
+
+[data-theme="dark"] .nh-countdown-badge.urgent {
+  background: rgba(233,69,96,0.15);
+  color: #ff6b81;
+  border-color: rgba(233,69,96,0.3);
+}
+
+[data-theme="dark"] .nh-countdown-badge.soon {
+  background: rgba(244,162,97,0.12);
+  color: #f4a261;
+  border-color: rgba(244,162,97,0.25);
+}
+
+[data-theme="dark"] .nh-countdown-badge.upcoming {
+  background: rgba(42,157,143,0.15);
+  color: #4ecdc4;
+  border-color: rgba(42,157,143,0.25);
+}
+
+.nh-countdown-badge svg {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+.nh-countdown-badge .days-num {
+  font-weight: 700;
+  font-size: 12px;
+}
+
+/* Event card countdown overlay */
+.nh-event-card .nh-card-countdown {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+}
+
+.nh-event-card {
+  position: relative;
+}
+
+/* Ticket urgency bar on featured event */
+.nh-ticket-urgency {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.nh-ticket-urgency .urgency-bar {
+  flex: 1;
+  height: 5px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 3px;
+  overflow: hidden;
+  max-width: 180px;
+}
+
+.nh-ticket-urgency .urgency-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.6s ease;
+}
+
+.nh-ticket-urgency .urgency-fill.hot {
+  background: linear-gradient(90deg, #e94560, #ff6b81);
+}
+
+.nh-ticket-urgency .urgency-fill.warm {
+  background: linear-gradient(90deg, #f4a261, #e9c46a);
+}
+
+.nh-ticket-urgency .urgency-fill.cool {
+  background: linear-gradient(90deg, #2a9d8f, #4ecdc4);
+}
+
+.nh-ticket-urgency .urgency-text {
+  font-size: 11px;
+  color: rgba(255,255,255,0.6);
+  white-space: nowrap;
+}
+
+</style>
+</head>
+<body>
+
+<!-- Mobile Overlay -->
+<div class="nh-mobile-overlay" id="mobileOverlay" onclick="closeMobileNav()"></div>
+
+<!-- Mobile Navigation Drawer -->
+<div class="nh-mobile-nav" id="mobileNav">
+  <div class="nh-mobile-nav-header">
+    <a href="index.html" class="nh-brand" style="text-decoration:none">
+      <div class="nh-brand-icon" aria-hidden="true">N</div>
+      <div>
+        <div class="nh-brand-text">newshub <span>AFRICA</span></div>
+      </div>
+    </a>
+    <button class="nh-mobile-nav-close" onclick="closeMobileNav()" aria-label="Close menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <div class="nh-mobile-section-title">Sections</div>
+  <ul class="nh-mobile-nav-list">
+    <li><a href="index.html">Home <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="business.html">Business <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="technology.html">Technology <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="agriculture.html">Agriculture <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="mining.html">Mining <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="energy.html">Energy <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="markets.html">Markets <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="events.html">Events <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+  </ul>
+
+  <div class="nh-mobile-section-title">Account</div>
+  <ul class="nh-mobile-nav-list">
+    <li><a href="submit-event.html">Submit an Event <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="#" onclick="alert('Subscribe feature coming soon!'); closeMobileNav(); return false;">Subscribe <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="#" onclick="toggleTheme(); closeMobileNav(); return false;">Toggle Dark Mode <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+  </ul>
+
+  <div class="nh-mobile-section-title">Company</div>
+  <ul class="nh-mobile-nav-list">
+    <li><a href="#">About Us <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="#">Careers <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="#">Advertise <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="#">Contact <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+  </ul>
+</div>
+
+<header class="nh-header" role="banner">
+  <div class="nh-header-inner">
+    <div class="nh-header-top">
+      <a href="index.html" class="nh-brand">
+        <div class="nh-brand-icon" aria-hidden="true">N</div>
+        <div>
+          <div class="nh-brand-text">newshub <span>AFRICA</span></div>
+          <div class="nh-brand-tagline">The pulse of the continent</div>
+        </div>
+      </a>
+      <div class="nh-actions">
+        <div class="nh-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" placeholder="Search news..." aria-label="Search news">
+        </div>
+        <button class="nh-btn nh-btn-icon" onclick="toggleTheme()" aria-label="Toggle dark mode" style="padding:9px 12px;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center">
+          <svg id="nh-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          <svg id="nh-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        </button>
+        <button class="nh-btn" onclick="alert('Thank you for subscribing to NewsHub Africa!')">Subscribe</button>
+        <button class="nh-hamburger" id="hamburgerBtn" onclick="toggleMobileNav()" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <nav class="nh-nav" role="navigation" aria-label="Main navigation">
+      <a href="index.html" class="nh-nav-item ">Home</a>
+      <a href="business.html" class="nh-nav-item ">Business</a>
+      <a href="technology.html" class="nh-nav-item ">Technology</a>
+      <a href="agriculture.html" class="nh-nav-item ">Agriculture</a>
+      <a href="mining.html" class="nh-nav-item ">Mining</a>
+      <a href="energy.html" class="nh-nav-item ">Energy</a>
+      <a href="markets.html" class="nh-nav-item ">Markets</a>
+      <a href="events.html" class="nh-nav-item active">Events</a>
+      <div class="nh-live" role="status" aria-live="polite"><span class="dot"></span><span>Live Updates</span></div>
+</nav>
+  </div>
+</header>
+
+<main class="nh-main">
+<!-- EVENTS FILTER BAR -->
+<div class="filter-bar-container" id="eventsFilterBar">
+  <div class="filter-group">
+    <span class="filter-label">Sector</span>
+    <div class="filter-pills" id="sectorPills">
+      <button class="filter-pill active" data-filter="all" data-group="sector">All</button>
+      <button class="filter-pill" data-filter="tech" data-group="sector">Tech</button>
+      <button class="filter-pill" data-filter="mining" data-group="sector">Mining</button>
+      <button class="filter-pill" data-filter="agriculture" data-group="sector">Agriculture</button>
+      <button class="filter-pill" data-filter="energy" data-group="sector">Energy</button>
+      <button class="filter-pill" data-filter="finance" data-group="sector">Finance</button>
+    </div>
+  </div>
+
+  <div class="filter-divider"></div>
+
+  <div class="filter-group">
+    <span class="filter-label">When</span>
+    <div class="filter-pills" id="timePills">
+      <button class="filter-pill active" data-filter="all" data-group="time">All</button>
+      <button class="filter-pill" data-filter="this-month" data-group="time">This Month</button>
+      <button class="filter-pill" data-filter="next-3" data-group="time">Next 3 Months</button>
+      <button class="filter-pill" data-filter="2027" data-group="time">2027</button>
+    </div>
+  </div>
+
+  <div class="filter-divider"></div>
+
+  <div class="filter-group">
+    <span class="filter-label">Region</span>
+    <div class="filter-select-wrap">
+      <select id="regionSelect">
+        <option value="all">All Regions</option>
+        <option value="east-africa">East Africa</option>
+        <option value="west-africa">West Africa</option>
+        <option value="southern-africa">Southern Africa</option>
+        <option value="north-africa">North Africa</option>
+        <option value="central-africa">Central Africa</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="filter-search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <input type="text" id="eventSearch" placeholder="Search events, cities, topics..." aria-label="Search events">
+  </div>
+
+  <button class="filter-clear" id="clearFilters" style="display:none">Clear All</button>
+
+  <span class="filter-results-count" id="resultsCount"><strong>29</strong> events found</span>
+</div>
+
+
+<div class="nh-ad-slot" style="background:var(--nh-surface-raised);border:1px dashed var(--nh-border);border-radius:var(--nh-radius-md);padding:8px 16px;margin-bottom:20px;text-align:center;position:relative;overflow:hidden">
+  <span class="nh-ad-label">Advertisement</span>
+  <a href="https://africanmediaagency.com" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none">
+    <img src="https://kimi-web-img.moonshot.cn/img/africanmediaagency.com/04912b6be587182aec4daa2dca4619d5a608e9a1.png" 
+         alt="Africa Money & DeFi Summit West Africa" 
+         style="width:100%;max-width:970px;height:auto;min-height:90px;object-fit:cover;border-radius:6px;display:block;margin:0 auto">
+  </a>
+</div>
+<!-- FEATURED EVENT HERO -->
+<div class="nh-card" style="margin-bottom:36px;position:relative;overflow:hidden;display:grid;grid-template-columns:1.4fr 1fr;min-height:420px">
+  <!-- Background Image -->
+  <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&h=700&fit=crop" alt="Africa Tech Summit Nairobi" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0">
+  <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0.88) 0%,rgba(0,0,0,0.6) 60%,rgba(0,0,0,0.3) 100%);z-index:1"></div>
+
+  <!-- Left: Event Info -->
+  <div style="position:relative;z-index:2;padding:40px 36px;display:flex;flex-direction:column;justify-content:center">
+    <div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:16px">
+      <span style="width:8px;height:8px;border-radius:50%;background:#e94560;animation:blink 1.5s infinite"></span>
+      <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#e94560">Featured Event</span>
+    </div>
+    <h1 style="font-size:36px;font-weight:500;color:white;line-height:1.2;margin-bottom:12px">Africa Tech Summit Nairobi 2026</h1>
+    <p style="font-size:15px;color:rgba(255,255,255,0.75);line-height:1.6;margin-bottom:24px;max-width:480px">East Africa's premier technology conference bringing together 2,000+ founders, investors, and policymakers for three days of deal-making and knowledge exchange.</p>
+
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px">
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,0.7)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        August 15–17, 2026
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,0.7)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Nairobi, Kenya — KICC & Radisson Blu
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,0.7)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        2,000+ Attendees · 120+ Speakers · 40+ Countries
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <a href="#register" style="padding:12px 28px;background:var(--nh-blue);color:white;border-radius:100px;font-weight:500;font-size:14px;text-decoration:none;transition:all 0.3s ease" onmouseover="this.style.background='#002080'" onmouseout="this.style.background='var(--nh-blue)'">Register Now</a>
+      <a href="#agenda" style="padding:12px 28px;background:rgba(255,255,255,0.12);color:white;border-radius:100px;font-weight:500;font-size:14px;text-decoration:none;transition:all 0.3s ease;border:1px solid rgba(255,255,255,0.2)" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.12)'">View Agenda</a>
+    </div>
+  </div>
+
+  <!-- Right: Countdown + Quick Stats -->
+  <div style="position:relative;z-index:2;padding:40px 36px;display:flex;flex-direction:column;justify-content:center;align-items:flex-end">
+    <div style="background:rgba(0,0,0,0.4);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.1);border-radius:var(--nh-radius-lg);padding:28px;width:100%;max-width:280px">
+      <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.5);margin-bottom:16px;text-align:center">Starting In</div>
+      <div class="nh-hero-countdown" data-target="2026-08-15T09:00:00">
+        <div class="cd-unit"><div class="cd-num" data-unit="days">--</div><div class="cd-label">Days</div></div>
+        <div class="cd-unit"><div class="cd-num" data-unit="hours">--</div><div class="cd-label">Hrs</div></div>
+        <div class="cd-unit"><div class="cd-num" data-unit="minutes">--</div><div class="cd-label">Min</div></div>
+        <div class="cd-unit"><div class="cd-num" data-unit="seconds">--</div><div class="cd-label">Sec</div></div>
+      </div>
+    </div>
+
+    <div style="background:rgba(0,0,0,0.4);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.1);border-radius:var(--nh-radius-lg);padding:20px 28px;width:100%;max-width:280px;margin-top:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <span style="font-size:12px;color:rgba(255,255,255,0.6)">Early Bird Tickets</span>
+        <span style="font-size:12px;font-weight:600;color:#4ecdc4">73% Sold</span>
+      </div>
+      <div style="width:100%;height:4px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden">
+        <div style="width:73%;height:100%;background:linear-gradient(90deg,#4ecdc4,#2a9d8f);border-radius:2px"></div>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:8px">Only 142 tickets remaining at $450</div>
+    </div>
+  </div>
+</div>
+
+<div class="nh-section-header">
+  <h2 class="nh-section-title">Upcoming Events</h2>
+  <a href="submit-event.html" class="nh-view-all">Submit Event &rarr;</a>
+</div>
+
+<div class="nh-events-grid">
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge urgent" data-target="2026-08-15">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&h=400&fit=crop" alt="Africa Tech Summit">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Aug 15-17, 2026
+      </div>
+      <h3>Africa Tech Summit Nairobi 2026</h3>
+      <p>East Africa's premier technology conference bringing together 2,000+ founders, investors, and policymakers.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Nairobi, Kenya
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge soon" data-target="2026-09-08">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=600&h=400&fit=crop" alt="Mining Indaba">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Sep 8-11, 2026
+      </div>
+      <h3>Mining Indaba 2026</h3>
+      <p>Africa's largest mining investment conference connecting miners, governments, and investors from across the globe.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Cape Town, South Africa
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2026-10-20">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=600&h=400&fit=crop" alt="AfDB Annual Meetings">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Oct 20-24, 2026
+      </div>
+      <h3>AfDB Annual Meetings 2026</h3>
+      <p>The African Development Bank's flagship gathering focusing on infrastructure financing and climate resilience.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Abidjan, Ivory Coast
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2026-11-05">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=600&h=400&fit=crop" alt="Agric Summit">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Nov 5-7, 2026
+      </div>
+      <h3>Africa Agri-Investment Summit</h3>
+      <p>Connecting agribusiness investors with scalable farming ventures across the continent's food value chains.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Accra, Ghana
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2026-12-01">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=600&h=400&fit=crop" alt="Energy Forum">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Dec 1-3, 2026
+      </div>
+      <h3>Africa Energy Forum 2026</h3>
+      <p>The continent's leading energy conference covering power generation, renewables, and the just energy transition.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Marrakech, Morocco
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2027-01-18">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=600&h=400&fit=crop" alt="Fintech Summit">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Jan 18-20, 2027
+      </div>
+      <h3>Africa Fintech Summit Lagos</h3>
+      <p>West Africa's definitive fintech gathering exploring digital payments, blockchain, and financial inclusion.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Lagos, Nigeria
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge soon" data-target="2026-09-25">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=600&h=400&fit=crop" alt="ZimTrade Expo">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Sep 25-27, 2026
+      </div>
+      <h3>ZimTrade International Expo 2026</h3>
+      <p>Zimbabwe's flagship trade exhibition showcasing manufacturing, agriculture, and mining opportunities to global buyers and investors.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Harare, Zimbabwe
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2026-10-12">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1569025743873-ea3a9f125c38?w=600&h=400&fit=crop" alt="ZITF">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Oct 12-16, 2026
+      </div>
+      <h3>Zimbabwe International Trade Fair</h3>
+      <p>Southern Africa's longest-running trade fair connecting Zimbabwean exporters with regional and international markets.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Bulawayo, Zimbabwe
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2026-11-18">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600&h=400&fit=crop" alt="Transform Africa Summit">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Nov 18-20, 2026
+      </div>
+      <h3>Transform Africa Summit 2026</h3>
+      <p>The Smart Africa Alliance's premier gathering on digital transformation, e-government, and ICT infrastructure investment.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Kigali, Rwanda
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2026-12-08">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1531058020387-3be344556be6?w=600&h=400&fit=crop" alt="Africa Investment Forum">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Dec 8-10, 2026
+      </div>
+      <h3>Africa Investment Forum 2026</h3>
+      <p>AfDB's deal-making platform bringing together project sponsors, investors, and financiers to close transformative deals.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Casablanca, Morocco
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2027-02-10">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=600&h=400&fit=crop" alt="Africa CEO Forum">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Feb 10-11, 2027
+      </div>
+      <h3>Africa CEO Forum 2027</h3>
+      <p>The continent's largest CEO gathering focused on private sector leadership, intra-African trade, and AfCFTA implementation.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Abidjan, Ivory Coast
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2027-03-15">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=600&h=400&fit=crop" alt="African Union Summit">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Mar 15-19, 2027
+      </div>
+      <h3>African Union Summit 2027</h3>
+      <p>The 40th Ordinary Session of the AU Assembly of Heads of State, setting the continental policy agenda for the year ahead.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Addis Ababa, Ethiopia
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2027-04-22">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&h=400&fit=crop" alt="AfricaCom">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Apr 22-24, 2027
+      </div>
+      <h3>AfricaTech Festival / AfricaCom 2027</h3>
+      <p>Africa's largest tech and telecoms event covering connectivity, cloud, fintech, AI, and digital infrastructure.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Cape Town, South Africa
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2027-05-05">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&h=400&fit=crop" alt="Zimbabwe Mining Conference">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        May 5-7, 2027
+      </div>
+      <h3>Zimbabwe Mining & Minerals Conference</h3>
+      <p>Exploring Zimbabwe's lithium, platinum, and gold potential with global miners, government officials, and investors.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Victoria Falls, Zimbabwe
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2027-06-20">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=600&h=400&fit=crop" alt="African Green Revolution Forum">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Jun 20-23, 2027
+      </div>
+      <h3>African Green Revolution Forum 2027</h3>
+      <p>The continent's premier agriculture platform convening smallholder farmers, agribusiness, and policymakers for food security.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Nairobi, Kenya
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2027-07-15">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&h=400&fit=crop" alt="Africa Internet Summit">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Jul 15-18, 2027
+      </div>
+      <h3>Africa Internet Governance Forum 2027</h3>
+      <p>Multi-stakeholder dialogue on digital rights, cybersecurity, and internet governance policy across the continent.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Dakar, Senegal
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2027-08-20">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1544531586-fde5298cdd40?w=600&h=400&fit=crop" alt="Zim Tourism Expo">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Aug 20-23, 2027
+      </div>
+      <h3>Zimbabwe Tourism & Hospitality Expo</h3>
+      <p>Showcasing Victoria Falls, Great Zimbabwe, and safari experiences to international tour operators and investors.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Victoria Falls, Zimbabwe
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2027-09-10">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=600&h=400&fit=crop" alt="SME Summit">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Sep 10-12, 2027
+      </div>
+      <h3>Africa SME Summit 2027</h3>
+      <p>Empowering small and medium enterprises with access to finance, markets, and digital tools for continental growth.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Lagos, Nigeria
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2027-10-05">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop" alt="Powering Africa">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Oct 5-7, 2027
+      </div>
+      <h3>Powering Africa Summit 2027</h3>
+      <p>Connecting IPPs, utilities, and development finance for grid expansion, mini-grids, and renewable energy projects.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Kigali, Rwanda
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2027-11-15">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop" alt="Africa Data Centres">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Nov 15-17, 2027
+      </div>
+      <h3>Africa Data Centres & Cloud Summit</h3>
+      <p>Exploring hyperscale infrastructure, edge computing, and sovereign cloud strategies for Africa's digital economy.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Johannesburg, South Africa
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2027-12-01">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600&h=400&fit=crop" alt="Zim Business Forum">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Dec 1-3, 2027
+      </div>
+      <h3>Zimbabwe Business & Investment Forum</h3>
+      <p>Annual platform for diaspora investors, local entrepreneurs, and government to unlock Zimbabwe's economic potential.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Harare, Zimbabwe
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge soon" data-target="2026-10-05">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&h=400&fit=crop" alt="DRC Mining Week">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Oct 5-7, 2026
+      </div>
+      <h3>DRC Mining Week 2026</h3>
+      <p>The definitive gathering for DRC's copper and cobalt belt, connecting miners with investors amid global energy transition demand.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Lubumbashi, DRC
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2026-11-22">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=400&fit=crop" alt="Botswana Diamond Conference">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Nov 22-24, 2026
+      </div>
+      <h3>Botswana Diamond & Resources Summit</h3>
+      <p>Exploring the future of diamond beneficiation, Debswana partnerships, and Botswana's diversification into tech and tourism.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Gaborone, Botswana
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2026-12-15">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=600&h=400&fit=crop" alt="Mozambique Gas Summit">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Dec 15-17, 2026
+      </div>
+      <h3>Mozambique Gas & LNG Summit 2026</h3>
+      <p>Unlocking the Rovuma Basin's LNG potential with TotalEnergies, ENI, and regional stakeholders for Southern African energy security.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Maputo, Mozambique
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2027-01-25">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop" alt="Namibia Economic Summit">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Jan 25-27, 2027
+      </div>
+      <h3>Namibia Economic & Green Hydrogen Summit</h3>
+      <p>Positioning Namibia as Africa's green hydrogen hub with world-class wind and solar resources for export to Europe and Asia.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Windhoek, Namibia
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2027-02-28">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&h=400&fit=crop" alt="Tanzania Agri-Business">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Feb 28 – Mar 2, 2027
+      </div>
+      <h3>Tanzania Agri-Business & Food Security Forum</h3>
+      <p>Scaling Tanzania's agricultural potential from the Southern Highlands to the coast, with focus on cashew, coffee, and rice value chains.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Dar es Salaam, Tanzania
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2027-03-30">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&h=400&fit=crop" alt="Mauritius Fintech">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Mar 30 – Apr 1, 2027
+      </div>
+      <h3>Mauritius Fintech & Digital Innovation Week</h3>
+      <p>Leveraging Mauritius as Africa's financial gateway for blockchain, wealth management, and cross-border payment solutions.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Port Louis, Mauritius
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2027-05-18">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1593113598332-cd288d649433?w=600&h=400&fit=crop" alt="Uganda Business Forum">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        May 18-20, 2027
+      </div>
+      <h3>Uganda Business & Investment Forum 2027</h3>
+      <p>East Africa's fastest-growing economy opens its doors to investors in oil & gas, agriculture, manufacturing, and ICT infrastructure.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Kampala, Uganda
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2027-06-28">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&h=400&fit=crop" alt="Angola Oil & Gas">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Jun 28-30, 2027
+      </div>
+      <h3>Angola Oil & Gas Conference 2027</h3>
+      <p>Exploring Angola's post-OPEC diversification, pre-salt blocks, and the Lobito Corridor's role in regional energy logistics.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Luanda, Angola
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="nh-ad-slot" style="background:var(--nh-surface-raised);border:1px dashed var(--nh-border);border-radius:var(--nh-radius-md);padding:8px 16px;margin-bottom:36px;text-align:center;position:relative">
+  <span class="nh-ad-label">Advertisement</span>
+  <a href="https://www.globalafricanetwork.com" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none">
+    <img src="https://kimi-web-img.moonshot.cn/img/www.globalafricanetwork.com/193ed8efeffe6900234c8e904d61e19282a62cd6.jpg" 
+         alt="Digital Finance Africa 2023" 
+         style="width:100%;max-width:336px;height:auto;min-height:280px;object-fit:cover;border-radius:6px;display:block;margin:0 auto">
+  </a>
+</div>
+</main>
+
+<div class="nh-ticker-wrap" role="complementary" aria-label="Live market ticker">
+  <div class="nh-ticker-label">Markets</div>
+  <div class="nh-ticker">
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">JSE All Share</span><span class="nh-ticker-price">110,027</span><span class="nh-ticker-change up">+0.49%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">NGX All Share</span><span class="nh-ticker-price">205,831</span><span class="nh-ticker-change up">+0.67%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">EGX 30</span><span class="nh-ticker-price">52,312</span><span class="nh-ticker-change up">+0.54%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">NSE 25</span><span class="nh-ticker-price">5,733</span><span class="nh-ticker-change up">+0.32%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">GSE Composite</span><span class="nh-ticker-price">13,270</span><span class="nh-ticker-change up">+0.87%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">BRVM Composite</span><span class="nh-ticker-price">402.18</span><span class="nh-ticker-change down">-0.46%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">LuSE All Share</span><span class="nh-ticker-price">26,943</span><span class="nh-ticker-change down">-0.41%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">ZSE All Share</span><span class="nh-ticker-price">362.68</span><span class="nh-ticker-change down">-0.06%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">JSE All Share</span><span class="nh-ticker-price">110,027</span><span class="nh-ticker-change up">+0.49%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">NGX All Share</span><span class="nh-ticker-price">205,831</span><span class="nh-ticker-change up">+0.67%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">EGX 30</span><span class="nh-ticker-price">52,312</span><span class="nh-ticker-change up">+0.54%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">NSE 25</span><span class="nh-ticker-price">5,733</span><span class="nh-ticker-change up">+0.32%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">GSE Composite</span><span class="nh-ticker-price">13,270</span><span class="nh-ticker-change up">+0.87%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">BRVM Composite</span><span class="nh-ticker-price">402.18</span><span class="nh-ticker-change down">-0.46%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">LuSE All Share</span><span class="nh-ticker-price">26,943</span><span class="nh-ticker-change down">-0.41%</span></div>
+    <div class="nh-ticker-item"><span class="nh-ticker-symbol">ZSE All Share</span><span class="nh-ticker-price">362.68</span><span class="nh-ticker-change down">-0.06%</span></div>
+  </div>
+</div>
+
+<div class="nh-newsletter">
+  <div class="nh-newsletter-box">
+    <div class="nh-newsletter-content">
+      <h2>Stay Ahead of African Markets</h2>
+      <p>Get curated business intelligence, market data, and breaking news delivered to your inbox every morning.</p>
+      <form class="nh-newsletter-form" onsubmit="event.preventDefault(); alert('Thank you for subscribing to NewsHub Africa!');">
+        <input type="email" placeholder="Enter your email" required aria-label="Email address">
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+    <div class="nh-stats">
+      <div class="nh-stat"><div class="nh-stat-num">250K+</div><div class="nh-stat-label">Subscribers</div></div>
+      <div class="nh-stat"><div class="nh-stat-num">54</div><div class="nh-stat-label">Countries</div></div>
+      <div class="nh-stat"><div class="nh-stat-num">Daily</div><div class="nh-stat-label">Updates</div></div>
+    </div>
+  </div>
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge soon" data-target="2026-10-05">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&h=400&fit=crop" alt="DRC Mining Week">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Oct 5-7, 2026
+      </div>
+      <h3>DRC Mining Week 2026</h3>
+      <p>The definitive gathering for DRC's copper and cobalt belt, connecting miners with investors amid global energy transition demand.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Lubumbashi, DRC
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2026-11-22">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=400&fit=crop" alt="Botswana Diamond Conference">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Nov 22-24, 2026
+      </div>
+      <h3>Botswana Diamond & Resources Summit</h3>
+      <p>Exploring the future of diamond beneficiation, Debswana partnerships, and Botswana's diversification into tech and tourism.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Gaborone, Botswana
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2026-12-15">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=600&h=400&fit=crop" alt="Mozambique Gas Summit">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Dec 15-17, 2026
+      </div>
+      <h3>Mozambique Gas & LNG Summit 2026</h3>
+      <p>Unlocking the Rovuma Basin's LNG potential with TotalEnergies, ENI, and regional stakeholders for Southern African energy security.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Maputo, Mozambique
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2027-01-25">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop" alt="Namibia Economic Summit">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Jan 25-27, 2027
+      </div>
+      <h3>Namibia Economic & Green Hydrogen Summit</h3>
+      <p>Positioning Namibia as Africa's green hydrogen hub with world-class wind and solar resources for export to Europe and Asia.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Windhoek, Namibia
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2027-02-28">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&h=400&fit=crop" alt="Tanzania Agri-Business">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Feb 28 – Mar 2, 2027
+      </div>
+      <h3>Tanzania Agri-Business & Food Security Forum</h3>
+      <p>Scaling Tanzania's agricultural potential from the Southern Highlands to the coast, with focus on cashew, coffee, and rice value chains.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Dar es Salaam, Tanzania
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2027-03-30">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&h=400&fit=crop" alt="Mauritius Fintech">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Mar 30 – Apr 1, 2027
+      </div>
+      <h3>Mauritius Fintech & Digital Innovation Week</h3>
+      <p>Leveraging Mauritius as Africa's financial gateway for blockchain, wealth management, and cross-border payment solutions.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Port Louis, Mauritius
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2027-05-18">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1593113598332-cd288d649433?w=600&h=400&fit=crop" alt="Uganda Business Forum">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        May 18-20, 2027
+      </div>
+      <h3>Uganda Business & Investment Forum 2027</h3>
+      <p>East Africa's fastest-growing economy opens its doors to investors in oil & gas, agriculture, manufacturing, and ICT infrastructure.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Kampala, Uganda
+      </div>
+    </div>
+  </div>
+
+  <div class="nh-event-card">
+    <div class="nh-card-countdown">
+      <span class="nh-countdown-badge upcoming" data-target="2027-06-28">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="days-num">--</span> days left
+      </span>
+    </div>
+    <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&h=400&fit=crop" alt="Angola Oil & Gas">
+    <div class="nh-event-card-body">
+      <div class="nh-event-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Jun 28-30, 2027
+      </div>
+      <h3>Angola Oil & Gas Conference 2027</h3>
+      <p>Exploring Angola's post-OPEC diversification, pre-salt blocks, and the Lobito Corridor's role in regional energy logistics.</p>
+      <div class="nh-event-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+        Luanda, Angola
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="nh-ad-slot" style="background:var(--nh-surface-raised);border:1px dashed var(--nh-border);border-radius:var(--nh-radius-md);padding:8px 16px;margin-bottom:36px;text-align:center;position:relative;overflow:hidden">
+  <span class="nh-ad-label">Advertisement</span>
+  <a href="https://mgtix.africa" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none">
+    <img src="https://kimi-web-img.moonshot.cn/img/mgtix.africa/5220896a7b6e63fa56c581cab34917eb59925ca2" 
+         alt="Beyond Mobile Money: Fintech's Next Frontier" 
+         style="width:100%;max-width:970px;height:auto;min-height:90px;object-fit:cover;border-radius:6px;display:block;margin:0 auto">
+  </a>
+</div>
+
+<footer class="nh-footer">
+  <div class="nh-footer-inner">
+    <div class="nh-footer-top">
+      <div class="nh-footer-brand">
+        <div class="nh-brand-text">newshub <span>AFRICA</span></div>
+        <p>Your trusted source for comprehensive business, technology, agriculture, mining, and energy news across the African continent.</p>
+        <div class="nh-social">
+          <a href="#" aria-label="Twitter">𝕏</a>
+          <a href="#" aria-label="LinkedIn">in</a>
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="Instagram">📷</a>
+        </div>
+      </div>
+      <div class="nh-footer-col"><h4>Sections</h4><ul><li><a href="business.html">Business</a></li><li><a href="technology.html">Technology</a></li><li><a href="agriculture.html">Agriculture</a></li><li><a href="mining.html">Mining</a></li><li><a href="energy.html">Energy</a></li></ul></div>
+      <div class="nh-footer-col"><h4>Company</h4><ul><li><a href="#">About Us</a></li><li><a href="#">Careers</a></li><li><a href="#">Advertise</a></li><li><a href="#">Contact</a></li></ul></div>
+      <div class="nh-footer-col"><h4>Resources</h4><ul><li><a href="#">Market Data</a></li><li><a href="#">Newsletters</a></li><li><a href="#">Podcasts</a></li><li><a href="#">Events</a></li></ul></div>
+      <div class="nh-footer-col"><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li><li><a href="#">Cookie Policy</a></li></ul></div>
+    </div>
+    <div class="nh-footer-bottom">
+      <span>&copy; 2026 NewsHub Africa. All rights reserved.</span>
+      <div style="display:flex;gap:16px"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Cookies</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+
+function toggleTheme() {
+  const html = document.documentElement;
+  const moon = document.getElementById('nh-moon');
+  const sun = document.getElementById('nh-sun');
+  if (html.getAttribute('data-theme') === 'dark') {
+    html.removeAttribute('data-theme');
+    if (moon) moon.style.display = 'block';
+    if (sun) sun.style.display = 'none';
+  } else {
+    html.setAttribute('data-theme', 'dark');
+    if (moon) moon.style.display = 'none';
+    if (sun) sun.style.display = 'block';
+  }
+}
+
+function toggleMobileNav() {
+  const nav = document.getElementById('mobileNav');
+  const overlay = document.getElementById('mobileOverlay');
+  const btn = document.getElementById('hamburgerBtn');
+  const isOpen = nav.classList.contains('open');
+
+  if (isOpen) {
+    closeMobileNav();
+  } else {
+    nav.style.display = 'block';
+    overlay.style.display = 'block';
+    void nav.offsetWidth;
+    void overlay.offsetWidth;
+    nav.classList.add('open');
+    overlay.classList.add('open');
+    btn.classList.add('active');
+    btn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeMobileNav() {
+  const nav = document.getElementById('mobileNav');
+  const overlay = document.getElementById('mobileOverlay');
+  const btn = document.getElementById('hamburgerBtn');
+
+  nav.classList.remove('open');
+  overlay.classList.remove('open');
+  btn.classList.remove('active');
+  btn.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+
+  setTimeout(() => {
+    if (!nav.classList.contains('open')) {
+      nav.style.display = 'none';
+      overlay.style.display = 'none';
+    }
+  }, 300);
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeMobileNav();
+});
+
+
+
+
+// ── Events Filter Bar Logic ─────────────────────────────────────
+(function() {
+  const eventsData = [
+    { id: 1, title: 'Africa Tech Summit Nairobi 2026', sector: 'tech', region: 'east-africa', date: '2026-08-15', city: 'Nairobi', keywords: 'technology startup innovation' },
+    { id: 2, title: 'Mining Indaba 2026', sector: 'mining', region: 'southern-africa', date: '2026-09-08', city: 'Cape Town', keywords: 'mining investment resources' },
+    { id: 3, title: 'AfDB Annual Meetings 2026', sector: 'finance', region: 'west-africa', date: '2026-10-20', city: 'Abidjan', keywords: 'development bank infrastructure' },
+    { id: 4, title: 'Africa Agri-Investment Summit', sector: 'agriculture', region: 'west-africa', date: '2026-11-05', city: 'Accra', keywords: 'farming agribusiness food' },
+    { id: 5, title: 'Africa Energy Forum 2026', sector: 'energy', region: 'north-africa', date: '2026-12-01', city: 'Marrakech', keywords: 'power renewables transition' },
+    { id: 6, title: 'Africa Fintech Summit Lagos', sector: 'finance', region: 'west-africa', date: '2027-01-18', city: 'Lagos', keywords: 'fintech payments blockchain' },
+    { id: 7, title: 'ZimTrade International Expo 2026', sector: 'business', region: 'southern-africa', date: '2026-09-25', city: 'Harare', keywords: 'trade export manufacturing' },
+    { id: 8, title: 'Zimbabwe International Trade Fair', sector: 'business', region: 'southern-africa', date: '2026-10-12', city: 'Bulawayo', keywords: 'trade fair exhibition' },
+    { id: 9, title: 'Transform Africa Summit 2026', sector: 'tech', region: 'east-africa', date: '2026-11-18', city: 'Kigali', keywords: 'digital transformation ict' },
+    { id: 10, title: 'Africa Investment Forum 2026', sector: 'finance', region: 'north-africa', date: '2026-12-08', city: 'Casablanca', keywords: 'investment deals financing' },
+    { id: 11, title: 'Africa CEO Forum 2027', sector: 'business', region: 'west-africa', date: '2027-02-10', city: 'Abidjan', keywords: 'ceo leadership afcfta' },
+    { id: 12, title: 'African Union Summit 2027', sector: 'business', region: 'east-africa', date: '2027-03-15', city: 'Addis Ababa', keywords: 'policy governance diplomacy' },
+    { id: 13, title: 'AfricaTech Festival AfricaCom 2027', sector: 'tech', region: 'southern-africa', date: '2027-04-22', city: 'Cape Town', keywords: 'telecoms connectivity cloud' },
+    { id: 14, title: 'Zimbabwe Mining Minerals Conference', sector: 'mining', region: 'southern-africa', date: '2027-05-05', city: 'Victoria Falls', keywords: 'lithium platinum gold' },
+    { id: 15, title: 'African Green Revolution Forum 2027', sector: 'agriculture', region: 'east-africa', date: '2027-06-20', city: 'Nairobi', keywords: 'food security smallholder' },
+    { id: 16, title: 'Africa Internet Governance Forum 2027', sector: 'tech', region: 'west-africa', date: '2027-07-15', city: 'Dakar', keywords: 'digital rights cybersecurity' },
+    { id: 17, title: 'Zimbabwe Tourism Hospitality Expo', sector: 'business', region: 'southern-africa', date: '2027-08-20', city: 'Victoria Falls', keywords: 'tourism safari hospitality' },
+    { id: 18, title: 'Africa SME Summit 2027', sector: 'business', region: 'west-africa', date: '2027-09-10', city: 'Lagos', keywords: 'sme entrepreneurship finance' },
+    { id: 19, title: 'Powering Africa Summit 2027', sector: 'energy', region: 'east-africa', date: '2027-10-05', city: 'Kigali', keywords: 'power grid renewable' },
+    { id: 20, title: 'Africa Data Centres Cloud Summit', sector: 'tech', region: 'southern-africa', date: '2027-11-15', city: 'Johannesburg', keywords: 'data centres cloud edge' },
+    { id: 21, title: 'Zimbabwe Business Investment Forum', sector: 'business', region: 'southern-africa', date: '2027-12-01', city: 'Harare', keywords: 'investment diaspora economy' },
+    { id: 22, title: 'DRC Mining Week 2026', sector: 'mining', region: 'central-africa', date: '2026-10-05', city: 'Lubumbashi', keywords: 'copper cobalt energy transition' },
+    { id: 23, title: 'Botswana Diamond Resources Summit', sector: 'mining', region: 'southern-africa', date: '2026-11-22', city: 'Gaborone', keywords: 'diamond beneficiation diversification' },
+    { id: 24, title: 'Mozambique Gas LNG Summit 2026', sector: 'energy', region: 'southern-africa', date: '2026-12-15', city: 'Maputo', keywords: 'lng rovuma basin energy' },
+    { id: 25, title: 'Namibia Economic Green Hydrogen Summit', sector: 'energy', region: 'southern-africa', date: '2027-01-25', city: 'Windhoek', keywords: 'green hydrogen renewable export' },
+    { id: 26, title: 'Tanzania Agri-Business Food Security Forum', sector: 'agriculture', region: 'east-africa', date: '2027-02-28', city: 'Dar es Salaam', keywords: 'agriculture cashew coffee rice' },
+    { id: 27, title: 'Mauritius Fintech Digital Innovation Week', sector: 'finance', region: 'east-africa', date: '2027-03-30', city: 'Port Louis', keywords: 'fintech blockchain wealth management' },
+    { id: 28, title: 'Uganda Business Investment Forum 2027', sector: 'business', region: 'east-africa', date: '2027-05-18', city: 'Kampala', keywords: 'oil gas agriculture ict' },
+    { id: 29, title: 'Angola Oil Gas Conference 2027', sector: 'energy', region: 'central-africa', date: '2027-06-28', city: 'Luanda', keywords: 'oil gas presalt lobito corridor' }
+  ];
+
+  let activeFilters = { sector: 'all', time: 'all', region: 'all', search: '' };
+
+  function getEventId(card) {
+    const h3 = card.querySelector('h3');
+    if (!h3) return null;
+    const title = h3.textContent.trim();
+    return eventsData.findIndex(e => title.includes(e.title.split(' ').slice(0, 3).join(' '))) + 1;
+  }
+
+  function matchesTime(dateStr, filter) {
+    const now = new Date('2026-07-24');
+    const d = new Date(dateStr);
+    const days = Math.ceil((d - now) / 86400000);
+    switch(filter) {
+      case 'this-month': return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+      case 'next-3': return days >= 0 && days <= 90;
+      case '2027': return d.getFullYear() === 2027;
+      default: return true;
+    }
+  }
+
+  function applyFilters() {
+    const cards = document.querySelectorAll('.nh-events-grid .nh-event-card');
+    let visible = 0;
+    cards.forEach(card => {
+      const id = getEventId(card);
+      const e = eventsData.find(ev => ev.id === id);
+      if (!e) return;
+      let show = true;
+      if (activeFilters.sector !== 'all' && e.sector !== activeFilters.sector) show = false;
+      if (activeFilters.time !== 'all' && !matchesTime(e.date, activeFilters.time)) show = false;
+      if (activeFilters.region !== 'all' && e.region !== activeFilters.region) show = false;
+      if (activeFilters.search) {
+        const q = activeFilters.search.toLowerCase();
+        if (!(e.title + ' ' + e.city + ' ' + e.keywords).toLowerCase().includes(q)) show = false;
+      }
+      card.classList.toggle('hidden', !show);
+      if (show) visible++;
+    });
+    document.getElementById('resultsCount').innerHTML = `<strong>${visible}</strong> event${visible !== 1 ? 's' : ''} found`;
+    const hasActive = activeFilters.sector !== 'all' || activeFilters.time !== 'all' || activeFilters.region !== 'all' || activeFilters.search !== '';
+    document.getElementById('clearFilters').style.display = hasActive ? 'inline-block' : 'none';
+  }
+
+  // Pill clicks
+  document.querySelectorAll('.filter-pill').forEach(pill => {
+    pill.addEventListener('click', function() {
+      const group = this.dataset.group;
+      document.querySelectorAll(`.filter-pill[data-group="${group}"]`).forEach(p => p.classList.remove('active'));
+      this.classList.add('active');
+      activeFilters[group] = this.dataset.filter;
+      applyFilters();
+    });
+  });
+
+  // Region select
+  document.getElementById('regionSelect').addEventListener('change', function() {
+    activeFilters.region = this.value;
+    applyFilters();
+  });
+
+  // Search (debounced)
+  let timer;
+  document.getElementById('eventSearch').addEventListener('input', function() {
+    clearTimeout(timer);
+    timer = setTimeout(() => { activeFilters.search = this.value.trim(); applyFilters(); }, 200);
+  });
+
+  // Clear all
+  document.getElementById('clearFilters').addEventListener('click', function() {
+    activeFilters = { sector: 'all', time: 'all', region: 'all', search: '' };
+    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.filter-pill[data-filter="all"]').forEach(p => p.classList.add('active'));
+    document.getElementById('regionSelect').value = 'all';
+    document.getElementById('eventSearch').value = '';
+    applyFilters();
+  });
+
+  applyFilters();
+})();
+
+
+// ── Countdown Timer Logic ───────────────────────────────────────
+(function() {
+  function updateCountdowns() {
+    const now = new Date();
+
+    // Update hero countdown
+    document.querySelectorAll('.nh-hero-countdown[data-target]').forEach(container => {
+      const target = new Date(container.dataset.target);
+      const diff = target - now;
+
+      if (diff <= 0) {
+        container.querySelectorAll('.cd-num').forEach(el => el.textContent = '00');
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      container.querySelector('[data-unit="days"]').textContent = String(days).padStart(2, '0');
+      container.querySelector('[data-unit="hours"]').textContent = String(hours).padStart(2, '0');
+      container.querySelector('[data-unit="minutes"]').textContent = String(minutes).padStart(2, '0');
+      container.querySelector('[data-unit="seconds"]').textContent = String(seconds).padStart(2, '0');
+    });
+
+    // Update card badges
+    document.querySelectorAll('.nh-countdown-badge[data-target]').forEach(badge => {
+      const target = new Date(badge.dataset.target + 'T00:00:00');
+      const diff = target - now;
+      const daysEl = badge.querySelector('.days-num');
+
+      if (diff <= 0) {
+        daysEl.textContent = '0';
+        badge.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Happening Now';
+        badge.className = 'nh-countdown-badge urgent';
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      daysEl.textContent = days;
+
+      // Auto-update urgency class based on days remaining
+      badge.classList.remove('urgent', 'soon', 'upcoming');
+      if (days <= 30) {
+        badge.classList.add('urgent');
+      } else if (days <= 90) {
+        badge.classList.add('soon');
+      } else {
+        badge.classList.add('upcoming');
+      }
+    });
+  }
+
+  updateCountdowns();
+  setInterval(updateCountdowns, 1000);
+})();
+
+</script>
+
+</body>
+</html>
