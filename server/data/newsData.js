@@ -1,0 +1,241 @@
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const ARTICLES_FILE = path.join(__dirname, 'articles.json');
+
+export const initialArticles = [
+  {
+    id: "art-b1",
+    title: "AfCFTA Guided Trade Initiative Expands to 38 African Nations with Digital Settlement Engine",
+    slug: "afcfta-digital-settlement-engine-expands",
+    category: "business",
+    categoryLabel: "Business & Trade",
+    country: "Pan-African",
+    summary: "The Pan-African Payment and Settlement System (PAPSS) and AfCFTA secretariat announce full integration of 14 new national central banks, allowing local currency clearing and saving an estimated $5 billion annually in foreign exchange transaction costs.",
+    content: `The African Continental Free Trade Area (AfCFTA) Secretariat, headquartered in Accra, alongside the African Export-Import Bank (Afreximbank), has officially announced the expansion of the Guided Trade Initiative to include 38 member states. 
+
+Central to this milestone is the accelerated deployment of the Pan-African Payment and Settlement System (PAPSS), which enables businesses across member states to trade using their local national currencies without requiring US Dollar or Euro intermediaries.
+
+Key trade corridors actively reporting frictionless trade under the framework include:
+- Agricultural produce from Kenya and Rwanda to Ghana and Nigeria
+- Refined copper and value-added battery precursors from Zambia and DRC to South Africa and Morocco
+- Processed textiles and apparel from Egypt to West and East African markets
+
+"This is not just a policy milestone; it represents the real plumbing of intra-African commerce," stated the AfCFTA Secretary-General. "Eliminating currency conversion hurdles directly empowers small and medium-sized enterprises (SMEs), which form over 80% of our continental economic engine."`,
+    author: "Ashley Jordan Chihiya",
+    authorTitle: "Chief Editor & Continental Markets Lead",
+    authorImage: "/Ashley Jordan Chihiya.jpg",
+    publishedAt: "2026-08-17T08:30:00Z",
+    readTime: "4 min read",
+    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1000&auto=format&fit=crop&q=80",
+    tags: ["AfCFTA", "PAPSS", "Trade", "Intra-Africa", "Afreximbank", "Finance"],
+    isBreaking: true,
+    isFeatured: true,
+    views: 14280,
+    likes: 894,
+    comments: [
+      {
+        id: "c1",
+        author: "Kofi Mensah",
+        country: "Ghana",
+        date: "2026-08-17T09:15:00Z",
+        content: "PAPSS clearing in Cedi and Naira directly has halved our cross-border logistics remittance delays. Huge milestone for West-East trade!",
+        likes: 42
+      },
+      {
+        id: "c2",
+        author: "Amina Al-Mansoor",
+        country: "Egypt",
+        date: "2026-08-17T10:02:00Z",
+        content: "Great to see North African industrial corridors connecting directly into Sub-Saharan supply chains.",
+        likes: 19
+      }
+    ]
+  },
+  {
+    id: "art-t1",
+    title: "Pan-African AI & Data Infrastructure Attracts $1.2B in Sovereign and Private Cloud Investments",
+    slug: "pan-african-ai-data-infrastructure-investment",
+    category: "technology",
+    categoryLabel: "Technology & Innovation",
+    country: "Kenya / Nigeria / South Africa",
+    summary: "Tier-IV data centers and localized large language models trained on indigenous African languages accelerate enterprise AI adoption from Lagos to Nairobi and Cape Town.",
+    content: `Africa's digital transformation has entered a decisive new phase, with sovereign wealth funds and global infrastructure investors deploying $1.2 billion across sustainable hyperscale data centers and native AI compute clusters.
+
+Key highlights of the expansion include:
+- Geothermal-powered cloud campuses in the Great Rift Valley, Kenya, delivering ultra-low carbon compute.
+- Multi-lingual African Language Models covering Swahili, Yoruba, Hausa, Amharic, Zulu, and Arabic to automate banking, healthcare diagnostics, and legal services.
+- Subsea fiber-optic cable activations increasing total continental bandwidth redundancy by over 300%.
+
+The continent's rapid demographic dividend and mobile-first population are driving unprecedented demand for decentralized cloud infrastructure and fintech APIs.`,
+    author: "Tariq Adeleke",
+    authorTitle: "Senior Tech & Telecoms Analyst",
+    authorImage: "/Ashley Jordan Chihiya.jpg",
+    publishedAt: "2026-08-17T07:45:00Z",
+    readTime: "5 min read",
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1000&auto=format&fit=crop&q=80",
+    tags: ["AI", "Data Centers", "Cloud", "Fintech", "Telecoms", "Startups"],
+    isBreaking: false,
+    isFeatured: true,
+    views: 11950,
+    likes: 720,
+    comments: [
+      {
+        id: "c3",
+        author: "Chinedu Okafor",
+        country: "Nigeria",
+        date: "2026-08-17T08:20:00Z",
+        content: "Training LLMs on local African dialects is critical for inclusive healthtech and educational access.",
+        likes: 31
+      }
+    ]
+  },
+  {
+    id: "art-m1",
+    title: "Critical Minerals Value-Addition: SADC & Central Africa Commission Joint Lithium & Cobalt Refineries",
+    slug: "sadc-critical-minerals-lithium-cobalt-refinery",
+    category: "mining",
+    categoryLabel: "Mining & Resources",
+    country: "DRC / Zambia / Zimbabwe",
+    summary: "A historic joint venture between Southern and Central African mining ministries bans raw ore exports in favor of domestic precursor cathode manufacturing for global EV battery giants.",
+    content: `Governments across the Copperbelt and the Great Dyke have enacted sweeping local beneficiation policies, establishing a unified Southern and Central African Critical Minerals Corridor.
+
+The newly inaugurated multi-billion dollar refining hub in Ndola and Lubumbashi will process raw battery-grade lithium, cobalt, nickel, and manganese into cathode active materials (CAM) directly on African soil.
+
+"Exporting raw dirt for pennies while importing refined components for thousands of dollars is a relic of the past," affirmed the Minister of Mines. "Africa produces over 70% of global cobalt and substantial lithium reserves; we are now positioning the continent at the high-margin pinnacle of the global energy transition."`,
+    author: "Farai Chitepo",
+    authorTitle: "Resources & Energy Correspondent",
+    authorImage: "/Ashley Jordan Chihiya.jpg",
+    publishedAt: "2026-08-17T06:15:00Z",
+    readTime: "4 min read",
+    image: "https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?w=1000&auto=format&fit=crop&q=80",
+    tags: ["Mining", "Lithium", "Cobalt", "Energy Transition", "Copper", "EV"],
+    isBreaking: true,
+    isFeatured: true,
+    views: 18400,
+    likes: 1340,
+    comments: []
+  },
+  {
+    id: "art-a1",
+    title: "Precision Agritech & Solar Irrigation Drive Record Cereal Yields Across Sahel & East Africa",
+    slug: "precision-agritech-solar-irrigation-cereal-yields",
+    category: "agriculture",
+    categoryLabel: "Agriculture & Food Security",
+    country: "Ethiopia / Senegal / Tanzania",
+    summary: "Satellite soil diagnostics, drought-resistant indigenous seed varieties, and pay-as-you-go solar water pumps mitigate climate volatility, boosting smallholder farmer output by 35%.",
+    content: `Agricultural transformation across Sub-Saharan Africa has registered record yields this season, powered by localized climate-smart farming methodologies and IoT-driven irrigation networks.
+
+Over 4 million smallholder farmers across Senegal, Ethiopia, Mali, and Tanzania have adopted digital agronomy platforms that provide micro-weather forecasts, AI-driven crop pest detection, and guaranteed off-take market linkages.
+
+Key accomplishments reported:
+- 35% average increase in maize, sorghum, and teff grain tonnage per hectare.
+- Deployment of over 250,000 decentralized solar-powered irrigation pumps.
+- Digital warehouse receipt financing unlocking $300M in non-collateralized seasonal agricultural credit.`,
+    author: "Zainab Diallo",
+    authorTitle: "Agritech & Food Systems Editor",
+    authorImage: "/Ashley Jordan Chihiya.jpg",
+    publishedAt: "2026-08-16T14:20:00Z",
+    readTime: "4 min read",
+    image: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1000&auto=format&fit=crop&q=80",
+    tags: ["Agriculture", "Agritech", "Food Security", "Solar", "Sustainability"],
+    isBreaking: false,
+    isFeatured: false,
+    views: 9230,
+    likes: 540,
+    comments: []
+  },
+  {
+    id: "art-e1",
+    title: "Green Hydrogen & Solar Mega-Projects: Africa's Clean Energy Corridor Secures $8.5B in Financing",
+    slug: "green-hydrogen-solar-clean-energy-financing",
+    category: "energy",
+    categoryLabel: "Energy & Renewables",
+    country: "Namibia / Egypt / Morocco / South Africa",
+    summary: "World Bank, European Investment Bank, and African Development Bank finalize syndicated financing for monumental green ammonia plants and cross-border ultra-high-voltage transmission grids.",
+    content: `The African continent's clean energy ambitions reached an unprecedented milestone as a coalition of multilateral finance institutions and private sovereign funds signed $8.5 billion in blended financing for green hydrogen and solar energy complexes.
+
+The projects span:
+- Namibia's Tsau //Khaeb National Park green hydrogen and ammonia export hub.
+- Morocco's Noor Ouarzazate hybrid solar-thermal expansion with subsea power links to Europe.
+- Egypt's Ain Sokhna green methanol plant servicing maritime container ships transiting the Suez Canal.
+- South Africa's Just Energy Transition renewable grid interconnections in Mpumalanga.`,
+    author: "Farai Chitepo",
+    authorTitle: "Resources & Energy Correspondent",
+    authorImage: "/Ashley Jordan Chihiya.jpg",
+    publishedAt: "2026-08-16T11:10:00Z",
+    readTime: "5 min read",
+    image: "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=1000&auto=format&fit=crop&q=80",
+    tags: ["Energy", "Green Hydrogen", "Solar", "Renewables", "AfDB", "Climate"],
+    isBreaking: false,
+    isFeatured: false,
+    views: 13100,
+    likes: 910,
+    comments: []
+  },
+  {
+    id: "art-mk1",
+    title: "African Bourses Weekly Roundup: JSE Top 40 & NGX Surge on Banking and Telecoms Earnings",
+    slug: "african-bourses-weekly-roundup-jse-ngx-rally",
+    category: "markets",
+    categoryLabel: "Markets & Equities",
+    country: "South Africa / Nigeria / Kenya / Egypt",
+    summary: "Robust double-digit earnings growth from continental banking conglomerates and mobile telecom operators fuel foreign portfolio inflows across major African stock exchanges.",
+    content: `Equities across major African bourses concluded the trading week on strong footing, led by heavy foreign institutional buying in South Africa, Nigeria, and Egypt.
+
+Market Performance Snapshot:
+- **JSE Top 40 (South Africa)**: Gained +1.4% to trade at 78,450.20 points, spurred by platinum miners and diversified financials.
+- **NGX All-Share (Nigeria)**: Rose +1.8% to 104,230.15, buoyed by banking recapitalization enthusiasm and consumer goods momentum.
+- **EGX 30 (Egypt)**: Surged +2.1% to 30,120.40 on record industrial export revenues.
+- **NSE 20 (Kenya)**: Rose +0.9% to 1,845.60 backed by Safaricom and regional banking dividend announcements.`,
+    author: "Ashley Jordan Chihiya",
+    authorTitle: "Chief Editor & Continental Markets Lead",
+    authorImage: "/Ashley Jordan Chihiya.jpg",
+    publishedAt: "2026-08-17T09:00:00Z",
+    readTime: "3 min read",
+    image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1000&auto=format&fit=crop&q=80",
+    tags: ["Markets", "JSE", "NGX", "EGX", "NSE", "Stocks", "Currencies"],
+    isBreaking: false,
+    isFeatured: false,
+    views: 15600,
+    likes: 1120,
+    comments: []
+  }
+];
+
+// Load persisted articles or initialize default
+function loadPersistedArticles() {
+  try {
+    if (fs.existsSync(ARTICLES_FILE)) {
+      const data = fs.readFileSync(ARTICLES_FILE, 'utf8');
+      const parsed = JSON.parse(data);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    }
+  } catch (err) {
+    console.error('Error loading articles.json, falling back to defaults:', err);
+  }
+  // If not exist, save initial
+  try {
+    fs.writeFileSync(ARTICLES_FILE, JSON.stringify(initialArticles, null, 2), 'utf8');
+  } catch (err) {
+    console.error('Error writing initial articles.json:', err);
+  }
+  return [...initialArticles];
+}
+
+// In-memory store initialized with persistent or initial articles
+export const articlesStore = loadPersistedArticles();
+
+export function saveArticlesStore() {
+  try {
+    fs.writeFileSync(ARTICLES_FILE, JSON.stringify(articlesStore, null, 2), 'utf8');
+  } catch (err) {
+    console.error('Error saving to articles.json:', err);
+  }
+}
+

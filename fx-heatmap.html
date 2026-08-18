@@ -5,6 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FX Heatmap — NewsHub Africa</title>
   <meta name="description" content="Real-time African currency exchange rates and forex heatmap. Track NGN, ZAR, KES, EGP, GHS and more.">
+
+  <meta name="keywords" content="African forex, FX heatmap, USD/ZAR, USD/NGN, USD/KES, USD/EGP, currency matrix">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://newshub-africa.com/fx-heatmap.html">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌍</text></svg>">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://newshub-africa.com/fx-heatmap.html">
+  <meta property="og:title" content="Pan-African Foreign Exchange Heatmap & Currency Matrix — NewsHub Africa">
+  <meta property="og:description" content="Interactive currency strength matrix and volatility heatmap across major African currency pairs against USD, EUR, GBP, and ZAR.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=80">
+  <meta property="og:site_name" content="NewsHub Africa">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://newshub-africa.com/fx-heatmap.html">
+  <meta name="twitter:title" content="Pan-African Foreign Exchange Heatmap & Currency Matrix — NewsHub Africa">
+  <meta name="twitter:description" content="Interactive currency strength matrix and volatility heatmap across major African currency pairs against USD, EUR, GBP, and ZAR.">
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=80">
+
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
 :root {
@@ -994,7 +1015,9 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   <div class="nh-mobile-nav-header">
     <a href="index.html" class="nh-brand" style="text-decoration:none">
       <div class="nh-brand-icon" aria-hidden="true">N</div>
-      <div><div class="nh-brand-text">newshub <span>AFRICA</span></div></div>
+      <div>
+        <div class="nh-brand-text">newshub <span>AFRICA</span></div>
+      </div>
     </a>
     <button class="nh-mobile-nav-close" onclick="closeMobileNav()" aria-label="Close menu">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
@@ -1008,7 +1031,7 @@ button:focus-visible, input:focus-visible, a:focus-visible {
     <li><a href="agriculture.html">Agriculture <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
     <li><a href="mining.html">Mining <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
     <li><a href="energy.html">Energy <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
-    <li><a href="markets.html">Markets <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="markets_v13_linked.html">Markets <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
     <li><a href="watchlist.html">Watchlist <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
     <li><a href="fx-heatmap.html">FX Heatmap <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
     <li><a href="events.html">Events <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
@@ -1073,7 +1096,7 @@ button:focus-visible, input:focus-visible, a:focus-visible {
       <a href="agriculture.html" class="nh-nav-item">Agriculture</a>
       <a href="mining.html" class="nh-nav-item">Mining</a>
       <a href="energy.html" class="nh-nav-item">Energy</a>
-      <a href="markets.html" class="nh-nav-item">Markets</a>
+      <a href="markets_v13_linked.html" class="nh-nav-item">Markets</a>
       <a href="watchlist.html" class="nh-nav-item">Watchlist</a>
       <a href="fx-heatmap.html" class="nh-nav-item active">FX Heatmap</a>
       <a href="events.html" class="nh-nav-item">Events</a>
@@ -1119,7 +1142,7 @@ button:focus-visible, input:focus-visible, a:focus-visible {
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
       API Keys
     </button>
-    <a href="markets.html" class="nh-view-all" style="margin-left:auto;">&larr; Back to Markets</a>
+    <a href="markets_v13_linked.html" class="nh-view-all" style="margin-left:auto;">&larr; Back to Markets</a>
   </div>
 
   <div class="nh-heatmap-legend">

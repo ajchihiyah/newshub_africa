@@ -5,6 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>African Markets — NewsHub Africa</title>
   <meta name="description" content="Comprehensive business, technology, agriculture, mining, and energy news across the African continent.">
+
+  <meta name="keywords" content="African stocks, JSE Top 40, NGX ASI, SEMDEX, USD/ZAR, USD/NGN, Gold, Brent Crude, African bourses">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://newshub-africa.com/markets_v13_linked.html">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌍</text></svg>">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://newshub-africa.com/markets_v13_linked.html">
+  <meta property="og:title" content="Pan-African Financial Markets & Live Bourses — NewsHub Africa">
+  <meta property="og:description" content="Real-time market indices (JSE, NGX, EGX, SEMDEX), foreign exchange pairs, African commodities, and top equity movers.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=80">
+  <meta property="og:site_name" content="NewsHub Africa">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://newshub-africa.com/markets_v13_linked.html">
+  <meta name="twitter:title" content="Pan-African Financial Markets & Live Bourses — NewsHub Africa">
+  <meta name="twitter:description" content="Real-time market indices (JSE, NGX, EGX, SEMDEX), foreign exchange pairs, African commodities, and top equity movers.">
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=80">
+
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
 
@@ -2997,6 +3018,7 @@ button:focus-visible, input:focus-visible, a:focus-visible {
       <a href="energy.html" class="nh-nav-item ">Energy</a>
       <a href="markets_v13_linked.html" class="nh-nav-item active">Markets</a>
       <a href="events.html" class="nh-nav-item ">Events</a>
+      <a href="dashboard.html" class="nh-nav-item" style="color:var(--nh-blue);font-weight:700">✍️ Studio CMS</a>
       <div class="nh-live" role="status" aria-live="polite"><span class="dot"></span><span>Live Updates</span></div>
     </nav>
   </div>
@@ -4595,26 +4617,23 @@ class MarketDataClient {
     // Check cache first
     const cached = dataCache.get(cacheKey);
     if (cached && Date.now() - cached.timestamp < API_CONFIG.CACHE_DURATION_MS) {
-      console.log(`[Cache Hit] ${cacheKey}`);
       return cached.data;
     }
 
     // Check rate limits
     if (source === 'mansa' && this.requestCount.mansa >= 95) {
-      console.warn('Mansa API daily limit approaching, using fallback');
       return null;
     }
     if (source === 'alpha' && this.requestCount.alpha >= 23) {
-      console.warn('Alpha Vantage daily limit approaching, using fallback');
       return null;
     }
 
-    // Rate limit delay
-    await new Promise(r => setTimeout(r, API_CONFIG.REQUEST_DELAY_MS));
-
     try {
-      const response = await fetch(url);
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3000);
+      const response = await fetch(url, { signal: controller.signal });
+      clearTimeout(timeoutId);
+      if (!response.ok) return null;
 
       const data = await response.json();
 
@@ -4627,7 +4646,7 @@ class MarketDataClient {
 
       return data;
     } catch (error) {
-      console.error(`API Error (${source}):`, error.message);
+      // Soft fallback for external rate limits or offline mode
       return null;
     }
   }
@@ -5157,86 +5176,73 @@ const renderer = new DataRenderer();
 // ==========================
 // MAIN DATA FETCHING
 // ==========================
-async function fetchLiveData() {
-  console.log('[NewsHub Markets] Fetching live data...');
-  renderer.showApiStatus('live', 'Fetching...');
+function processMarketSnapshot(serverData) {
+  if (!serverData || !serverData.success) return;
 
-  try {
-    // 1. Fetch indices
-    const indicesData = await apiClient.getIndices();
-    if (indicesData && indicesData.data) {
-      // Map API response to our format
-      const liveIndices = {};
-      indicesData.data.forEach(idx => {
-        liveIndices[idx.code] = {
-          name: idx.name,
-          value: idx.currentPrice,
-          change_pct: idx.changePercentage
-        };
-      });
-      renderer.liveData.indices = { ...renderer.liveData.indices, ...liveIndices };
-      renderer.showApiStatus('live', 'Mansa API connected');
-    } else {
-      renderer.showApiStatus('cached', 'Using cached index data');
-    }
-  } catch (e) {
-    console.warn('Indices fetch failed:', e);
-    renderer.showApiStatus('cached', 'Demo data mode');
+  // Process indices
+  const indicesList = Array.isArray(serverData.indicesList) ? serverData.indicesList : (Array.isArray(serverData.indices) ? serverData.indices : Object.values(serverData.indices || {}));
+  if (indicesList && indicesList.length > 0) {
+    const liveIndices = {};
+    indicesList.forEach(idx => {
+      const key = idx.symbol ? (idx.symbol.split(':')[0] || idx.symbol) : idx.name;
+      liveIndices[key] = {
+        name: idx.name || key,
+        value: idx.price || idx.value || 0,
+        change_pct: idx.changePercent !== undefined ? idx.changePercent : (idx.change_pct || 0)
+      };
+    });
+    renderer.liveData.indices = { ...renderer.liveData.indices, ...liveIndices };
+  } else if (serverData.indices && typeof serverData.indices === 'object') {
+    renderer.liveData.indices = { ...renderer.liveData.indices, ...serverData.indices };
   }
 
-  try {
-    // 2. Fetch pan-African movers
-    const moversData = await apiClient.getPanAfricanMovers();
-    if (moversData) {
-      if (moversData.gainers) {
-        renderer.liveData.gainers = moversData.gainers.map(m => ({
-          name: m.name,
-          ticker: m.ticker,
-          exchange: m.exchange,
-          price: m.price,
-          change_pct: m.change_pct,
-          currency: m.currency || ''
-        }));
-      }
-      if (moversData.losers) {
-        renderer.liveData.losers = moversData.losers.map(m => ({
-          name: m.name,
-          ticker: m.ticker,
-          exchange: m.exchange,
-          price: m.price,
-          change_pct: m.change_pct,
-          currency: m.currency || ''
-        }));
-      }
-    }
-  } catch (e) {
-    console.warn('Movers fetch failed:', e);
-  }
-
-  try {
-    // 3. Fetch commodities from Alpha Vantage (limited free calls)
-    // Only fetch one commodity per load to stay under limits
-    const commodityFunctions = [
-      { key: 'gold', func: 'GOLD_SILVER_SPOT', symbol: 'GOLD' },
-      { key: 'brent', func: 'BRENT', interval: 'daily' }
-    ];
-
-    for (const comm of commodityFunctions) {
-      if (comm.symbol) {
-        const data = await apiClient.getGoldSilverSpot(comm.symbol);
-        if (data && data.price) {
-          renderer.liveData.commodities[comm.key].price = parseFloat(data.price);
-        }
+  // Process commodities
+  const commoditiesList = Array.isArray(serverData.commoditiesList) ? serverData.commoditiesList : (Array.isArray(serverData.commodities) ? serverData.commodities : Object.values(serverData.commodities || {}));
+  if (commoditiesList && commoditiesList.length > 0) {
+    commoditiesList.forEach(cmd => {
+      const key = (cmd.id || cmd.symbol || cmd.name || '').toLowerCase();
+      if (renderer.liveData.commodities[key]) {
+        renderer.liveData.commodities[key].price = cmd.price;
+        renderer.liveData.commodities[key].change_pct = cmd.changePercent !== undefined ? cmd.changePercent : (cmd.change_pct || 0);
       } else {
-        const data = await apiClient.getCommodity(comm.func, comm.interval);
-        if (data && data.data && data.data[0]) {
-          renderer.liveData.commodities[comm.key].price = parseFloat(data.data[0].value);
-        }
+        renderer.liveData.commodities[key] = {
+          price: cmd.price,
+          change_pct: cmd.changePercent !== undefined ? cmd.changePercent : (cmd.change_pct || 0),
+          unit: cmd.unit || 'USD',
+          name: cmd.name || key
+        };
       }
-    }
-  } catch (e) {
-    console.warn('Commodities fetch failed:', e);
+    });
   }
+
+  // Process Forex
+  const forexList = Array.isArray(serverData.forex) ? serverData.forex : Object.values(serverData.fx || {});
+  if (forexList && forexList.length > 0) {
+    forexList.forEach(fx => {
+      const pair = fx.pair || fx.name;
+      if (pair) {
+        renderer.liveData.fx[pair] = {
+          rate: fx.rate,
+          change_pct: fx.changePercent !== undefined ? fx.changePercent : (fx.change_pct || 0)
+        };
+      }
+    });
+  }
+
+  // Process Equities, Gainers, Losers, Heavyweights
+  if (serverData.gainers && serverData.gainers.length > 0) {
+    renderer.liveData.gainers = serverData.gainers;
+  }
+  if (serverData.losers && serverData.losers.length > 0) {
+    renderer.liveData.losers = serverData.losers;
+  }
+  if (serverData.heavyweights && serverData.heavyweights.length > 0) {
+    renderer.liveData.heavyweights = serverData.heavyweights;
+  } else if (serverData.equities && serverData.equities.length > 0) {
+    renderer.liveData.heavyweights = serverData.equities;
+  }
+
+  renderer.showApiStatus('live', 'Live 24/7 API Connected');
 
   // Render all data
   renderer.updateTicker(renderer.liveData.indices);
@@ -5247,23 +5253,56 @@ async function fetchLiveData() {
   renderer.updateCommodities(renderer.liveData.commodities);
   renderer.updateFXHeatmap(renderer.liveData.fx);
   renderer.updateTimestamp();
+}
 
-  console.log('[NewsHub Markets] Data refresh complete');
+async function fetchLiveData() {
+  renderer.showApiStatus('live', 'Syncing...');
+
+  try {
+    const serverRes = await fetch('/api/markets/live');
+    if (serverRes.ok) {
+      const serverData = await serverRes.json();
+      processMarketSnapshot(serverData);
+    }
+  } catch (e) {
+    renderer.showApiStatus('cached', 'Cached Data Mode');
+  }
 }
 
 // ==========================
-// AUTO-REFRESH
+// 24/7 AUTO-REFRESH & SSE STREAM
 // ==========================
 function startAutoRefresh() {
   // Initial fetch
   fetchLiveData();
 
-  // Refresh every 5 minutes (300 seconds)
-  // Free tier: 100 req/day Mansa + 25 req/day Alpha = ~5 req/hour sustainable
-  setInterval(fetchLiveData, 5 * 60 * 1000);
+  // Connect to continuous 24/7 Server-Sent Events stream
+  let streamConnected = false;
+  if (typeof EventSource !== 'undefined') {
+    try {
+      const es = new EventSource('/api/markets/stream');
+      es.onmessage = (e) => {
+        try {
+          const snap = JSON.parse(e.data);
+          processMarketSnapshot(snap);
+          streamConnected = true;
+        } catch (err) {}
+      };
+      es.onerror = () => {
+        streamConnected = false;
+      };
+    } catch (err) {}
+  }
 
-  // Update timestamp every minute
-  setInterval(() => renderer.updateTimestamp(), 60 * 1000);
+  // Fast fallback polling every 4 seconds if SSE disconnects
+  setInterval(() => {
+    if (!streamConnected) {
+      fetchLiveData();
+    }
+  }, 4000);
+
+  // Update clock timestamp every 15 seconds
+  setInterval(() => renderer.updateTimestamp(), 15000);
 }
 
 // ==========================
@@ -6203,6 +6242,6 @@ DataRenderer.prototype.updateApiStatus = function(status, message) {
     </div>
   </div>
 </div>
-
+<script src="/js/newshub-api.js"></script>
 </body>
 </html>

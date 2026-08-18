@@ -1,0 +1,2151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NewsHub Africa Newsroom — Editorial & Publishing Desk</title>
+  <meta name="description" content="Pan-African Newsroom & Editorial Content Management Dashboard for NewsHub Africa.">
+
+  <meta name="keywords" content="editorial dashboard, newsroom cms, African journalism, article publishing">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://newshub-africa.com/dashboard.html">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌍</text></svg>">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://newshub-africa.com/dashboard.html">
+  <meta property="og:title" content="NewsHub Africa Editorial Newsroom & Publishing Dashboard">
+  <meta property="og:description" content="Content management studio, AI draft assistant, publication scheduler, and newsroom analytics for editors and journalists.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=80">
+  <meta property="og:site_name" content="NewsHub Africa">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://newshub-africa.com/dashboard.html">
+  <meta name="twitter:title" content="NewsHub Africa Editorial Newsroom & Publishing Dashboard">
+  <meta name="twitter:description" content="Content management studio, AI draft assistant, publication scheduler, and newsroom analytics for editors and journalists.">
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=80">
+
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --nh-blue: #0033cc;
+      --nh-blue-light: #1a53ff;
+      --nh-blue-dark: #002080;
+      --nh-black: #0a0a0a;
+      --nh-white: #ffffff;
+      --nh-surface: #ffffff;
+      --nh-surface-raised: #f8f9fa;
+      --nh-text-primary: #0a0a0a;
+      --nh-text-secondary: #495057;
+      --nh-text-muted: #adb5bd;
+      --nh-border: #dee2e6;
+      --nh-shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+      --nh-shadow-md: 0 4px 12px rgba(0,0,0,0.10);
+      --nh-shadow-lg: 0 10px 40px rgba(0,0,0,0.15);
+      --nh-radius-sm: 6px;
+      --nh-radius-md: 10px;
+      --nh-radius-lg: 14px;
+      --nh-transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      --nh-green: #2a9d8f;
+      --nh-red: #e94560;
+      --nh-yellow: #e9c46a;
+    }
+
+    [data-theme="dark"] {
+      --nh-surface: #0f1115;
+      --nh-surface-raised: #1a1d23;
+      --nh-text-primary: #f0f0f5;
+      --nh-text-secondary: #8a8b97;
+      --nh-text-muted: #5a5a6b;
+      --nh-border: #2a2d35;
+      --nh-shadow-sm: 0 1px 3px rgba(0,0,0,0.30);
+      --nh-shadow-md: 0 4px 12px rgba(0,0,0,0.40);
+      --nh-shadow-lg: 0 10px 40px rgba(0,0,0,0.50);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--nh-surface-raised);
+      color: var(--nh-text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* Top Navigation Header */
+    .nh-dash-header {
+      background: var(--nh-surface);
+      border-bottom: 1px solid var(--nh-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+    .nh-dash-header-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .nh-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: inherit;
+    }
+    .nh-brand-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--nh-blue);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .nh-brand-text {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+    }
+    .nh-brand-text span { color: var(--nh-blue); }
+    .nh-dash-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: rgba(0, 51, 204, 0.1);
+      color: var(--nh-blue);
+      margin-left: 8px;
+    }
+
+    .nh-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nh-nav-link {
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--nh-text-secondary);
+      text-decoration: none;
+      transition: var(--nh-transition);
+    }
+    .nh-nav-link:hover, .nh-nav-link.active {
+      color: var(--nh-text-primary);
+      background: var(--nh-surface-raised);
+    }
+    .nh-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: var(--nh-transition);
+      text-decoration: none;
+    }
+    .nh-btn-primary {
+      background: var(--nh-blue);
+      color: #ffffff;
+      border-color: var(--nh-blue);
+    }
+    .nh-btn-primary:hover {
+      background: var(--nh-blue-dark);
+      transform: translateY(-1px);
+    }
+    .nh-btn-outline {
+      background: transparent;
+      color: var(--nh-text-primary);
+      border-color: var(--nh-border);
+    }
+    .nh-btn-outline:hover {
+      background: var(--nh-surface-raised);
+    }
+    .nh-btn-ai {
+      background: linear-gradient(135deg, #0033cc, #6b21a8);
+      color: #ffffff;
+      border: none;
+      box-shadow: 0 4px 12px rgba(107, 33, 168, 0.25);
+    }
+    .nh-btn-ai:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(107, 33, 168, 0.35);
+    }
+
+    /* Main Container */
+    .nh-dash-container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    /* Quick Metrics Cards */
+    .nh-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .nh-metric-card {
+      background: var(--nh-surface);
+      border: 1px solid var(--nh-border);
+      border-radius: var(--nh-radius-md);
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      box-shadow: var(--nh-shadow-sm);
+    }
+    .nh-metric-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--nh-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .nh-metric-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--nh-text-primary);
+      line-height: 1.1;
+    }
+    .nh-metric-sub {
+      font-size: 12px;
+      color: var(--nh-text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .nh-trend-up { color: var(--nh-green); font-weight: 600; }
+
+    /* Dashboard Tabs */
+    .nh-dash-tabs {
+      display: flex;
+      gap: 10px;
+      border-bottom: 1px solid var(--nh-border);
+      margin-bottom: 24px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+    .nh-tab-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border: none;
+      background: transparent;
+      color: var(--nh-text-secondary);
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: var(--nh-transition);
+      white-space: nowrap;
+    }
+    .nh-tab-btn.active {
+      color: var(--nh-blue);
+      border-bottom-color: var(--nh-blue);
+    }
+    .nh-tab-btn:hover:not(.active) {
+      color: var(--nh-text-primary);
+    }
+
+    /* Tab Panels */
+    .nh-tab-pane {
+      display: none;
+    }
+    .nh-tab-pane.active {
+      display: block;
+    }
+
+    /* 2-Column Editor Layout */
+    .nh-editor-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+    }
+    @media (max-width: 1024px) {
+      .nh-editor-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Editor Card */
+    .nh-card {
+      background: var(--nh-surface);
+      border: 1px solid var(--nh-border);
+      border-radius: var(--nh-radius-lg);
+      padding: 24px;
+      box-shadow: var(--nh-shadow-sm);
+    }
+    .nh-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--nh-border);
+    }
+    .nh-card-title {
+      font-size: 17px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Form Controls */
+    .nh-form-group {
+      margin-bottom: 18px;
+    }
+    .nh-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--nh-text-primary);
+      margin-bottom: 6px;
+    }
+    .nh-label span {
+      color: var(--nh-text-muted);
+      font-weight: normal;
+      font-size: 12px;
+    }
+    .nh-input, .nh-select, .nh-textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--nh-border);
+      border-radius: var(--nh-radius-md);
+      background: var(--nh-surface-raised);
+      color: var(--nh-text-primary);
+      font-size: 13.5px;
+      font-family: inherit;
+      outline: none;
+      transition: var(--nh-transition);
+    }
+    .nh-input:focus, .nh-select:focus, .nh-textarea:focus {
+      border-color: var(--nh-blue);
+      background: var(--nh-surface);
+      box-shadow: 0 0 0 3px rgba(0, 51, 204, 0.1);
+    }
+    .nh-textarea {
+      resize: vertical;
+      min-height: 180px;
+      line-height: 1.6;
+    }
+
+    /* AI Prompt Box */
+    .nh-ai-box {
+      background: linear-gradient(135deg, rgba(0, 51, 204, 0.05), rgba(107, 33, 168, 0.05));
+      border: 1px dashed rgba(0, 51, 204, 0.3);
+      border-radius: var(--nh-radius-md);
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+    .nh-ai-box-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .nh-ai-box-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--nh-blue);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Image Presets Selector */
+    .nh-image-presets {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .nh-preset-btn {
+      position: relative;
+      height: 60px;
+      border-radius: var(--nh-radius-sm);
+      overflow: hidden;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: var(--nh-transition);
+    }
+    .nh-preset-btn img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .nh-preset-btn span {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      color: white;
+      font-size: 10px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2px 4px;
+    }
+    .nh-preset-btn:hover {
+      border-color: var(--nh-blue);
+      transform: scale(1.02);
+    }
+
+    /* Article Management Table */
+    .nh-table-container {
+      overflow-x: auto;
+    }
+    .nh-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      text-align: left;
+    }
+    .nh-table th {
+      padding: 12px 16px;
+      background: var(--nh-surface-raised);
+      color: var(--nh-text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--nh-border);
+    }
+    .nh-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--nh-border);
+      vertical-align: middle;
+    }
+    .nh-table tr:hover td {
+      background: var(--nh-surface-raised);
+    }
+
+    .nh-tag-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .nh-tag-business { background: rgba(42,157,143,0.12); color: #2a9d8f; }
+    .nh-tag-technology { background: rgba(0,51,204,0.12); color: #0033cc; }
+    .nh-tag-agriculture { background: rgba(233,196,106,0.2); color: #b8860b; }
+    .nh-tag-mining { background: rgba(107,91,149,0.15); color: #6b5b95; }
+    .nh-tag-energy { background: rgba(244,162,97,0.2); color: #c77733; }
+    .nh-tag-markets { background: rgba(233,69,96,0.12); color: #e94560; }
+
+    .nh-action-btns {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nh-icon-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      border: 1px solid var(--nh-border);
+      background: var(--nh-surface);
+      color: var(--nh-text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--nh-transition);
+    }
+    .nh-icon-btn:hover {
+      background: var(--nh-surface-raised);
+      color: var(--nh-blue);
+      border-color: var(--nh-blue);
+    }
+    .nh-icon-btn.delete:hover {
+      color: #e94560;
+      border-color: #e94560;
+    }
+
+    /* Live Preview Box */
+    .nh-preview-card {
+      background: var(--nh-surface);
+      border: 1px solid var(--nh-border);
+      border-radius: var(--nh-radius-lg);
+      overflow: hidden;
+      box-shadow: var(--nh-shadow-md);
+    }
+    .nh-preview-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      background: #1a1d23;
+    }
+    .nh-preview-body {
+      padding: 18px;
+    }
+
+    /* Dedicated Studio CMS Login Gate */
+    .nh-auth-gate-overlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 50% 20%, rgba(0, 51, 204, 0.15), rgba(10, 15, 30, 0.98));
+      backdrop-filter: blur(12px);
+      z-index: 50000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .nh-auth-gate-overlay.hidden-gate {
+      display: none !important;
+    }
+    .nh-login-box {
+      background: var(--nh-surface);
+      border: 1px solid var(--nh-border);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 520px;
+      padding: 36px 32px;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+    .nh-login-brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .nh-login-heading {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .nh-login-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--nh-text-primary);
+      margin-bottom: 6px;
+      letter-spacing: -0.3px;
+    }
+    .nh-login-sub {
+      font-size: 13.5px;
+      color: var(--nh-text-secondary);
+      line-height: 1.5;
+    }
+    .nh-quick-role-pills {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--nh-border);
+    }
+    .nh-quick-role-btn {
+      background: var(--nh-surface-raised);
+      border: 1px solid var(--nh-border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 11.5px;
+      color: var(--nh-text-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      text-align: left;
+    }
+    .nh-quick-role-btn:hover {
+      border-color: var(--nh-blue);
+      background: rgba(0, 51, 204, 0.08);
+      transform: translateY(-1px);
+    }
+
+    /* Modal for Quick Edit */
+    .nh-edit-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s ease;
+    }
+    .nh-edit-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .nh-edit-modal-content {
+      background: var(--nh-surface);
+      border: 1px solid var(--nh-border);
+      border-radius: var(--nh-radius-lg);
+      width: 100%;
+      max-width: 760px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px;
+      box-shadow: var(--nh-shadow-lg);
+    }
+
+    /* User Profile Pill in Header */
+    .nh-user-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 12px 4px 6px;
+      background: var(--nh-surface-raised);
+      border: 1px solid var(--nh-border);
+      border-radius: 100px;
+    }
+    .nh-user-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .nh-user-info {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+    .nh-user-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--nh-text-primary);
+    }
+    .nh-user-role-badge {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    /* Role Status Banner */
+    .nh-role-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      border: 1px solid var(--nh-border);
+      background: var(--nh-surface);
+      box-shadow: var(--nh-shadow-sm);
+    }
+    .nh-role-banner.admin {
+      border-left: 4px solid #0033cc;
+      background: linear-gradient(90deg, rgba(0, 51, 204, 0.04), var(--nh-surface));
+    }
+    .nh-role-banner.writer {
+      border-left: 4px solid #2a9d8f;
+      background: linear-gradient(90deg, rgba(42, 157, 143, 0.05), var(--nh-surface));
+    }
+    .nh-locked-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      background: rgba(233, 69, 96, 0.1);
+      color: #e94560;
+      border: 1px dashed rgba(233, 69, 96, 0.3);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Dedicated Studio CMS Login Gate -->
+<div class="nh-auth-gate-overlay" id="cmsAuthGate">
+  <div class="nh-login-box">
+    <div class="nh-login-brand">
+      <a href="index.html" class="nh-brand" style="text-decoration:none;">
+        <div class="nh-brand-icon" aria-hidden="true">N</div>
+        <div>
+          <div class="nh-brand-text">newshub <span>AFRICA</span></div>
+          <div class="nh-brand-tagline">The pulse of the continent</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="nh-login-heading">
+      <h1 class="nh-login-title">NewsHub Africa Newsroom Access</h1>
+      <p class="nh-login-sub">Please enter your authorized editorial credentials to access the continental publishing workspace.</p>
+    </div>
+
+    <div id="loginErrorMsg" style="display:none; background: rgba(233, 69, 96, 0.12); color: #e94560; border: 1px solid rgba(233, 69, 96, 0.3); border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 16px; text-align: center;">
+      <!-- Error message will appear here -->
+    </div>
+
+    <form id="cmsLoginForm" onsubmit="handleCmsLogin(event)" style="display: flex; flex-direction: column; gap: 14px;">
+      <div>
+        <label class="nh-label" for="loginIdentifier">Email or Username</label>
+        <input type="text" id="loginIdentifier" class="nh-input" placeholder="e.g. admin@newshub-africa.com or writer1" required autocomplete="username" />
+      </div>
+      <div>
+        <label class="nh-label" for="loginPassword">Password</label>
+        <div style="position: relative;">
+          <input type="password" id="loginPassword" class="nh-input" placeholder="Enter your newsroom password" required autocomplete="current-password" style="padding-right: 42px;" />
+          <button type="button" onclick="togglePasswordVisibility()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--nh-text-muted); font-size: 14px;" title="Show/Hide Password">
+            👁️
+          </button>
+        </div>
+      </div>
+
+      <button type="submit" id="cmsLoginSubmitBtn" class="nh-btn nh-btn-primary" style="padding: 12px; font-size: 14px; font-weight: 700; width: 100%; justify-content: center; margin-top: 4px;">
+        <span>Sign In to NewsHub Newsroom →</span>
+      </button>
+    </form>
+
+    <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--nh-text-muted); margin-top: 20px; text-align: center;">
+      Quick Role Pre-sets:
+    </div>
+
+    <div class="nh-quick-role-pills">
+      <button type="button" class="nh-quick-role-btn" onclick="fillRoleCredentials('admin')">
+        <span>👑</span>
+        <div>
+          <div style="font-weight:700;">Administrator</div>
+          <div style="font-size:10px; color:var(--nh-text-muted);">Full Access</div>
+        </div>
+      </button>
+      <button type="button" class="nh-quick-role-btn" onclick="fillRoleCredentials('writer1')">
+        <span>✍️</span>
+        <div>
+          <div style="font-weight:700;">Writer Slot 1</div>
+          <div style="font-size:10px; color:var(--nh-text-muted);">Upload Only</div>
+        </div>
+      </button>
+      <button type="button" class="nh-quick-role-btn" onclick="fillRoleCredentials('writer2')">
+        <span>✍️</span>
+        <div>
+          <div style="font-weight:700;">Writer Slot 2</div>
+          <div style="font-size:10px; color:var(--nh-text-muted);">Upload Only</div>
+        </div>
+      </button>
+      <button type="button" class="nh-quick-role-btn" onclick="fillRoleCredentials('writer3')">
+        <span>✍️</span>
+        <div>
+          <div style="font-weight:700;">Writer Slot 3</div>
+          <div style="font-size:10px; color:var(--nh-text-muted);">Upload Only</div>
+        </div>
+      </button>
+    </div>
+
+    <div style="margin-top: 18px; text-align: center;">
+      <a href="index.html" class="nh-nav-link" style="font-size: 12.5px; color: var(--nh-text-muted);">
+        ← Return to Public Site
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Main CMS Application (Protected Workspace) -->
+<div id="cmsMainApp" style="display: none;">
+
+<!-- Dashboard Header -->
+<header class="nh-dash-header">
+  <div class="nh-dash-header-inner">
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <a href="index.html" class="nh-brand">
+        <div class="nh-brand-icon" aria-hidden="true">N</div>
+        <div>
+          <div class="nh-brand-text">newshub <span>AFRICA</span></div>
+          <div class="nh-brand-tagline">The pulse of the continent</div>
+        </div>
+      </a>
+      <span class="nh-dash-badge">NewsHub Africa Newsroom</span>
+    </div>
+
+    <nav class="nh-nav-links">
+      <!-- Active User Capsule -->
+      <div class="nh-user-pill" id="headerUserPill">
+        <img src="/Ashley Jordan Chihiya.jpg" id="headerUserAvatar" class="nh-user-avatar" alt="User Avatar" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80'" />
+        <div class="nh-user-info">
+          <span class="nh-user-name" id="headerUserName">Ashley Jordan Chihiya</span>
+          <span class="nh-user-role-badge" id="headerUserRole" style="color: #0033cc;">👑 Administrator</span>
+        </div>
+      </div>
+
+      <button class="nh-btn nh-btn-outline" onclick="logoutCms()" style="font-size: 12px; padding: 6px 12px; color: #e94560; border-color: rgba(233, 69, 96, 0.3);" title="Log Out from NewsHub Newsroom">
+        <span>🚪 Log Out</span>
+      </button>
+
+      <a href="index.html" class="nh-nav-link">← Public Site</a>
+      <a href="markets_v13_linked.html" class="nh-nav-link">Markets</a>
+      <button class="nh-btn nh-btn-primary" onclick="switchTab('write')">
+        <span>+ Write Article</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<div class="nh-dash-container">
+
+  <!-- Active Role Status Banner -->
+  <div class="nh-role-banner admin" id="roleStatusBanner">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <div style="font-size: 28px;" id="roleStatusIcon">👑</div>
+      <div>
+        <div style="font-weight: 700; font-size: 14.5px; color: var(--nh-text-primary);" id="roleStatusHeading">
+          Administrator Workspace (Full Access)
+        </div>
+        <div style="font-size: 12.5px; color: var(--nh-text-secondary);" id="roleStatusDetails">
+          You have full authority to compose & upload new stories, edit/change existing site articles, delete articles, and manage continental events.
+        </div>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <button class="nh-btn nh-btn-outline" onclick="logoutCms()" style="font-size: 12px; padding: 6px 14px;">
+        🔄 Switch / Log Out
+      </button>
+    </div>
+  </div>
+
+  <!-- Overview Metrics -->
+  <div class="nh-metrics-grid">
+    <div class="nh-metric-card">
+      <div class="nh-metric-header">
+        <span>Published Articles</span>
+        <span>📰</span>
+      </div>
+      <div class="nh-metric-value" id="metricArticles">--</div>
+      <div class="nh-metric-sub"><span class="nh-trend-up">Active</span> in continental store</div>
+    </div>
+    <div class="nh-metric-card">
+      <div class="nh-metric-header">
+        <span>Total Article Reads</span>
+        <span>👁️</span>
+      </div>
+      <div class="nh-metric-value" id="metricViews">--</div>
+      <div class="nh-metric-sub"><span class="nh-trend-up">+14.2%</span> readership this week</div>
+    </div>
+    <div class="nh-metric-card">
+      <div class="nh-metric-header">
+        <span>Reader Interactions</span>
+        <span>❤️</span>
+      </div>
+      <div class="nh-metric-value" id="metricInteractions">--</div>
+      <div class="nh-metric-sub">Likes & Discussion comments</div>
+    </div>
+    <div class="nh-metric-card">
+      <div class="nh-metric-header">
+        <span>Continental Summits</span>
+        <span>📅</span>
+      </div>
+      <div class="nh-metric-value" id="metricEvents">--</div>
+      <div class="nh-metric-sub">Listed on 2026-2027 calendar</div>
+    </div>
+    <div class="nh-metric-card">
+      <div class="nh-metric-header">
+        <span>Briefing Subscribers</span>
+        <span>✉️</span>
+      </div>
+      <div class="nh-metric-value" id="metricSubscribers">--</div>
+      <div class="nh-metric-sub">Daily pan-African digest</div>
+    </div>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <div class="nh-dash-tabs">
+    <button class="nh-tab-btn active" onclick="switchTab('write')" id="tab-btn-write">
+      <span>✍️</span> Write & Publish Article
+    </button>
+    <button class="nh-tab-btn" onclick="switchTab('articles')" id="tab-btn-articles">
+      <span>📚</span> Manage Articles (<span id="tabArticleCount">0</span>)
+    </button>
+    <button class="nh-tab-btn" onclick="switchTab('events')" id="tab-btn-events">
+      <span>📅</span> Continental Events Manager
+    </button>
+    <button class="nh-tab-btn" onclick="switchTab('marketdesk')" id="tab-btn-marketdesk">
+      <span>📈</span> Live African Bourses Desk
+    </button>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- TAB 1: WRITE & PUBLISH ARTICLE                 -->
+  <!-- ============================================== -->
+  <div class="nh-tab-pane active" id="pane-write">
+    <div class="nh-editor-grid">
+      <!-- Main Form -->
+      <div class="nh-card">
+        <div class="nh-card-header">
+          <div class="nh-card-title">
+            <span>📝</span> Article Editorial Composer
+          </div>
+          <button type="button" class="nh-btn nh-btn-outline" onclick="resetArticleForm()">
+            Clear Form
+          </button>
+        </div>
+
+        <!-- AI Newsroom Assistant Box -->
+        <div class="nh-ai-box">
+          <div class="nh-ai-box-header">
+            <div class="nh-ai-box-title">
+              <span>✨</span> Gemini AI Newsroom Co-Pilot
+            </div>
+            <button type="button" class="nh-btn nh-btn-ai" id="aiDraftBtn" onclick="generateAIDraft()" style="padding: 5px 14px; font-size: 12px;">
+              <span>Draft Full Story</span>
+            </button>
+          </div>
+          <p style="font-size: 12px; color: var(--nh-text-secondary); margin-bottom: 8px;">
+            Provide a headline topic or raw key points, and Gemini AI will draft the headline, executive summary, and formatted analytical paragraphs.
+          </p>
+          <input type="text" id="aiDraftPrompt" class="nh-input" placeholder="e.g. Kenya and Ethiopia sign $1.2B green energy interconnection pact..." style="font-size: 12.5px; padding: 8px 12px;" />
+        </div>
+
+        <form id="articleForm" onsubmit="handlePublishArticle(event)">
+          <div class="nh-form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label class="nh-label" style="margin: 0;">Article Headline *</label>
+              <button type="button" class="nh-btn nh-btn-outline" onclick="optimizeHeadline()" style="padding: 3px 10px; font-size: 11px;">
+                ✨ Optimize Headline
+              </button>
+            </div>
+            <input type="text" id="artTitle" class="nh-input" placeholder="e.g., AfCFTA Digital Trade Protocol Accelerates Intra-African Commerce" required />
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div class="nh-form-group">
+              <label class="nh-label">Category *</label>
+              <select id="artCategory" class="nh-select" required onchange="updateCoverPreset()">
+                <option value="business">Business & AfCFTA Trade</option>
+                <option value="technology">Technology & Startups</option>
+                <option value="agriculture">Agriculture & Agribusiness</option>
+                <option value="mining">Mining & Critical Minerals</option>
+                <option value="energy">Energy & Infrastructure</option>
+                <option value="markets">Financial Markets & Bourses</option>
+              </select>
+            </div>
+
+            <div class="nh-form-group">
+              <label class="nh-label">Country / Region</label>
+              <select id="artCountry" class="nh-select">
+                <option value="Pan-African">Pan-African (Continent-Wide)</option>
+                <option value="Nigeria">Nigeria</option>
+                <option value="South Africa">South Africa</option>
+                <option value="Kenya">Kenya</option>
+                <option value="Egypt">Egypt</option>
+                <option value="Ghana">Ghana</option>
+                <option value="Rwanda">Rwanda</option>
+                <option value="Zimbabwe">Zimbabwe</option>
+                <option value="Ethiopia">Ethiopia</option>
+                <option value="Morocco">Morocco</option>
+                <option value="DR Congo">DR Congo</option>
+                <option value="Tanzania">Tanzania</option>
+                <option value="Angola">Angola</option>
+                <option value="Uganda">Uganda</option>
+                <option value="Zambia">Zambia</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="nh-form-group">
+            <label class="nh-label">Executive Lead / Summary <span>(Displayed on cards & briefs)</span></label>
+            <textarea id="artSummary" class="nh-textarea" style="min-height: 80px;" placeholder="2-3 sentence overview highlighting the strategic economic or industry impact..."></textarea>
+          </div>
+
+          <div class="nh-form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label class="nh-label" style="margin: 0;">Full Article Body Content *</label>
+              <div style="display: flex; gap: 4px;">
+                <button type="button" class="nh-btn nh-btn-outline" onclick="insertFormatting('h3')" style="padding: 2px 8px; font-size: 11px;">+ Subheading</button>
+                <button type="button" class="nh-btn nh-btn-outline" onclick="insertFormatting('quote')" style="padding: 2px 8px; font-size: 11px;">+ Quote</button>
+                <button type="button" class="nh-btn nh-btn-outline" onclick="insertFormatting('bullets')" style="padding: 2px 8px; font-size: 11px;">+ Bullets</button>
+              </div>
+            </div>
+            <textarea id="artContent" class="nh-textarea" style="min-height: 260px;" placeholder="Write or paste your comprehensive news report here..." required></textarea>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div class="nh-form-group">
+              <label class="nh-label">Author Name</label>
+              <input type="text" id="artAuthor" class="nh-input" value="Ashley Jordan Chihiya" />
+            </div>
+            <div class="nh-form-group">
+              <label class="nh-label">Author Title / Role</label>
+              <input type="text" id="artAuthorTitle" class="nh-input" value="Senior Pan-African Intelligence Editor" />
+            </div>
+          </div>
+
+          <div class="nh-form-group">
+            <label class="nh-label">Tags / Keywords <span>(Comma separated)</span></label>
+            <input type="text" id="artTags" class="nh-input" placeholder="AfCFTA, Trade, Investment, Infrastructure, GDP" />
+          </div>
+
+          <div class="nh-form-group">
+            <label class="nh-label">Featured Cover Image URL</label>
+            <input type="url" id="artImage" class="nh-input" value="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1000&auto=format&fit=crop&q=80" />
+            
+            <div style="margin-top: 8px;">
+              <span style="font-size: 11px; color: var(--nh-text-muted); font-weight: 600;">1-Click Image Presets:</span>
+              <div class="nh-image-presets">
+                <div class="nh-preset-btn" onclick="setImagePreset('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1000&auto=format&fit=crop&q=80', 'Business Hub')">
+                  <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=300&auto=format&fit=crop&q=60" />
+                  <span>Business Hub</span>
+                </div>
+                <div class="nh-preset-btn" onclick="setImagePreset('https://images.unsplash.com/photo-1518770660439-4636190af475?w=1000&auto=format&fit=crop&q=80', 'Tech & AI')">
+                  <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=300&auto=format&fit=crop&q=60" />
+                  <span>Tech & AI</span>
+                </div>
+                <div class="nh-preset-btn" onclick="setImagePreset('https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=1000&auto=format&fit=crop&q=80', 'Agriculture')">
+                  <img src="https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=300&auto=format&fit=crop&q=60" />
+                  <span>Agriculture</span>
+                </div>
+                <div class="nh-preset-btn" onclick="setImagePreset('https://images.unsplash.com/photo-1579548122080-c35fd6820ecb?w=1000&auto=format&fit=crop&q=80', 'Mining & Minerals')">
+                  <img src="https://images.unsplash.com/photo-1579548122080-c35fd6820ecb?w=300&auto=format&fit=crop&q=60" />
+                  <span>Mining</span>
+                </div>
+                <div class="nh-preset-btn" onclick="setImagePreset('https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1000&auto=format&fit=crop&q=80', 'Clean Energy')">
+                  <img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=300&auto=format&fit=crop&q=60" />
+                  <span>Clean Energy</span>
+                </div>
+                <div class="nh-preset-btn" onclick="setImagePreset('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1000&auto=format&fit=crop&q=80', 'Stock Bourses')">
+                  <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=300&auto=format&fit=crop&q=60" />
+                  <span>Markets</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 18px; margin-bottom: 24px; padding: 12px 16px; background: var(--nh-surface-raised); border-radius: var(--nh-radius-md);">
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer;">
+              <input type="checkbox" id="artBreaking" />
+              <span>⚡ Mark as Breaking News</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer;">
+              <input type="checkbox" id="artFeatured" checked />
+              <span>⭐ Feature in Lead Banner</span>
+            </label>
+          </div>
+
+          <div style="display: flex; gap: 12px;">
+            <button type="submit" class="nh-btn nh-btn-primary" style="padding: 10px 28px; font-size: 14px;" id="publishBtn">
+              🚀 Publish Article to NewsHub
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Right Sidebar: Live Preview Card -->
+      <div>
+        <div class="nh-card" style="position: sticky; top: 80px;">
+          <div class="nh-card-header">
+            <div class="nh-card-title">
+              <span>👁️</span> Live Card Preview
+            </div>
+            <span style="font-size: 11px; color: var(--nh-green); font-weight: 700;">● Real-time</span>
+          </div>
+
+          <div class="nh-preview-card" id="cardPreview">
+            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1000&auto=format&fit=crop&q=80" class="nh-preview-img" id="prevImg" />
+            <div class="nh-preview-body">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span class="nh-tag-badge nh-tag-business" id="prevTag">Business</span>
+                <span style="font-size: 11px; color: var(--nh-text-muted);" id="prevCountry">Pan-African</span>
+              </div>
+              <h3 style="font-size: 16px; font-weight: 600; line-height: 1.3; margin-bottom: 8px;" id="prevTitle">
+                AfCFTA Digital Trade Protocol Accelerates Intra-African Commerce
+              </h3>
+              <p style="font-size: 13px; color: var(--nh-text-secondary); line-height: 1.5; margin-bottom: 12px;" id="prevSummary">
+                A 2-3 sentence executive lead will appear here once entered.
+              </p>
+              <div style="display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--nh-text-muted); border-top: 1px solid var(--nh-border); padding-top: 8px;">
+                <span id="prevAuthor">By Ashley Jordan Chihiya</span>
+                <span>Just now • 3 min read</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- TAB 2: MANAGE PUBLISHED ARTICLES               -->
+  <!-- ============================================== -->
+  <div class="nh-tab-pane" id="pane-articles">
+    <div class="nh-card">
+      <div class="nh-card-header">
+        <div class="nh-card-title">
+          <span>📚</span> Continental Editorial Repository
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <input type="text" id="articleSearchInput" class="nh-input" placeholder="Search articles by title or tag..." style="width: 260px; padding: 6px 12px; font-size: 13px;" oninput="filterDashboardArticles()" />
+          <select id="articleCategoryFilter" class="nh-select" style="width: 160px; padding: 6px 12px; font-size: 13px;" onchange="filterDashboardArticles()">
+            <option value="all">All Categories</option>
+            <option value="business">Business</option>
+            <option value="technology">Technology</option>
+            <option value="agriculture">Agriculture</option>
+            <option value="mining">Mining</option>
+            <option value="energy">Energy</option>
+            <option value="markets">Markets</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="nh-table-container">
+        <table class="nh-table">
+          <thead>
+            <tr>
+              <th>Article</th>
+              <th>Category</th>
+              <th>Country</th>
+              <th>Author</th>
+              <th>Published</th>
+              <th>Stats</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="articlesTableBody">
+            <tr>
+              <td colspan="7" style="text-align: center; padding: 30px; color: var(--nh-text-muted);">
+                Loading articles from store...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- TAB 3: CONTINENTAL EVENTS MANAGER              -->
+  <!-- ============================================== -->
+  <div class="nh-tab-pane" id="pane-events">
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+      <!-- Events List -->
+      <div class="nh-card">
+        <div class="nh-card-header">
+          <div class="nh-card-title">
+            <span>📅</span> Scheduled Conferences & Summits
+          </div>
+          <span style="font-size: 12px; color: var(--nh-text-muted);" id="eventsCountBadge">-- events</span>
+        </div>
+        <div class="nh-table-container">
+          <table class="nh-table">
+            <thead>
+              <tr>
+                <th>Event</th>
+                <th>Category</th>
+                <th>Location</th>
+                <th>Dates</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="eventsTableBody">
+              <tr>
+                <td colspan="5" style="text-align: center; padding: 30px; color: var(--nh-text-muted);">
+                  Loading events...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Quick Add Event Form -->
+      <div class="nh-card">
+        <div class="nh-card-header">
+          <div class="nh-card-title">
+            <span>+</span> Add New Summit / Event
+          </div>
+        </div>
+        <form id="dashEventForm" onsubmit="handleQuickAddEvent(event)">
+          <div class="nh-form-group">
+            <label class="nh-label">Event Name *</label>
+            <input type="text" id="evtTitle" class="nh-input" placeholder="e.g., Africa Energy Transition Forum 2026" required />
+          </div>
+          <div class="nh-form-group">
+            <label class="nh-label">Host Organization</label>
+            <input type="text" id="evtOrg" class="nh-input" placeholder="e.g., African Energy Commission" />
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="nh-form-group">
+              <label class="nh-label">City & Venue *</label>
+              <input type="text" id="evtLocation" class="nh-input" placeholder="e.g., Cape Town, CTICC" required />
+            </div>
+            <div class="nh-form-group">
+              <label class="nh-label">Category</label>
+              <select id="evtCategory" class="nh-select">
+                <option value="Technology">Technology & AI</option>
+                <option value="Business & Trade">Business & Trade</option>
+                <option value="Mining & Energy">Mining & Critical Minerals</option>
+                <option value="Agriculture">Agriculture & Food</option>
+                <option value="Clean Energy">Clean Energy & Gas</option>
+              </select>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="nh-form-group">
+              <label class="nh-label">Start Date *</label>
+              <input type="date" id="evtStartDate" class="nh-input" required />
+            </div>
+            <div class="nh-form-group">
+              <label class="nh-label">End Date</label>
+              <input type="date" id="evtEndDate" class="nh-input" />
+            </div>
+          </div>
+          <div class="nh-form-group">
+            <label class="nh-label">Official Website URL</label>
+            <input type="url" id="evtWebsite" class="nh-input" placeholder="https://..." />
+          </div>
+          <button type="submit" class="nh-btn nh-btn-primary" style="width: 100%; justify-content: center; padding: 10px;">
+            Add Event to Continental Calendar
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- TAB 4: LIVE AFRICAN BOURSES DESK               -->
+  <!-- ============================================== -->
+  <div class="nh-tab-pane" id="pane-marketdesk">
+    <div class="nh-card">
+      <div class="nh-card-header">
+        <div class="nh-card-title">
+          <span>📈</span> African Financial Bourses & Foreign Exchange Live Feeds
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <span style="font-size: 12px; color: var(--nh-green); font-weight: 600;">● Live Polling (15s)</span>
+          <a href="markets_v13_linked.html" class="nh-btn nh-btn-outline" style="font-size: 12px; padding: 6px 14px;">
+            View Full Markets Page →
+          </a>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div>
+          <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; color: var(--nh-text-muted);">
+            Major African Stock Indices
+          </h4>
+          <div class="nh-table-container">
+            <table class="nh-table">
+              <thead>
+                <tr>
+                  <th>Index</th>
+                  <th>Country</th>
+                  <th>Price</th>
+                  <th>Change</th>
+                  <th>Watchlist</th>
+                </tr>
+              </thead>
+              <tbody id="deskIndicesBody">
+                <tr><td colspan="5">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; color: var(--nh-text-muted);">
+            Key Currency Pairs & Commodities
+          </h4>
+          <div class="nh-table-container">
+            <table class="nh-table">
+              <thead>
+                <tr>
+                  <th>Instrument</th>
+                  <th>Type</th>
+                  <th>Rate/Price</th>
+                  <th>Change</th>
+                  <th>Watchlist</th>
+                </tr>
+              </thead>
+              <tbody id="deskCurrenciesBody">
+                <tr><td colspan="5">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal for Editing Articles -->
+<div class="nh-edit-modal" id="editArticleModal">
+  <div class="nh-edit-modal-content">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--nh-border); padding-bottom: 12px;">
+      <h3 style="font-size: 17px; font-weight: 700;">Edit Article</h3>
+      <button class="nh-icon-btn" onclick="closeEditModal()">&times;</button>
+    </div>
+    <form id="editArticleForm" onsubmit="handleSaveEditedArticle(event)">
+      <input type="hidden" id="editArtId" />
+      <div class="nh-form-group">
+        <label class="nh-label">Title</label>
+        <input type="text" id="editArtTitle" class="nh-input" required />
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+        <div class="nh-form-group">
+          <label class="nh-label">Category</label>
+          <select id="editArtCategory" class="nh-select">
+            <option value="business">Business</option>
+            <option value="technology">Technology</option>
+            <option value="agriculture">Agriculture</option>
+            <option value="mining">Mining</option>
+            <option value="energy">Energy</option>
+            <option value="markets">Markets</option>
+          </select>
+        </div>
+        <div class="nh-form-group">
+          <label class="nh-label">Country</label>
+          <input type="text" id="editArtCountry" class="nh-input" />
+        </div>
+      </div>
+      <div class="nh-form-group">
+        <label class="nh-label">Summary</label>
+        <textarea id="editArtSummary" class="nh-textarea" style="min-height: 80px;"></textarea>
+      </div>
+      <div class="nh-form-group">
+        <label class="nh-label">Full Body Content</label>
+        <textarea id="editArtContent" class="nh-textarea" style="min-height: 200px;" required></textarea>
+      </div>
+      <div class="nh-form-group">
+        <label class="nh-label">Cover Image URL</label>
+        <input type="url" id="editArtImage" class="nh-input" />
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+        <button type="button" class="nh-btn nh-btn-outline" onclick="closeEditModal()">Cancel</button>
+        <button type="submit" class="nh-btn nh-btn-primary">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+</div><!-- End #cmsMainApp -->
+
+<script src="/js/newshub-api.js"></script>
+<script>
+  let allArticles = [];
+  let allEvents = [];
+  let currentWatchlist = new Set();
+  
+  // Current Authenticated User Session (Null by default, requires credentials)
+  let currentUser = null;
+
+  const CREDENTIAL_PRESETS = {
+    admin: { identifier: 'admin@newshub-africa.com', password: 'Admin@NewsHub2026!' },
+    writer1: { identifier: 'writer1@newshub-africa.com', password: 'Writer1@2026!' },
+    writer2: { identifier: 'writer2@newshub-africa.com', password: 'Writer2@2026!' },
+    writer3: { identifier: 'writer3@newshub-africa.com', password: 'Writer3@2026!' }
+  };
+
+  // Auth Gate Handlers
+  function showLoginGate() {
+    currentUser = null;
+    const gate = document.getElementById('cmsAuthGate');
+    const app = document.getElementById('cmsMainApp');
+    if (gate) gate.classList.remove('hidden-gate');
+    if (app) app.style.display = 'none';
+  }
+
+  function showCmsApp() {
+    const gate = document.getElementById('cmsAuthGate');
+    const app = document.getElementById('cmsMainApp');
+    if (gate) gate.classList.add('hidden-gate');
+    if (app) app.style.display = 'block';
+  }
+
+  function fillRoleCredentials(roleKey) {
+    const creds = CREDENTIAL_PRESETS[roleKey];
+    if (!creds) return;
+    const idInput = document.getElementById('loginIdentifier');
+    const passInput = document.getElementById('loginPassword');
+    if (idInput) idInput.value = creds.identifier;
+    if (passInput) passInput.value = creds.password;
+    const errEl = document.getElementById('loginErrorMsg');
+    if (errEl) errEl.style.display = 'none';
+    const submitBtn = document.getElementById('cmsLoginSubmitBtn');
+    if (submitBtn) submitBtn.focus();
+  }
+
+  function togglePasswordVisibility() {
+    const passInput = document.getElementById('loginPassword');
+    if (!passInput) return;
+    if (passInput.type === 'password') {
+      passInput.type = 'text';
+    } else {
+      passInput.type = 'password';
+    }
+  }
+
+  async function handleCmsLogin(e) {
+    e.preventDefault();
+    const id = document.getElementById('loginIdentifier').value.trim();
+    const pass = document.getElementById('loginPassword').value.trim();
+    const submitBtn = document.getElementById('cmsLoginSubmitBtn');
+    
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span>Verifying credentials...</span>';
+    }
+
+    await performLogin(id, pass);
+
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<span>Sign In to Studio CMS →</span>';
+    }
+  }
+
+  async function performLogin(identifier, password) {
+    const errEl = document.getElementById('loginErrorMsg');
+    if (errEl) errEl.style.display = 'none';
+
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier, password })
+      });
+      const data = await res.json();
+      if (data.success && data.user) {
+        currentUser = {
+          ...data.user,
+          token: data.token
+        };
+        localStorage.setItem('newshub_auth_session', JSON.stringify(currentUser));
+        applyUserSessionUI();
+        showCmsApp();
+        window.showNewsHubToast(`Signed in as ${currentUser.name} (${currentUser.role === 'admin' ? 'Administrator' : 'Staff Writer'})`, '👋');
+        loadDashboardData();
+      } else {
+        if (errEl) {
+          errEl.textContent = data.error || 'Invalid credentials. Please check your username/email and password.';
+          errEl.style.display = 'block';
+        }
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      if (errEl) {
+        errEl.textContent = 'Unable to connect to authentication server. Please try again.';
+        errEl.style.display = 'block';
+      }
+    }
+  }
+
+  async function logoutCms() {
+    if (currentUser && currentUser.token) {
+      try {
+        await fetch('/api/auth/logout', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${currentUser.token}`
+          }
+        });
+      } catch (e) {}
+    }
+    localStorage.removeItem('newshub_auth_session');
+    currentUser = null;
+    showLoginGate();
+    const idInput = document.getElementById('loginIdentifier');
+    const passInput = document.getElementById('loginPassword');
+    if (idInput) idInput.value = '';
+    if (passInput) passInput.value = '';
+    window.showNewsHubToast('Signed out of Studio CMS.', '🔒');
+  }
+
+  function applyUserSessionUI() {
+    if (!currentUser) return;
+    const avatar = currentUser.avatar || '/Ashley Jordan Chihiya.jpg';
+    const name = currentUser.name || 'Ashley Jordan Chihiya';
+    const role = currentUser.role || 'admin';
+    const title = currentUser.title || 'Editorial Staff';
+
+    // Header Pill
+    const avatarEl = document.getElementById('headerUserAvatar');
+    if (avatarEl) {
+      avatarEl.src = avatar;
+      avatarEl.alt = name;
+    }
+    const nameEl = document.getElementById('headerUserName');
+    if (nameEl) nameEl.textContent = name;
+    
+    const roleBadgeEl = document.getElementById('headerUserRole');
+    if (roleBadgeEl) {
+      if (role === 'admin') {
+        roleBadgeEl.textContent = '👑 Administrator';
+        roleBadgeEl.style.color = '#0033cc';
+      } else {
+        roleBadgeEl.textContent = '✍️ Writer (' + (currentUser.department || currentUser.desk || 'Desk') + ')';
+        roleBadgeEl.style.color = '#2a9d8f';
+      }
+    }
+
+    // Role Status Banner
+    const banner = document.getElementById('roleStatusBanner');
+    const icon = document.getElementById('roleStatusIcon');
+    const heading = document.getElementById('roleStatusHeading');
+    const details = document.getElementById('roleStatusDetails');
+
+    if (banner) {
+      if (role === 'admin') {
+        banner.className = 'nh-role-banner admin';
+        if (icon) icon.textContent = '👑';
+        if (heading) heading.textContent = `Administrator Workspace (Full Access) — ${name}`;
+        if (details) details.textContent = 'Full editorial authority active: Upload new articles, edit/change existing site publications, delete articles, and manage continental events.';
+      } else {
+        banner.className = 'nh-role-banner writer';
+        if (icon) icon.textContent = '✍️';
+        if (heading) heading.textContent = `Staff Writer Workspace (Upload Only) — ${name} (${title})`;
+        if (details) details.textContent = 'Upload privileges enabled: You can compose, optimize with Gemini AI, and publish new stories. Altering existing site publications, deletions, and site events are restricted to the Administrator.';
+      }
+    }
+
+    // Composer defaults for writers
+    const authorInp = document.getElementById('artAuthor');
+    const authorTitleInp = document.getElementById('artAuthorTitle');
+    if (authorInp && role === 'writer') {
+      authorInp.value = name;
+    }
+    if (authorTitleInp && role === 'writer') {
+      authorTitleInp.value = title;
+    }
+    syncPreview();
+  }
+
+  // Restore session from localStorage on load or show login gate
+  function initAuth() {
+    try {
+      const saved = localStorage.getItem('newshub_auth_session');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.token) {
+          currentUser = parsed;
+          applyUserSessionUI();
+          showCmsApp();
+          return;
+        }
+      }
+    } catch (e) {}
+    
+    // Default: Show login gate asking for credentials
+    showLoginGate();
+  }
+
+  // Tab Switcher
+  function switchTab(tabId) {
+    document.querySelectorAll('.nh-tab-pane').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nh-tab-btn').forEach(b => b.classList.remove('active'));
+    
+    const targetPane = document.getElementById('pane-' + tabId);
+    const targetBtn = document.getElementById('tab-btn-' + tabId);
+    if (targetPane) targetPane.classList.add('active');
+    if (targetBtn) targetBtn.classList.add('active');
+  }
+
+  // Live Card Preview Sync
+  const titleInput = document.getElementById('artTitle');
+  const categorySelect = document.getElementById('artCategory');
+  const countrySelect = document.getElementById('artCountry');
+  const summaryInput = document.getElementById('artSummary');
+  const authorInput = document.getElementById('artAuthor');
+  const imageInput = document.getElementById('artImage');
+
+  function syncPreview() {
+    document.getElementById('prevTitle').textContent = titleInput.value || 'AfCFTA Digital Trade Protocol Accelerates Intra-African Commerce';
+    document.getElementById('prevSummary').textContent = summaryInput.value || 'A 2-3 sentence executive lead will appear here once entered.';
+    document.getElementById('prevTag').textContent = categorySelect.options[categorySelect.selectedIndex].text.split('&')[0].trim();
+    document.getElementById('prevTag').className = 'nh-tag-badge nh-tag-' + categorySelect.value;
+    document.getElementById('prevCountry').textContent = countrySelect.value;
+    document.getElementById('prevAuthor').textContent = 'By ' + (authorInput.value || currentUser.name || 'Ashley Jordan Chihiya');
+    if (imageInput.value) {
+      document.getElementById('prevImg').src = imageInput.value;
+    }
+  }
+
+  [titleInput, categorySelect, countrySelect, summaryInput, authorInput, imageInput].forEach(el => {
+    el.addEventListener('input', syncPreview);
+    el.addEventListener('change', syncPreview);
+  });
+
+  function setImagePreset(url, label) {
+    imageInput.value = url;
+    syncPreview();
+  }
+
+  function updateCoverPreset() {
+    const cat = categorySelect.value;
+    const presets = {
+      business: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1000&auto=format&fit=crop&q=80',
+      technology: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1000&auto=format&fit=crop&q=80',
+      agriculture: 'https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=1000&auto=format&fit=crop&q=80',
+      mining: 'https://images.unsplash.com/photo-1579548122080-c35fd6820ecb?w=1000&auto=format&fit=crop&q=80',
+      energy: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1000&auto=format&fit=crop&q=80',
+      markets: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1000&auto=format&fit=crop&q=80'
+    };
+    if (presets[cat]) {
+      imageInput.value = presets[cat];
+      syncPreview();
+    }
+  }
+
+  function insertFormatting(type) {
+    const textarea = document.getElementById('artContent');
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selected = textarea.value.substring(start, end);
+    let replacement = '';
+
+    if (type === 'h3') {
+      replacement = `\n\n### ${selected || 'Strategic Market Outlook'}\n\n`;
+    } else if (type === 'quote') {
+      replacement = `\n\n> "${selected || 'This agreement signifies a profound acceleration of economic integration across the continent.'}"\n— Executive Director, African Enterprise Chamber\n\n`;
+    } else if (type === 'bullets') {
+      replacement = `\n\n- Key Metric 1: 24% expansion in cross-border volume\n- Key Metric 2: $450M committed in sovereign infrastructure bonds\n- Key Metric 3: Fast-track regulatory approvals for verified exporters\n\n`;
+    }
+
+    textarea.setRangeText(replacement, start, end, 'end');
+    textarea.focus();
+  }
+
+  // AI Newsroom Assistant
+  async function generateAIDraft() {
+    const promptInput = document.getElementById('aiDraftPrompt');
+    const btn = document.getElementById('aiDraftBtn');
+    const topic = promptInput.value.trim() || titleInput.value.trim();
+
+    if (!topic) {
+      alert('Please enter a topic or news headline for Gemini AI to draft.');
+      promptInput.focus();
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span>⏳ Drafting...</span>';
+
+    try {
+      const res = await fetch('/api/ai/draft-assistant', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          topic,
+          category: categorySelect.value,
+          country: countrySelect.value,
+          keyPoints: summaryInput.value || promptInput.value
+        })
+      });
+
+      const data = await res.json();
+      if (data.success && data.draft) {
+        const d = data.draft;
+        titleInput.value = d.title;
+        summaryInput.value = d.summary;
+        document.getElementById('artContent').value = d.content;
+        if (d.tags && Array.isArray(d.tags)) {
+          document.getElementById('artTags').value = d.tags.join(', ');
+        }
+        syncPreview();
+        window.showNewsHubToast('Gemini AI successfully drafted your article!', '✨');
+      } else {
+        alert('Failed to generate draft: ' + (data.error || 'Unknown error'));
+      }
+    } catch (e) {
+      console.error(e);
+      alert('Error contacting AI service.');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<span>Draft Full Story</span>';
+    }
+  }
+
+  async function optimizeHeadline() {
+    const current = titleInput.value.trim();
+    if (!current) {
+      alert('Please enter a working title first.');
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/ai/draft-assistant', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          topic: current,
+          category: categorySelect.value,
+          country: countrySelect.value,
+          mode: 'headline_only'
+        })
+      });
+      const data = await res.json();
+      if (data.success && data.draft && data.draft.suggestedHeadlines) {
+        const headlines = data.draft.suggestedHeadlines;
+        const choice = prompt("Select an AI Optimized Headline (1, 2, or 3):\n\n" + headlines.map((h, i) => `${i+1}. ${h}`).join("\n\n"), "1");
+        if (choice && headlines[parseInt(choice, 10) - 1]) {
+          titleInput.value = headlines[parseInt(choice, 10) - 1];
+          syncPreview();
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  // Publish Article Handler (Available to both Administrator and Writers)
+  async function handlePublishArticle(e) {
+    e.preventDefault();
+    const btn = document.getElementById('publishBtn');
+    btn.disabled = true;
+    btn.textContent = 'Publishing to NewsHub Africa...';
+
+    const payload = {
+      title: titleInput.value.trim(),
+      category: categorySelect.value,
+      country: countrySelect.value,
+      summary: summaryInput.value.trim(),
+      content: document.getElementById('artContent').value.trim(),
+      author: authorInput.value.trim() || currentUser.name,
+      authorTitle: document.getElementById('artAuthorTitle').value.trim() || currentUser.title,
+      image: imageInput.value.trim(),
+      tags: document.getElementById('artTags').value.split(',').map(t => t.trim()).filter(Boolean),
+      isBreaking: document.getElementById('artBreaking').checked,
+      isFeatured: document.getElementById('artFeatured').checked
+    };
+
+    try {
+      const headers = { 'Content-Type': 'application/json' };
+      if (currentUser.token) {
+        headers['Authorization'] = `Bearer ${currentUser.token}`;
+      }
+
+      const res = await fetch('/api/articles', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (data.success && data.article) {
+        // Save to localStorage as backup
+        try {
+          const stored = JSON.parse(localStorage.getItem('newshub_published_articles') || '[]');
+          stored.unshift(data.article);
+          localStorage.setItem('newshub_published_articles', JSON.stringify(stored));
+        } catch (err) {}
+
+        window.showNewsHubToast(`Article published by ${currentUser.name}!`, '🚀');
+        
+        // Show publication success confirmation with quick links
+        const confirmBox = document.createElement('div');
+        confirmBox.style.cssText = 'position:fixed; top:20px; right:20px; z-index:99999; background:var(--nh-surface); border:2px solid var(--nh-blue); border-radius:12px; padding:20px; box-shadow:0 10px 40px rgba(0,51,204,0.3); max-width:420px; animation: slideIn 0.3s ease;';
+        confirmBox.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <div style="font-weight:700; color:var(--nh-blue); font-size:15px;">🎉 Published Live!</div>
+            <button onclick="this.parentElement.parentElement.remove()" style="border:none; background:transparent; font-size:18px; cursor:pointer;">&times;</button>
+          </div>
+          <p style="font-size:13px; margin-bottom:14px; color:var(--nh-text-primary); line-height:1.4;"><strong>${data.article.title}</strong> is now live across NewsHub Africa homepage and sector channels.</p>
+          <div style="display:flex; gap:10px;">
+            <a href="/article.html?id=${encodeURIComponent(data.article.id)}" target="_blank" class="nh-btn nh-btn-primary" style="font-size:12px; padding:8px 14px; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">👁️ Read Live Article</a>
+            <a href="/index.html" target="_blank" class="nh-btn" style="font-size:12px; padding:8px 14px; text-decoration:none; background:var(--nh-surface-raised); border:1px solid var(--nh-border); color:var(--nh-text-primary);">🏠 View Homepage</a>
+          </div>
+        `;
+        document.body.appendChild(confirmBox);
+        setTimeout(() => { if (confirmBox.parentElement) confirmBox.remove(); }, 12000);
+
+        resetArticleForm();
+        loadDashboardData();
+        switchTab('articles');
+      } else {
+        alert('Error publishing article: ' + (data.error || 'Unknown error'));
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Failed to publish article. Please check your connection.');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '🚀 Publish Article to NewsHub';
+    }
+  }
+
+  function resetArticleForm() {
+    document.getElementById('articleForm').reset();
+    document.getElementById('aiDraftPrompt').value = '';
+    applyUserSessionUI();
+    updateCoverPreset();
+    syncPreview();
+  }
+
+  // Load Dashboard Data & Stats
+  async function loadDashboardData() {
+    try {
+      // 1. Stats
+      const statsRes = await fetch('/api/dashboard/stats');
+      const statsData = await statsRes.json();
+      if (statsData.success) {
+        const s = statsData.stats;
+        document.getElementById('metricArticles').textContent = s.totalArticles.toLocaleString();
+        document.getElementById('metricViews').textContent = s.totalViews.toLocaleString();
+        document.getElementById('metricInteractions').textContent = (s.totalLikes + s.totalComments).toLocaleString();
+        document.getElementById('metricEvents').textContent = s.totalEvents.toLocaleString();
+        document.getElementById('metricSubscribers').textContent = (s.totalSubscribers || 14).toLocaleString();
+        document.getElementById('tabArticleCount').textContent = s.totalArticles;
+      }
+
+      // 2. Articles List
+      const artRes = await fetch('/api/articles?limit=50');
+      const artData = await artRes.json();
+      if (artData.success) {
+        allArticles = artData.articles;
+        renderArticlesTable(allArticles);
+      }
+
+      // 3. Events List
+      const evRes = await fetch('/api/events');
+      const evData = await evRes.json();
+      if (evData.success) {
+        allEvents = evData.events;
+        renderEventsTable(allEvents);
+      }
+
+      // 4. Live Markets Desk
+      loadMarketDesk();
+    } catch (err) {
+      console.error('Error loading dashboard data:', err);
+    }
+  }
+
+  function renderArticlesTable(articles) {
+    const tbody = document.getElementById('articlesTableBody');
+    if (!articles || articles.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 24px; color: var(--nh-text-muted);">No articles found.</td></tr>`;
+      return;
+    }
+
+    const isAdmin = currentUser.role === 'admin';
+
+    tbody.innerHTML = articles.map(art => `
+      <tr>
+        <td style="max-width: 280px;">
+          <div style="font-weight: 600; color: var(--nh-text-primary); margin-bottom: 2px;">
+            ${art.isBreaking ? '<span style="color:#e94560; font-size:11px; font-weight:bold;">[BREAKING] </span>' : ''}
+            ${art.title}
+          </div>
+          <div style="font-size: 11px; color: var(--nh-text-muted);">${art.slug || ''}</div>
+        </td>
+        <td>
+          <span class="nh-tag-badge nh-tag-${art.category.toLowerCase()}">${art.categoryLabel || art.category}</span>
+        </td>
+        <td>${art.country || 'Pan-African'}</td>
+        <td>${art.author || 'NewsHub'}</td>
+        <td>${new Date(art.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
+        <td>
+          <div style="font-size: 12px;">
+            <span>👁️ ${art.views || 0}</span> • <span>❤️ ${art.likes || 0}</span>
+          </div>
+        </td>
+        <td>
+          <div class="nh-action-btns">
+            <a href="/article.html?id=${encodeURIComponent(art.id)}" target="_blank" class="nh-icon-btn" title="View Live on NewsHub Africa" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center;">👁️</a>
+            ${isAdmin ? `
+              <button class="nh-icon-btn" title="Edit Article (Admin Only)" onclick="openEditModal('${art.id}')">✏️</button>
+              <button class="nh-icon-btn delete" title="Delete Article (Admin Only)" onclick="handleDeleteArticle('${art.id}')">🗑️</button>
+            ` : `
+              <span class="nh-locked-badge" title="Altering or deleting existing articles is restricted to Administrator access. Writers have upload-only privileges.">🔒 Admin Only</span>
+            `}
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function filterDashboardArticles() {
+    const q = document.getElementById('articleSearchInput').value.toLowerCase();
+    const cat = document.getElementById('articleCategoryFilter').value;
+
+    let filtered = [...allArticles];
+    if (cat !== 'all') {
+      filtered = filtered.filter(a => a.category.toLowerCase() === cat);
+    }
+    if (q) {
+      filtered = filtered.filter(a =>
+        a.title.toLowerCase().includes(q) ||
+        (a.tags && a.tags.some(t => t.toLowerCase().includes(q))) ||
+        (a.country && a.country.toLowerCase().includes(q))
+      );
+    }
+    renderArticlesTable(filtered);
+  }
+
+  // Edit Modal Handlers (Admin Only)
+  function openEditModal(artId) {
+    if (currentUser.role !== 'admin') {
+      alert('Access Restricted: Writer credentials only have upload access. Modifying existing articles requires Administrator privileges.');
+      return;
+    }
+
+    const art = allArticles.find(a => a.id === artId);
+    if (!art) return;
+
+    document.getElementById('editArtId').value = art.id;
+    document.getElementById('editArtTitle').value = art.title;
+    document.getElementById('editArtCategory').value = art.category.toLowerCase();
+    document.getElementById('editArtCountry').value = art.country || 'Pan-African';
+    document.getElementById('editArtSummary').value = art.summary || '';
+    document.getElementById('editArtContent').value = art.content || '';
+    document.getElementById('editArtImage').value = art.image || '';
+
+    document.getElementById('editArticleModal').classList.add('active');
+  }
+
+  function closeEditModal() {
+    document.getElementById('editArticleModal').classList.remove('active');
+  }
+
+  async function handleSaveEditedArticle(e) {
+    e.preventDefault();
+    if (currentUser.role !== 'admin') {
+      alert('Access Denied: Only the Administrator can alter existing articles.');
+      return;
+    }
+
+    const id = document.getElementById('editArtId').value;
+    const payload = {
+      title: document.getElementById('editArtTitle').value.trim(),
+      category: document.getElementById('editArtCategory').value,
+      country: document.getElementById('editArtCountry').value.trim(),
+      summary: document.getElementById('editArtSummary').value.trim(),
+      content: document.getElementById('editArtContent').value.trim(),
+      image: document.getElementById('editArtImage').value.trim()
+    };
+
+    try {
+      const headers = { 'Content-Type': 'application/json' };
+      if (currentUser.token) {
+        headers['Authorization'] = `Bearer ${currentUser.token}`;
+      }
+
+      const res = await fetch(`/api/articles/${id}`, {
+        method: 'PUT',
+        headers,
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (data.success) {
+        window.showNewsHubToast('Article updated successfully!', '✓');
+        closeEditModal();
+        loadDashboardData();
+      } else {
+        alert(data.error || 'Failed to update article.');
+      }
+    } catch (err) {
+      alert('Failed to update article.');
+    }
+  }
+
+  async function handleDeleteArticle(id) {
+    if (currentUser.role !== 'admin') {
+      alert('Access Restricted: Writer credentials only have upload access. Deleting articles requires Administrator privileges.');
+      return;
+    }
+
+    if (!confirm('Are you sure you want to delete this article?')) return;
+    try {
+      const headers = {};
+      if (currentUser.token) {
+        headers['Authorization'] = `Bearer ${currentUser.token}`;
+      }
+
+      const res = await fetch(`/api/articles/${id}`, { 
+        method: 'DELETE',
+        headers
+      });
+      const data = await res.json();
+      if (data.success) {
+        window.showNewsHubToast('Article removed', '🗑️');
+        loadDashboardData();
+      } else {
+        alert(data.error || 'Delete failed.');
+      }
+    } catch (e) {
+      alert('Delete failed.');
+    }
+  }
+
+  // Events Table Handlers
+  function renderEventsTable(events) {
+    const tbody = document.getElementById('eventsTableBody');
+    document.getElementById('eventsCountBadge').textContent = `${events.length} summits registered`;
+
+    const isAdmin = currentUser.role === 'admin';
+
+    tbody.innerHTML = events.map(ev => `
+      <tr>
+        <td>
+          <div style="font-weight: 600;">${ev.title}</div>
+          <div style="font-size: 11px; color: var(--nh-text-muted);">${ev.organization || ''}</div>
+        </td>
+        <td><span class="nh-tag-badge nh-tag-business">${ev.category || 'Business'}</span></td>
+        <td>${ev.location} (${ev.country || 'Africa'})</td>
+        <td>${ev.startDate} ${ev.endDate ? '— ' + ev.endDate : ''}</td>
+        <td>
+          ${isAdmin ? `
+            <button class="nh-icon-btn delete" onclick="handleDeleteEvent('${ev.id}')" title="Delete Summit (Admin)">🗑️</button>
+          ` : `
+            <span class="nh-locked-badge" title="Managing continental summits is restricted to Administrator">🔒 Admin Only</span>
+          `}
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  async function handleQuickAddEvent(e) {
+    e.preventDefault();
+    if (currentUser.role !== 'admin') {
+      alert('Altering continental events is restricted to Administrator credentials.');
+      return;
+    }
+
+    const payload = {
+      title: document.getElementById('evtTitle').value.trim(),
+      organization: document.getElementById('evtOrg').value.trim(),
+      location: document.getElementById('evtLocation').value.trim(),
+      category: document.getElementById('evtCategory').value,
+      startDate: document.getElementById('evtStartDate').value,
+      endDate: document.getElementById('evtEndDate').value,
+      website: document.getElementById('evtWebsite').value.trim()
+    };
+
+    try {
+      const headers = { 'Content-Type': 'application/json' };
+      if (currentUser.token) {
+        headers['Authorization'] = `Bearer ${currentUser.token}`;
+      }
+
+      const res = await fetch('/api/events', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (data.success) {
+        window.showNewsHubToast('Event added to Continental Calendar!', '🎉');
+        document.getElementById('dashEventForm').reset();
+        loadDashboardData();
+      }
+    } catch (e) {
+      alert('Failed to add event.');
+    }
+  }
+
+  async function handleDeleteEvent(id) {
+    if (currentUser.role !== 'admin') {
+      alert('Altering continental events is restricted to Administrator credentials.');
+      return;
+    }
+
+    if (!confirm('Remove this event from calendar?')) return;
+    try {
+      const headers = {};
+      if (currentUser.token) {
+        headers['Authorization'] = `Bearer ${currentUser.token}`;
+      }
+
+      const res = await fetch(`/api/events/${id}`, { 
+        method: 'DELETE',
+        headers
+      });
+      const data = await res.json();
+      if (data.success) {
+        window.showNewsHubToast('Event removed', '✓');
+        loadDashboardData();
+      }
+    } catch (e) {
+      alert('Delete failed.');
+    }
+  }
+
+  // Live African Bourses Desk
+  async function loadMarketDesk() {
+    try {
+      const res = await fetch('/api/markets/live');
+      const data = await res.json();
+      if (!data.success) return;
+
+      const indicesBody = document.getElementById('deskIndicesBody');
+      indicesBody.innerHTML = data.indices.map(idx => `
+        <tr>
+          <td>
+            <strong>${idx.symbol}</strong>
+            <div style="font-size: 11px; color: var(--nh-text-muted);">${idx.name}</div>
+          </td>
+          <td>${idx.country}</td>
+          <td><strong>${idx.price.toLocaleString()}</strong></td>
+          <td style="color: ${idx.changePercent >= 0 ? 'var(--nh-green)' : 'var(--nh-red)'}; font-weight: 600;">
+            ${idx.changePercent >= 0 ? '+' : ''}${idx.changePercent}%
+          </td>
+          <td>
+            <button class="nh-btn nh-btn-outline" style="padding: 3px 8px; font-size: 11px;" onclick="window.toggleWatchlistSymbol('${idx.symbol}')">
+              ★ Watch
+            </button>
+          </td>
+        </tr>
+      `).join('');
+
+      const currBody = document.getElementById('deskCurrenciesBody');
+      const items = [
+        ...data.forex.map(f => ({ sym: f.pair, type: 'Forex', rate: f.rate.toFixed(2), chg: f.changePercent })),
+        ...data.commodities.map(c => ({ sym: c.name, type: 'Commodity', rate: '$' + c.price.toLocaleString(), chg: c.changePercent }))
+      ];
+
+      currBody.innerHTML = items.map(item => `
+        <tr>
+          <td><strong>${item.sym}</strong></td>
+          <td><span style="font-size: 11px; color: var(--nh-text-muted);">${item.type}</span></td>
+          <td><strong>${item.rate}</strong></td>
+          <td style="color: ${item.chg >= 0 ? 'var(--nh-green)' : 'var(--nh-red)'}; font-weight: 600;">
+            ${item.chg >= 0 ? '+' : ''}${item.chg}%
+          </td>
+          <td>
+            <button class="nh-btn nh-btn-outline" style="padding: 3px 8px; font-size: 11px;" onclick="window.toggleWatchlistSymbol('${item.sym}')">
+              ★ Watch
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', () => {
+    initAuth();
+    loadDashboardData();
+    setInterval(loadMarketDesk, 15000);
+  });
+</script>
+</body>
+</html>

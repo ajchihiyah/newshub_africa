@@ -1,0 +1,6 @@
+# Robots.txt for NewsHub Africa
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://newshub-africa.com/sitemap.xml

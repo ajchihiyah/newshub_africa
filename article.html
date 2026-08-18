@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="pageTitle">NewsHub Africa — Pan-African Intelligence & News</title>
+  <meta name="description" content="Pan-African business, technology, agriculture, energy, mining and financial markets intelligence across Africa.">
+  <meta name="keywords" content="African business news, AfCFTA, JSE, NGX, African fintech, green energy, mining Africa, African markets">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://newshub-africa.com/article.html">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="NewsHub Africa — Pan-African Intelligence & News">
+  <meta property="og:description" content="Pan-African business, technology, agriculture, energy, mining and financial markets intelligence.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=80">
+  <meta property="og:site_name" content="NewsHub Africa">
+  
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="NewsHub Africa — Pan-African Intelligence & News">
+  <meta name="twitter:description" content="Pan-African business, technology, agriculture, energy, mining and financial markets intelligence.">
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=80">
+  
+  <!-- Structured Data JSON-LD (Schema.org) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    "headline": "Pan-African Business, Technology & Markets Intelligence",
+    "image": [
+      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=80"
+    ],
+    "datePublished": "2026-08-18T00:00:00Z",
+    "dateModified": "2026-08-18T00:00:00Z",
+    "author": [{
+      "@type": "Person",
+      "name": "Ashley Jordan Chihiya",
+      "jobTitle": "Senior Pan-African Intelligence Editor",
+      "url": "https://newshub-africa.com/about.html"
+    }],
+    "publisher": {
+      "@type": "Organization",
+      "name": "NewsHub Africa",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=500&auto=format&fit=crop&q=80"
+      }
+    },
+    "description": "Pan-African business, technology, agriculture, energy, mining and financial markets intelligence."
+  }
+  </script>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Roboto:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --nh-blue: #0033cc;
+      --nh-blue-light: #1a53ff;
+      --nh-blue-dark: #002080;
+      --nh-black: #0a0a0a;
+      --nh-white: #ffffff;
+      --nh-surface: #ffffff;
+      --nh-surface-raised: #f8f9fa;
+      --nh-text-primary: #0a0a0a;
+      --nh-text-secondary: #495057;
+      --nh-text-muted: #868e96;
+      --nh-border: #dee2e6;
+      --nh-shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+      --nh-shadow-md: 0 4px 14px rgba(0,0,0,0.09);
+      --nh-shadow-lg: 0 10px 40px rgba(0,0,0,0.12);
+      --nh-radius-sm: 6px;
+      --nh-radius-md: 10px;
+      --nh-radius-lg: 14px;
+      --nh-transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      --nh-green: #2a9d8f;
+      --nh-red: #e94560;
+    }
+
+    [data-theme="dark"] {
+      --nh-surface: #0f1115;
+      --nh-surface-raised: #1a1d23;
+      --nh-text-primary: #f0f0f5;
+      --nh-text-secondary: #8a8b97;
+      --nh-text-muted: #5a5a6b;
+      --nh-border: #2a2d35;
+      --nh-shadow-sm: 0 1px 3px rgba(0,0,0,0.30);
+      --nh-shadow-md: 0 4px 14px rgba(0,0,0,0.40);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Google Sans', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--nh-surface);
+      color: var(--nh-text-primary);
+      line-height: 1.7;
+    }
+
+    /* Reading Progress Bar */
+    #readingProgress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--nh-blue), #2a9d8f);
+      width: 0%;
+      z-index: 10000;
+      transition: width 0.1s ease;
+    }
+
+    /* Header */
+    .nh-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--nh-surface);
+      border-bottom: 1px solid var(--nh-border);
+      backdrop-filter: blur(16px);
+    }
+    .nh-header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .nh-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: inherit;
+    }
+    .nh-brand-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--nh-blue);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .nh-brand-text {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+    .nh-brand-text span { color: var(--nh-blue); }
+
+    .nh-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .nh-nav-item {
+      padding: 6px 12px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--nh-text-secondary);
+      text-decoration: none;
+      transition: var(--nh-transition);
+    }
+    .nh-nav-item:hover, .nh-nav-item.active {
+      color: var(--nh-blue);
+      background: var(--nh-surface-raised);
+    }
+
+    /* Main Article Container */
+    .nh-article-layout {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 32px 24px 60px;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 48px;
+    }
+    @media (max-width: 1024px) {
+      .nh-article-layout { grid-template-columns: 1fr; }
+    }
+
+    /* Article Meta */
+    .nh-art-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .nh-tag-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: rgba(0, 51, 204, 0.1);
+      color: var(--nh-blue);
+    }
+    .nh-art-date {
+      font-size: 13px;
+      color: var(--nh-text-muted);
+    }
+
+    /* Headline & Lead */
+    .nh-art-headline {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--nh-text-primary);
+      margin-bottom: 20px;
+    }
+    .nh-art-lead {
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--nh-text-secondary);
+      margin-bottom: 24px;
+      padding-left: 18px;
+      border-left: 3px solid var(--nh-blue);
+      font-style: italic;
+    }
+
+    /* Author Card Bar */
+    .nh-author-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-top: 1px solid var(--nh-border);
+      border-bottom: 1px solid var(--nh-border);
+      margin-bottom: 28px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .nh-author-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .nh-author-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--nh-border);
+    }
+    .nh-author-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--nh-text-primary);
+    }
+    .nh-author-title {
+      font-size: 12px;
+      color: var(--nh-text-muted);
+    }
+
+    .nh-art-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nh-action-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 12.5px;
+      font-weight: 600;
+      background: var(--nh-surface-raised);
+      border: 1px solid var(--nh-border);
+      color: var(--nh-text-secondary);
+      cursor: pointer;
+      transition: var(--nh-transition);
+    }
+    .nh-action-pill:hover, .nh-action-pill.active {
+      border-color: var(--nh-blue);
+      color: var(--nh-blue);
+      background: rgba(0, 51, 204, 0.05);
+    }
+
+    /* Featured Image */
+    .nh-art-image-box {
+      margin-bottom: 32px;
+      border-radius: var(--nh-radius-lg);
+      overflow: hidden;
+      box-shadow: var(--nh-shadow-sm);
+    }
+    .nh-art-image {
+      width: 100%;
+      max-height: 480px;
+      object-fit: cover;
+      display: block;
+    }
+    .nh-art-caption {
+      padding: 8px 12px;
+      font-size: 12px;
+      color: var(--nh-text-muted);
+      background: var(--nh-surface-raised);
+      border-bottom-left-radius: var(--nh-radius-lg);
+      border-bottom-right-radius: var(--nh-radius-lg);
+    }
+
+    /* AI Executive Takeaway Box */
+    .nh-gemini-card {
+      background: linear-gradient(135deg, rgba(0, 51, 204, 0.04), rgba(42, 157, 143, 0.06));
+      border: 1px solid rgba(0, 51, 204, 0.2);
+      border-radius: var(--nh-radius-md);
+      padding: 20px;
+      margin-bottom: 32px;
+    }
+    .nh-gemini-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .nh-gemini-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--nh-blue);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nh-gemini-bullet {
+      margin-bottom: 8px;
+      padding-left: 20px;
+      position: relative;
+      font-size: 13.5px;
+      color: var(--nh-text-secondary);
+    }
+    .nh-gemini-bullet::before {
+      content: '◆';
+      position: absolute;
+      left: 4px;
+      color: var(--nh-blue);
+      font-size: 9px;
+      top: 3px;
+    }
+
+    /* Article Content Body */
+    .nh-art-body {
+      font-size: 17px;
+      line-height: 1.8;
+      color: var(--nh-text-primary);
+    }
+    .nh-art-body p {
+      margin-bottom: 22px;
+    }
+    .nh-art-body h2, .nh-art-body h3 {
+      font-family: 'Playfair Display', Georgia, serif;
+      margin: 36px 0 16px;
+      color: var(--nh-text-primary);
+    }
+    .nh-art-body blockquote {
+      margin: 28px 0;
+      padding: 18px 24px;
+      background: var(--nh-surface-raised);
+      border-left: 4px solid var(--nh-blue);
+      border-radius: 0 var(--nh-radius-md) var(--nh-radius-md) 0;
+      font-style: italic;
+      font-size: 18px;
+      color: var(--nh-text-secondary);
+    }
+
+    /* Tags Cloud */
+    .nh-tags-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 36px 0;
+      padding-top: 20px;
+      border-top: 1px solid var(--nh-border);
+    }
+    .nh-tag-item {
+      padding: 4px 12px;
+      border-radius: 100px;
+      background: var(--nh-surface-raised);
+      border: 1px solid var(--nh-border);
+      font-size: 12px;
+      color: var(--nh-text-secondary);
+      text-decoration: none;
+    }
+    .nh-tag-item:hover {
+      border-color: var(--nh-blue);
+      color: var(--nh-blue);
+    }
+
+    /* Comments Section */
+    .nh-comments-box {
+      margin-top: 40px;
+      padding-top: 32px;
+      border-top: 2px solid var(--nh-border);
+    }
+    .nh-comment-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--nh-border);
+      border-radius: var(--nh-radius-md);
+      background: var(--nh-surface-raised);
+      color: var(--nh-text-primary);
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+      resize: vertical;
+      min-height: 90px;
+      margin-bottom: 12px;
+    }
+    .nh-comment-input:focus {
+      border-color: var(--nh-blue);
+      background: var(--nh-surface);
+    }
+    .nh-comment-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .nh-comment-card {
+      padding: 16px;
+      background: var(--nh-surface-raised);
+      border-radius: var(--nh-radius-md);
+      border: 1px solid var(--nh-border);
+    }
+    .nh-comment-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    /* Sidebar Widgets */
+    .nh-sidebar-widget {
+      background: var(--nh-surface);
+      border: 1px solid var(--nh-border);
+      border-radius: var(--nh-radius-lg);
+      padding: 20px;
+      margin-bottom: 24px;
+      box-shadow: var(--nh-shadow-sm);
+    }
+    .nh-widget-title {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--nh-text-muted);
+    }
+
+    /* Sidebar mini market ticker table */
+    .nh-mini-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+    }
+    .nh-mini-table td {
+      padding: 8px 0;
+      border-bottom: 1px solid var(--nh-border);
+    }
+
+    .nh-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: var(--nh-transition);
+      text-decoration: none;
+    }
+    .nh-btn-primary {
+      background: var(--nh-blue);
+      color: #ffffff;
+    }
+    .nh-btn-primary:hover {
+      background: var(--nh-blue-dark);
+    }
+
+    /* Footer */
+    .nh-footer {
+      background: var(--nh-surface-raised);
+      border-top: 1px solid var(--nh-border);
+      padding: 40px 24px;
+      margin-top: 60px;
+    }
+    .nh-footer-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 13px;
+      color: var(--nh-text-muted);
+    }
+  </style>
+</head>
+<body>
+
+<div id="readingProgress"></div>
+
+<!-- Header -->
+<header class="nh-header">
+  <div class="nh-header-inner">
+    <a href="/index.html" class="nh-brand">
+      <div class="nh-brand-icon">N</div>
+      <div class="nh-brand-text">newshub <span>AFRICA</span></div>
+    </a>
+
+    <nav class="nh-nav-links">
+      <a href="/index.html" class="nh-nav-item">Home</a>
+      <a href="/business.html" class="nh-nav-item">Business</a>
+      <a href="/technology.html" class="nh-nav-item">Technology</a>
+      <a href="/agriculture.html" class="nh-nav-item">Agriculture</a>
+      <a href="/mining.html" class="nh-nav-item">Mining</a>
+      <a href="/energy.html" class="nh-nav-item">Energy</a>
+      <a href="/markets_v13_linked.html" class="nh-nav-item">Markets</a>
+      <a href="/events.html" class="nh-nav-item">Events</a>
+      <a href="/dashboard.html" class="nh-nav-item" style="color:var(--nh-blue);font-weight:700">✍️ Studio CMS</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Article Layout -->
+<main class="nh-article-layout">
+  <!-- Article Column -->
+  <article>
+    <div class="nh-art-meta">
+      <span class="nh-tag-badge" id="artCatBadge">Pan-African Intelligence</span>
+      <span class="nh-art-date" id="artDate">August 2026</span>
+      <span class="nh-art-date" id="artCountryBadge">Continent-Wide</span>
+    </div>
+
+    <h1 class="nh-art-headline" id="artHeadline">
+      AfCFTA Digital Trade Protocol Accelerates Intra-African Commerce
+    </h1>
+
+    <p class="nh-art-lead" id="artLead">
+      Cross-border digital settlement mechanisms and unified customs integrations propel intra-continental transaction volumes past new milestones.
+    </p>
+
+    <div class="nh-author-bar">
+      <div class="nh-author-info">
+        <img src="/Ashley Jordan Chihiya.jpg" alt="Ashley Jordan Chihiya" class="nh-author-avatar" id="artAuthorAvatar" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop'" />
+        <div>
+          <div class="nh-author-name" id="artAuthorName">Ashley Jordan Chihiya</div>
+          <div class="nh-author-title" id="artAuthorRole">Senior Pan-African Intelligence Editor</div>
+        </div>
+      </div>
+
+      <div class="nh-art-actions">
+        <button class="nh-action-pill" id="likeBtn" onclick="handleLike()">
+          <span>❤️</span> <span id="likeCount">34</span> Likes
+        </button>
+        <button class="nh-action-pill" onclick="handleShare()">
+          <span>🔗</span> Share
+        </button>
+        <button class="nh-action-pill" onclick="triggerAISummary()">
+          <span>✨</span> AI Analysis
+        </button>
+      </div>
+    </div>
+
+    <!-- Featured Hero Image -->
+    <div class="nh-art-image-box">
+      <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=80" alt="NewsHub Africa" class="nh-art-image" id="artHeroImg" />
+      <div class="nh-art-caption" id="artCaption">
+        Photo: African commercial ports and digital financial gateways connect 54 sovereign economies under AfCFTA.
+      </div>
+    </div>
+
+    <!-- Gemini AI Executive Summary Box -->
+    <div class="nh-gemini-card" id="aiSummaryBox">
+      <div class="nh-gemini-card-header">
+        <div class="nh-gemini-title">
+          <span>✨</span> Gemini Continental Intelligence Brief
+        </div>
+        <span style="font-size: 11px; color: var(--nh-green); font-weight: 700;">● Verified Macro Brief</span>
+      </div>
+      <div id="aiSummaryBullets">
+        <div class="nh-gemini-bullet">Intra-African trade volume registered a 24% year-over-year increase following digital protocol harmonizations.</div>
+        <div class="nh-gemini-bullet">Pan-African Payment and Settlement System (PAPSS) adoption across 14 central banks eliminated estimated $5B in annual FX conversion frictions.</div>
+        <div class="nh-gemini-bullet">Sovereign capital allocators are targeting logistics hubs across West, East, and Southern Africa.</div>
+      </div>
+    </div>
+
+    <!-- Main Content Body -->
+    <div class="nh-art-body" id="artContentBody">
+      <p>
+        The implementation of the African Continental Free Trade Area (AfCFTA) Digital Trade Protocol represents a monumental leap forward for regional economic integration. By harmonizing digital payment rails, cross-border electronic invoicing, and consumer protection standards across participating member states, businesses are experiencing unprecedented frictionless trade.
+      </p>
+
+      <h3>Empowering SMEs and Cross-Border Digital Enterprises</h3>
+      <p>
+        Small and medium-sized enterprises (SMEs)—which account for more than 80% of employment across the continent—are among the chief beneficiaries. Real-time settlement in local African currencies via PAPSS has reduced the historic reliance on intermediate foreign currencies, dramatically accelerating clearing times from days to seconds.
+      </p>
+
+      <blockquote>
+        "The digital trade protocol is not just a regulatory document; it is an active economic engine creating measurable value for African entrepreneurs from Lagos to Nairobi, Cairo to Johannesburg."
+      </blockquote>
+
+      <h3>Strategic Infrastructure Investments & Next Horizons</h3>
+      <p>
+        Complementing the regulatory progress, sovereign and private investments in terrestrial fiber optics, green data centers, and renewable energy corridors continue to build the resilient foundation necessary to sustain double-digit intra-continental trade growth through 2030.
+      </p>
+    </div>
+
+    <!-- Tags -->
+    <div class="nh-tags-cloud" id="artTagsContainer">
+      <a href="#" class="nh-tag-item">#AfCFTA</a>
+      <a href="#" class="nh-tag-item">#TradeIntegration</a>
+      <a href="#" class="nh-tag-item">#AfricanEconomy</a>
+      <a href="#" class="nh-tag-item">#PAPSS</a>
+      <a href="#" class="nh-tag-item">#Infrastructure</a>
+    </div>
+
+    <!-- Comments & Discussion -->
+    <div class="nh-comments-box">
+      <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 16px;">
+        Reader Discussion (<span id="commentsCount">0</span>)
+      </h3>
+      <form onsubmit="handlePostComment(event)">
+        <textarea id="commentTextInput" class="nh-comment-input" placeholder="Join the discussion with pan-African analysts and business leaders..." required></textarea>
+        <div style="display: flex; justify-content: flex-end;">
+          <button type="submit" class="nh-btn nh-btn-primary">Post Comment</button>
+        </div>
+      </form>
+
+      <div class="nh-comment-list" id="commentList">
+        <!-- Rendered Comments -->
+      </div>
+    </div>
+  </article>
+
+  <!-- Sidebar Column -->
+  <aside>
+    <!-- Live African Bourses Widget -->
+    <div class="nh-sidebar-widget">
+      <div class="nh-widget-title">
+        <span>African Markets</span>
+        <a href="/markets_v13_linked.html" style="font-size: 11px; color: var(--nh-blue); text-decoration: none;">View All &rarr;</a>
+      </div>
+      <table class="nh-mini-table">
+        <tbody id="sidebarBoursesBody">
+          <tr>
+            <td><strong>JSE All Share</strong> (ZA)</td>
+            <td style="text-align: right;"><strong>84,120.45</strong></td>
+            <td style="text-align: right; color: var(--nh-green); font-weight: 600;">+0.78%</td>
+          </tr>
+          <tr>
+            <td><strong>NGX ASI</strong> (NG)</td>
+            <td style="text-align: right;"><strong>104,280.12</strong></td>
+            <td style="text-align: right; color: var(--nh-green); font-weight: 600;">+1.14%</td>
+          </tr>
+          <tr>
+            <td><strong>EGX 30</strong> (EG)</td>
+            <td style="text-align: right;"><strong>29,450.80</strong></td>
+            <td style="text-align: right; color: var(--nh-red); font-weight: 600;">-0.32%</td>
+          </tr>
+          <tr>
+            <td><strong>NSE 20</strong> (KE)</td>
+            <td style="text-align: right;"><strong>1,890.34</strong></td>
+            <td style="text-align: right; color: var(--nh-green); font-weight: 600;">+0.45%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Trending Pan-African Stories -->
+    <div class="nh-sidebar-widget">
+      <div class="nh-widget-title">
+        <span>Trending Intelligence</span>
+      </div>
+      <div id="sidebarTrendingList" style="display: flex; flex-direction: column; gap: 14px;">
+        <!-- Dynamic Articles -->
+      </div>
+    </div>
+
+    <!-- Editorial Newsroom CTA -->
+    <div class="nh-sidebar-widget" style="background: linear-gradient(135deg, rgba(0,51,204,0.06), rgba(107,33,168,0.06)); border-color: rgba(0,51,204,0.2);">
+      <h4 style="font-size: 14px; font-weight: 700; color: var(--nh-blue); margin-bottom: 6px;">Newsroom Studio</h4>
+      <p style="font-size: 12.5px; color: var(--nh-text-secondary); margin-bottom: 12px;">
+        Publish and edit articles directly with our Gemini AI newsroom assistant.
+      </p>
+      <a href="/dashboard.html" class="nh-btn nh-btn-primary" style="width: 100%; justify-content: center; font-size: 12px; padding: 6px 12px;">
+        Open Studio CMS &rarr;
+      </a>
+    </div>
+  </aside>
+</main>
+
+<!-- Footer -->
+<footer class="nh-footer">
+  <div class="nh-footer-inner">
+    <div>&copy; 2026 NewsHub Africa. Pan-African Business, Tech & Financial Markets Intelligence.</div>
+    <div style="display: flex; gap: 16px;">
+      <a href="/about.html" style="color: inherit; text-decoration: none;">About</a>
+      <a href="/markets_v13_linked.html" style="color: inherit; text-decoration: none;">Markets</a>
+      <a href="/events.html" style="color: inherit; text-decoration: none;">Events</a>
+      <a href="/privacy.html" style="color: inherit; text-decoration: none;">Privacy</a>
+      <a href="/terms.html" style="color: inherit; text-decoration: none;">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/newshub-api.js"></script>
+<script>
+  let currentArticleId = null;
+  let currentArticleData = null;
+
+  // Reading progress
+  window.addEventListener('scroll', () => {
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrolled = (window.scrollY / (docHeight || 1)) * 100;
+    document.getElementById('readingProgress').style.width = scrolled + '%';
+  });
+
+  // Extract article ID from URL (e.g. ?id=xyz, path /article/xyz, or /article_b1.html)
+  function getRequestedArticleId() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('id')) return params.get('id');
+    const path = window.location.pathname;
+    const pathParts = path.split('/');
+    if (pathParts.length > 2 && pathParts[1] === 'article') {
+      return pathParts[2];
+    }
+    const cleanPath = path.replace(/^\//, '').replace(/\.html$/, '');
+    if (cleanPath.startsWith('article_')) {
+      return cleanPath.replace('article_', 'art-');
+    }
+    return null;
+  }
+
+  async function loadArticle() {
+    const artId = getRequestedArticleId();
+    try {
+      let url = '/api/articles';
+      if (artId) {
+        url = `/api/articles/${encodeURIComponent(artId)}`;
+      }
+      
+      const res = await fetch(url);
+      const data = await res.json();
+      
+      if (data.success) {
+        if (data.article) {
+          currentArticleData = data.article;
+        } else if (data.articles && data.articles.length > 0) {
+          if (artId) {
+            // Find by ID, slug, or matching category prefix
+            const found = data.articles.find(a => a.id === artId || a.slug === artId || (artId.startsWith('art-') && a.category.startsWith(artId.charAt(4))));
+            currentArticleData = found || data.articles[0];
+          } else {
+            currentArticleData = data.articles[0];
+          }
+        }
+      }
+    } catch (e) {
+      console.warn('Network article fetch error, trying local cache', e);
+    }
+
+    // Fallback to local storage if article not found on server
+    if (!currentArticleData && artId) {
+      try {
+        const stored = JSON.parse(localStorage.getItem('newshub_published_articles') || '[]');
+        const match = stored.find(a => a.id === artId || a.slug === artId);
+        if (match) {
+          currentArticleData = match;
+          // Re-sync to server
+          fetch('/api/articles/sync', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ articles: [match] })
+          }).catch(() => {});
+        }
+      } catch (err) {}
+    }
+
+    if (currentArticleData) {
+      currentArticleId = currentArticleData.id;
+      renderArticle(currentArticleData);
+    }
+
+    loadSidebarTrending();
+  }
+
+  function renderArticle(art) {
+    document.getElementById('pageTitle').textContent = `${art.title} — NewsHub Africa`;
+    document.getElementById('artHeadline').textContent = art.title;
+    document.getElementById('artLead').textContent = art.summary || '';
+    document.getElementById('artCatBadge').textContent = art.categoryLabel || art.category.toUpperCase();
+    document.getElementById('artCountryBadge').textContent = art.country || 'Pan-African';
+    document.getElementById('artDate').textContent = new Date(art.publishedAt || Date.now()).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    document.getElementById('artAuthorName').textContent = art.author || 'Ashley Jordan Chihiya';
+    document.getElementById('artAuthorRole').textContent = art.authorTitle || 'Senior Pan-African Intelligence Editor';
+    document.getElementById('likeCount').textContent = art.likes || 0;
+
+    if (art.image) {
+      document.getElementById('artHeroImg').src = art.image;
+    }
+
+    // Body content format
+    if (art.content) {
+      const paragraphs = art.content.split('\n\n');
+      document.getElementById('artContentBody').innerHTML = paragraphs.map(p => {
+        if (p.startsWith('### ')) {
+          return `<h3>${p.replace('### ', '')}</h3>`;
+        } else if (p.startsWith('> ')) {
+          return `<blockquote>${p.replace('> ', '')}</blockquote>`;
+        } else if (p.startsWith('- ')) {
+          return `<ul>${p.split('\n').map(li => `<li>${li.replace('- ', '')}</li>`).join('')}</ul>`;
+        }
+        return `<p>${p}</p>`;
+      }).join('');
+    }
+
+    // Tags
+    if (art.tags && art.tags.length > 0) {
+      document.getElementById('artTagsContainer').innerHTML = art.tags.map(t =>
+        `<a href="#" class="nh-tag-item">#${t.replace('#', '')}</a>`
+      ).join('');
+    }
+
+    // Comments
+    renderComments(art.comments || []);
+  }
+
+  function renderComments(comments) {
+    document.getElementById('commentsCount').textContent = comments.length;
+    const list = document.getElementById('commentList');
+    if (!comments || comments.length === 0) {
+      list.innerHTML = `<div style="font-size: 13px; color: var(--nh-text-muted); padding: 12px 0;">No comments yet. Be the first to share your perspective.</div>`;
+      return;
+    }
+
+    list.innerHTML = comments.map(c => `
+      <div class="nh-comment-card">
+        <div class="nh-comment-head">
+          <strong style="color: var(--nh-text-primary);">${c.author || 'Reader'}</strong>
+          <span style="color: var(--nh-text-muted);">${new Date(c.createdAt || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+        </div>
+        <p style="font-size: 13.5px; color: var(--nh-text-secondary);">${c.text}</p>
+      </div>
+    `).join('');
+  }
+
+  async function handleLike() {
+    if (!currentArticleId) return;
+    try {
+      const res = await fetch(`/api/articles/${currentArticleId}/like`, { method: 'POST' });
+      const data = await res.json();
+      if (data.success) {
+        document.getElementById('likeCount').textContent = data.likes;
+        document.getElementById('likeBtn').classList.add('active');
+        window.showNewsHubToast('Article liked!', '❤️');
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function handlePostComment(e) {
+    e.preventDefault();
+    const input = document.getElementById('commentTextInput');
+    const text = input.value.trim();
+    if (!text || !currentArticleId) return;
+
+    try {
+      const res = await fetch(`/api/articles/${currentArticleId}/comments`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, author: 'Pan-African Analyst' })
+      });
+      const data = await res.json();
+      if (data.success) {
+        input.value = '';
+        renderComments(data.comments);
+        window.showNewsHubToast('Comment posted!', '💬');
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  function handleShare() {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(window.location.href);
+      window.showNewsHubToast('Article link copied to clipboard!', '🔗');
+    }
+  }
+
+  async function triggerAISummary() {
+    if (!currentArticleData) return;
+    const box = document.getElementById('aiSummaryBox');
+    box.scrollIntoView({ behavior: 'smooth' });
+    window.showNewsHubToast('Gemini AI Takeaway Active', '✨');
+  }
+
+  async function loadSidebarTrending() {
+    try {
+      const res = await fetch('/api/articles?limit=5');
+      const data = await res.json();
+      if (data.success && data.articles) {
+        const container = document.getElementById('sidebarTrendingList');
+        container.innerHTML = data.articles.filter(a => a.id !== currentArticleId).slice(0, 4).map(a => `
+          <a href="/article.html?id=${a.id}" style="display: flex; gap: 10px; text-decoration: none; color: inherit; align-items: center;">
+            <img src="${a.image || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=100&h=80&fit=crop'}" style="width: 60px; height: 50px; object-fit: cover; border-radius: var(--nh-radius-sm); flex-shrink: 0;" />
+            <div>
+              <div style="font-size: 13px; font-weight: 600; line-height: 1.3; color: var(--nh-text-primary); margin-bottom: 2px;">
+                ${a.title}
+              </div>
+              <div style="font-size: 11px; color: var(--nh-text-muted);">
+                ${a.categoryLabel || a.category} • ${a.views || 0} reads
+              </div>
+            </div>
+          </a>
+        `).join('');
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', loadArticle);
+</script>
+</body>
+</html>

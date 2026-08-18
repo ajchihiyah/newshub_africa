@@ -1,0 +1,6 @@
+{
+  "name": "NewsHub Africa",
+  "description": "Africa's premier news aggregator & market intelligence platform featuring real-time African bourses, commodities, AI continental briefings, sector insights, events, and podcasts.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

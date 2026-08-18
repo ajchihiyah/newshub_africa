@@ -5,7 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Events & Conferences — NewsHub Africa</title>
   <meta name="description" content="Comprehensive business, technology, agriculture, mining, and energy news across the African continent.">
+
+  <meta name="keywords" content="African events, business conferences Africa, tech summits Africa, mining indaba, trade fairs Africa">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://newshub-africa.com/events.html">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌍</text></svg>">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://newshub-africa.com/events.html">
+  <meta property="og:title" content="Pan-African Business Summits & Conferences — NewsHub Africa">
+  <meta property="og:description" content="Discover premier African business forums, energy summits, tech weeks, mining indabas, and trade expos across the continent.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=80">
+  <meta property="og:site_name" content="NewsHub Africa">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://newshub-africa.com/events.html">
+  <meta name="twitter:title" content="Pan-African Business Summits & Conferences — NewsHub Africa">
+  <meta name="twitter:description" content="Discover premier African business forums, energy summits, tech weeks, mining indabas, and trade expos across the continent.">
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=80">
+
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/js/events.css">
   <style>
 
 :root {
@@ -1267,7 +1289,7 @@ button:focus-visible, input:focus-visible, a:focus-visible {
     <li><a href="agriculture.html">Agriculture <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
     <li><a href="mining.html">Mining <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
     <li><a href="energy.html">Energy <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
-    <li><a href="markets.html">Markets <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="markets_v13_linked.html">Markets <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
     <li><a href="events.html">Events <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
   </ul>
 
@@ -1319,8 +1341,9 @@ button:focus-visible, input:focus-visible, a:focus-visible {
       <a href="agriculture.html" class="nh-nav-item ">Agriculture</a>
       <a href="mining.html" class="nh-nav-item ">Mining</a>
       <a href="energy.html" class="nh-nav-item ">Energy</a>
-      <a href="markets.html" class="nh-nav-item ">Markets</a>
+      <a href="markets_v13_linked.html" class="nh-nav-item ">Markets</a>
       <a href="events.html" class="nh-nav-item active">Events</a>
+      <a href="dashboard.html" class="nh-nav-item" style="color:var(--nh-blue);font-weight:700">✍️ Studio CMS</a>
       <div class="nh-live" role="status" aria-live="polite"><span class="dot"></span><span>Live Updates</span></div>
 </nav>
   </div>
@@ -1616,7 +1639,7 @@ button:focus-visible, input:focus-visible, a:focus-visible {
         <span class="days-num">--</span> days left
       </span>
     </div>
-    <img src="https://images.unsplash.com/photo-1569025743873-ea3a9f125c38?w=600&h=400&fit=crop" alt="ZITF">
+    <img src="https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=600&h=400&fit=crop" alt="Zimbabwe International Trade Fair (ZITF)">
     <div class="nh-event-card-body">
       <div class="nh-event-date">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
@@ -2132,7 +2155,7 @@ button:focus-visible, input:focus-visible, a:focus-visible {
     <div class="nh-newsletter-content">
       <h2>Stay Ahead of African Markets</h2>
       <p>Get curated business intelligence, market data, and breaking news delivered to your inbox every morning.</p>
-      <form class="nh-newsletter-form" onsubmit="event.preventDefault(); alert('Thank you for subscribing to NewsHub Africa!');">
+      <form class="nh-newsletter-form">
         <input type="email" placeholder="Enter your email" required aria-label="Email address">
         <button type="submit">Subscribe</button>
       </form>
@@ -2143,182 +2166,6 @@ button:focus-visible, input:focus-visible, a:focus-visible {
       <div class="nh-stat"><div class="nh-stat-num">Daily</div><div class="nh-stat-label">Updates</div></div>
     </div>
   </div>
-  <div class="nh-event-card">
-    <div class="nh-card-countdown">
-      <span class="nh-countdown-badge soon" data-target="2026-10-05">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        <span class="days-num">--</span> days left
-      </span>
-    </div>
-    <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&h=400&fit=crop" alt="DRC Mining Week">
-    <div class="nh-event-card-body">
-      <div class="nh-event-date">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-        Oct 5-7, 2026
-      </div>
-      <h3>DRC Mining Week 2026</h3>
-      <p>The definitive gathering for DRC's copper and cobalt belt, connecting miners with investors amid global energy transition demand.</p>
-      <div class="nh-event-location">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-        Lubumbashi, DRC
-      </div>
-    </div>
-  </div>
-
-  <div class="nh-event-card">
-    <div class="nh-card-countdown">
-      <span class="nh-countdown-badge upcoming" data-target="2026-11-22">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        <span class="days-num">--</span> days left
-      </span>
-    </div>
-    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=400&fit=crop" alt="Botswana Diamond Conference">
-    <div class="nh-event-card-body">
-      <div class="nh-event-date">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-        Nov 22-24, 2026
-      </div>
-      <h3>Botswana Diamond & Resources Summit</h3>
-      <p>Exploring the future of diamond beneficiation, Debswana partnerships, and Botswana's diversification into tech and tourism.</p>
-      <div class="nh-event-location">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-        Gaborone, Botswana
-      </div>
-    </div>
-  </div>
-
-  <div class="nh-event-card">
-    <div class="nh-card-countdown">
-      <span class="nh-countdown-badge upcoming" data-target="2026-12-15">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        <span class="days-num">--</span> days left
-      </span>
-    </div>
-    <img src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=600&h=400&fit=crop" alt="Mozambique Gas Summit">
-    <div class="nh-event-card-body">
-      <div class="nh-event-date">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-        Dec 15-17, 2026
-      </div>
-      <h3>Mozambique Gas & LNG Summit 2026</h3>
-      <p>Unlocking the Rovuma Basin's LNG potential with TotalEnergies, ENI, and regional stakeholders for Southern African energy security.</p>
-      <div class="nh-event-location">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-        Maputo, Mozambique
-      </div>
-    </div>
-  </div>
-
-  <div class="nh-event-card">
-    <div class="nh-card-countdown">
-      <span class="nh-countdown-badge upcoming" data-target="2027-01-25">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        <span class="days-num">--</span> days left
-      </span>
-    </div>
-    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop" alt="Namibia Economic Summit">
-    <div class="nh-event-card-body">
-      <div class="nh-event-date">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-        Jan 25-27, 2027
-      </div>
-      <h3>Namibia Economic & Green Hydrogen Summit</h3>
-      <p>Positioning Namibia as Africa's green hydrogen hub with world-class wind and solar resources for export to Europe and Asia.</p>
-      <div class="nh-event-location">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-        Windhoek, Namibia
-      </div>
-    </div>
-  </div>
-
-  <div class="nh-event-card">
-    <div class="nh-card-countdown">
-      <span class="nh-countdown-badge upcoming" data-target="2027-02-28">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        <span class="days-num">--</span> days left
-      </span>
-    </div>
-    <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&h=400&fit=crop" alt="Tanzania Agri-Business">
-    <div class="nh-event-card-body">
-      <div class="nh-event-date">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-        Feb 28 – Mar 2, 2027
-      </div>
-      <h3>Tanzania Agri-Business & Food Security Forum</h3>
-      <p>Scaling Tanzania's agricultural potential from the Southern Highlands to the coast, with focus on cashew, coffee, and rice value chains.</p>
-      <div class="nh-event-location">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-        Dar es Salaam, Tanzania
-      </div>
-    </div>
-  </div>
-
-  <div class="nh-event-card">
-    <div class="nh-card-countdown">
-      <span class="nh-countdown-badge upcoming" data-target="2027-03-30">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        <span class="days-num">--</span> days left
-      </span>
-    </div>
-    <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&h=400&fit=crop" alt="Mauritius Fintech">
-    <div class="nh-event-card-body">
-      <div class="nh-event-date">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-        Mar 30 – Apr 1, 2027
-      </div>
-      <h3>Mauritius Fintech & Digital Innovation Week</h3>
-      <p>Leveraging Mauritius as Africa's financial gateway for blockchain, wealth management, and cross-border payment solutions.</p>
-      <div class="nh-event-location">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-        Port Louis, Mauritius
-      </div>
-    </div>
-  </div>
-
-  <div class="nh-event-card">
-    <div class="nh-card-countdown">
-      <span class="nh-countdown-badge upcoming" data-target="2027-05-18">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        <span class="days-num">--</span> days left
-      </span>
-    </div>
-    <img src="https://images.unsplash.com/photo-1593113598332-cd288d649433?w=600&h=400&fit=crop" alt="Uganda Business Forum">
-    <div class="nh-event-card-body">
-      <div class="nh-event-date">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-        May 18-20, 2027
-      </div>
-      <h3>Uganda Business & Investment Forum 2027</h3>
-      <p>East Africa's fastest-growing economy opens its doors to investors in oil & gas, agriculture, manufacturing, and ICT infrastructure.</p>
-      <div class="nh-event-location">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-        Kampala, Uganda
-      </div>
-    </div>
-  </div>
-
-  <div class="nh-event-card">
-    <div class="nh-card-countdown">
-      <span class="nh-countdown-badge upcoming" data-target="2027-06-28">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        <span class="days-num">--</span> days left
-      </span>
-    </div>
-    <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&h=400&fit=crop" alt="Angola Oil & Gas">
-    <div class="nh-event-card-body">
-      <div class="nh-event-date">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-        Jun 28-30, 2027
-      </div>
-      <h3>Angola Oil & Gas Conference 2027</h3>
-      <p>Exploring Angola's post-OPEC diversification, pre-salt blocks, and the Lobito Corridor's role in regional energy logistics.</p>
-      <div class="nh-event-location">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-        Luanda, Angola
-      </div>
-    </div>
-  </div>
-
 </div>
 
 <div class="nh-ad-slot" style="background:var(--nh-surface-raised);border:1px dashed var(--nh-border);border-radius:var(--nh-radius-md);padding:8px 16px;margin-bottom:36px;text-align:center;position:relative;overflow:hidden">
@@ -2419,122 +2266,6 @@ document.addEventListener('keydown', function(e) {
 
 
 
-// ── Events Filter Bar Logic ─────────────────────────────────────
-(function() {
-  const eventsData = [
-    { id: 1, title: 'Africa Tech Summit Nairobi 2026', sector: 'tech', region: 'east-africa', date: '2026-08-15', city: 'Nairobi', keywords: 'technology startup innovation' },
-    { id: 2, title: 'Mining Indaba 2026', sector: 'mining', region: 'southern-africa', date: '2026-09-08', city: 'Cape Town', keywords: 'mining investment resources' },
-    { id: 3, title: 'AfDB Annual Meetings 2026', sector: 'finance', region: 'west-africa', date: '2026-10-20', city: 'Abidjan', keywords: 'development bank infrastructure' },
-    { id: 4, title: 'Africa Agri-Investment Summit', sector: 'agriculture', region: 'west-africa', date: '2026-11-05', city: 'Accra', keywords: 'farming agribusiness food' },
-    { id: 5, title: 'Africa Energy Forum 2026', sector: 'energy', region: 'north-africa', date: '2026-12-01', city: 'Marrakech', keywords: 'power renewables transition' },
-    { id: 6, title: 'Africa Fintech Summit Lagos', sector: 'finance', region: 'west-africa', date: '2027-01-18', city: 'Lagos', keywords: 'fintech payments blockchain' },
-    { id: 7, title: 'ZimTrade International Expo 2026', sector: 'business', region: 'southern-africa', date: '2026-09-25', city: 'Harare', keywords: 'trade export manufacturing' },
-    { id: 8, title: 'Zimbabwe International Trade Fair', sector: 'business', region: 'southern-africa', date: '2026-10-12', city: 'Bulawayo', keywords: 'trade fair exhibition' },
-    { id: 9, title: 'Transform Africa Summit 2026', sector: 'tech', region: 'east-africa', date: '2026-11-18', city: 'Kigali', keywords: 'digital transformation ict' },
-    { id: 10, title: 'Africa Investment Forum 2026', sector: 'finance', region: 'north-africa', date: '2026-12-08', city: 'Casablanca', keywords: 'investment deals financing' },
-    { id: 11, title: 'Africa CEO Forum 2027', sector: 'business', region: 'west-africa', date: '2027-02-10', city: 'Abidjan', keywords: 'ceo leadership afcfta' },
-    { id: 12, title: 'African Union Summit 2027', sector: 'business', region: 'east-africa', date: '2027-03-15', city: 'Addis Ababa', keywords: 'policy governance diplomacy' },
-    { id: 13, title: 'AfricaTech Festival AfricaCom 2027', sector: 'tech', region: 'southern-africa', date: '2027-04-22', city: 'Cape Town', keywords: 'telecoms connectivity cloud' },
-    { id: 14, title: 'Zimbabwe Mining Minerals Conference', sector: 'mining', region: 'southern-africa', date: '2027-05-05', city: 'Victoria Falls', keywords: 'lithium platinum gold' },
-    { id: 15, title: 'African Green Revolution Forum 2027', sector: 'agriculture', region: 'east-africa', date: '2027-06-20', city: 'Nairobi', keywords: 'food security smallholder' },
-    { id: 16, title: 'Africa Internet Governance Forum 2027', sector: 'tech', region: 'west-africa', date: '2027-07-15', city: 'Dakar', keywords: 'digital rights cybersecurity' },
-    { id: 17, title: 'Zimbabwe Tourism Hospitality Expo', sector: 'business', region: 'southern-africa', date: '2027-08-20', city: 'Victoria Falls', keywords: 'tourism safari hospitality' },
-    { id: 18, title: 'Africa SME Summit 2027', sector: 'business', region: 'west-africa', date: '2027-09-10', city: 'Lagos', keywords: 'sme entrepreneurship finance' },
-    { id: 19, title: 'Powering Africa Summit 2027', sector: 'energy', region: 'east-africa', date: '2027-10-05', city: 'Kigali', keywords: 'power grid renewable' },
-    { id: 20, title: 'Africa Data Centres Cloud Summit', sector: 'tech', region: 'southern-africa', date: '2027-11-15', city: 'Johannesburg', keywords: 'data centres cloud edge' },
-    { id: 21, title: 'Zimbabwe Business Investment Forum', sector: 'business', region: 'southern-africa', date: '2027-12-01', city: 'Harare', keywords: 'investment diaspora economy' },
-    { id: 22, title: 'DRC Mining Week 2026', sector: 'mining', region: 'central-africa', date: '2026-10-05', city: 'Lubumbashi', keywords: 'copper cobalt energy transition' },
-    { id: 23, title: 'Botswana Diamond Resources Summit', sector: 'mining', region: 'southern-africa', date: '2026-11-22', city: 'Gaborone', keywords: 'diamond beneficiation diversification' },
-    { id: 24, title: 'Mozambique Gas LNG Summit 2026', sector: 'energy', region: 'southern-africa', date: '2026-12-15', city: 'Maputo', keywords: 'lng rovuma basin energy' },
-    { id: 25, title: 'Namibia Economic Green Hydrogen Summit', sector: 'energy', region: 'southern-africa', date: '2027-01-25', city: 'Windhoek', keywords: 'green hydrogen renewable export' },
-    { id: 26, title: 'Tanzania Agri-Business Food Security Forum', sector: 'agriculture', region: 'east-africa', date: '2027-02-28', city: 'Dar es Salaam', keywords: 'agriculture cashew coffee rice' },
-    { id: 27, title: 'Mauritius Fintech Digital Innovation Week', sector: 'finance', region: 'east-africa', date: '2027-03-30', city: 'Port Louis', keywords: 'fintech blockchain wealth management' },
-    { id: 28, title: 'Uganda Business Investment Forum 2027', sector: 'business', region: 'east-africa', date: '2027-05-18', city: 'Kampala', keywords: 'oil gas agriculture ict' },
-    { id: 29, title: 'Angola Oil Gas Conference 2027', sector: 'energy', region: 'central-africa', date: '2027-06-28', city: 'Luanda', keywords: 'oil gas presalt lobito corridor' }
-  ];
-
-  let activeFilters = { sector: 'all', time: 'all', region: 'all', search: '' };
-
-  function getEventId(card) {
-    const h3 = card.querySelector('h3');
-    if (!h3) return null;
-    const title = h3.textContent.trim();
-    return eventsData.findIndex(e => title.includes(e.title.split(' ').slice(0, 3).join(' '))) + 1;
-  }
-
-  function matchesTime(dateStr, filter) {
-    const now = new Date('2026-07-24');
-    const d = new Date(dateStr);
-    const days = Math.ceil((d - now) / 86400000);
-    switch(filter) {
-      case 'this-month': return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
-      case 'next-3': return days >= 0 && days <= 90;
-      case '2027': return d.getFullYear() === 2027;
-      default: return true;
-    }
-  }
-
-  function applyFilters() {
-    const cards = document.querySelectorAll('.nh-events-grid .nh-event-card');
-    let visible = 0;
-    cards.forEach(card => {
-      const id = getEventId(card);
-      const e = eventsData.find(ev => ev.id === id);
-      if (!e) return;
-      let show = true;
-      if (activeFilters.sector !== 'all' && e.sector !== activeFilters.sector) show = false;
-      if (activeFilters.time !== 'all' && !matchesTime(e.date, activeFilters.time)) show = false;
-      if (activeFilters.region !== 'all' && e.region !== activeFilters.region) show = false;
-      if (activeFilters.search) {
-        const q = activeFilters.search.toLowerCase();
-        if (!(e.title + ' ' + e.city + ' ' + e.keywords).toLowerCase().includes(q)) show = false;
-      }
-      card.classList.toggle('hidden', !show);
-      if (show) visible++;
-    });
-    document.getElementById('resultsCount').innerHTML = `<strong>${visible}</strong> event${visible !== 1 ? 's' : ''} found`;
-    const hasActive = activeFilters.sector !== 'all' || activeFilters.time !== 'all' || activeFilters.region !== 'all' || activeFilters.search !== '';
-    document.getElementById('clearFilters').style.display = hasActive ? 'inline-block' : 'none';
-  }
-
-  // Pill clicks
-  document.querySelectorAll('.filter-pill').forEach(pill => {
-    pill.addEventListener('click', function() {
-      const group = this.dataset.group;
-      document.querySelectorAll(`.filter-pill[data-group="${group}"]`).forEach(p => p.classList.remove('active'));
-      this.classList.add('active');
-      activeFilters[group] = this.dataset.filter;
-      applyFilters();
-    });
-  });
-
-  // Region select
-  document.getElementById('regionSelect').addEventListener('change', function() {
-    activeFilters.region = this.value;
-    applyFilters();
-  });
-
-  // Search (debounced)
-  let timer;
-  document.getElementById('eventSearch').addEventListener('input', function() {
-    clearTimeout(timer);
-    timer = setTimeout(() => { activeFilters.search = this.value.trim(); applyFilters(); }, 200);
-  });
-
-  // Clear all
-  document.getElementById('clearFilters').addEventListener('click', function() {
-    activeFilters = { sector: 'all', time: 'all', region: 'all', search: '' };
-    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.filter-pill[data-filter="all"]').forEach(p => p.classList.add('active'));
-    document.getElementById('regionSelect').value = 'all';
-    document.getElementById('eventSearch').value = '';
-    applyFilters();
-  });
-
-  applyFilters();
-})();
-
-
 // ── Countdown Timer Logic ───────────────────────────────────────
 (function() {
   function updateCountdowns() {
@@ -2555,10 +2286,14 @@ document.addEventListener('keydown', function(e) {
       const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-      container.querySelector('[data-unit="days"]').textContent = String(days).padStart(2, '0');
-      container.querySelector('[data-unit="hours"]').textContent = String(hours).padStart(2, '0');
-      container.querySelector('[data-unit="minutes"]').textContent = String(minutes).padStart(2, '0');
-      container.querySelector('[data-unit="seconds"]').textContent = String(seconds).padStart(2, '0');
+      const daysUnit = container.querySelector('[data-unit="days"]');
+      if (daysUnit) daysUnit.textContent = String(days).padStart(2, '0');
+      const hoursUnit = container.querySelector('[data-unit="hours"]');
+      if (hoursUnit) hoursUnit.textContent = String(hours).padStart(2, '0');
+      const minutesUnit = container.querySelector('[data-unit="minutes"]');
+      if (minutesUnit) minutesUnit.textContent = String(minutes).padStart(2, '0');
+      const secondsUnit = container.querySelector('[data-unit="seconds"]');
+      if (secondsUnit) secondsUnit.textContent = String(seconds).padStart(2, '0');
     });
 
     // Update card badges
@@ -2568,11 +2303,14 @@ document.addEventListener('keydown', function(e) {
       const daysEl = badge.querySelector('.days-num');
 
       if (diff <= 0) {
-        daysEl.textContent = '0';
+        if (daysEl) daysEl.textContent = '0';
         badge.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Happening Now';
         badge.className = 'nh-countdown-badge urgent';
+        badge.removeAttribute('data-target');
         return;
       }
+
+      if (!daysEl) return;
 
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
       daysEl.textContent = days;
@@ -2592,8 +2330,8 @@ document.addEventListener('keydown', function(e) {
   updateCountdowns();
   setInterval(updateCountdowns, 1000);
 })();
-
 </script>
-
+<script src="/js/events-app.js"></script>
+<script src="/js/newshub-api.js"></script>
 </body>
 </html>

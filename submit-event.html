@@ -5,6 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Events & Conferences — NewsHub Africa</title>
   <meta name="description" content="Comprehensive business, technology, agriculture, mining, and energy news across the African continent.">
+
+  <meta name="keywords" content="submit event, African business conference, event directory Africa">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://newshub-africa.com/submit-event.html">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌍</text></svg>">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://newshub-africa.com/submit-event.html">
+  <meta property="og:title" content="Submit an Event — NewsHub Africa Events Directory">
+  <meta property="og:description" content="Submit your business conference, tech summit, or industry expo to be featured on NewsHub Africa's continental event directory.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=80">
+  <meta property="og:site_name" content="NewsHub Africa">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://newshub-africa.com/submit-event.html">
+  <meta name="twitter:title" content="Submit an Event — NewsHub Africa Events Directory">
+  <meta name="twitter:description" content="Submit your business conference, tech summit, or industry expo to be featured on NewsHub Africa's continental event directory.">
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=80">
+
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
 
@@ -1741,7 +1762,7 @@ button:focus-visible, input:focus-visible, a:focus-visible {
     <li><a href="agriculture.html">Agriculture <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
     <li><a href="mining.html">Mining <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
     <li><a href="energy.html">Energy <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
-    <li><a href="markets.html">Markets <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="markets_v13_linked.html">Markets <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
     <li><a href="events.html">Events <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
   </ul>
 
@@ -1793,7 +1814,7 @@ button:focus-visible, input:focus-visible, a:focus-visible {
       <a href="agriculture.html" class="nh-nav-item ">Agriculture</a>
       <a href="mining.html" class="nh-nav-item ">Mining</a>
       <a href="energy.html" class="nh-nav-item ">Energy</a>
-      <a href="markets.html" class="nh-nav-item ">Markets</a>
+      <a href="markets_v13_linked.html" class="nh-nav-item ">Markets</a>
       <a href="events.html" class="nh-nav-item">Events</a>
       <div class="nh-live" role="status" aria-live="polite"><span class="dot"></span><span>Live Updates</span></div>
 </nav>
@@ -2529,10 +2550,14 @@ document.addEventListener('keydown', function(e) {
       const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-      container.querySelector('[data-unit="days"]').textContent = String(days).padStart(2, '0');
-      container.querySelector('[data-unit="hours"]').textContent = String(hours).padStart(2, '0');
-      container.querySelector('[data-unit="minutes"]').textContent = String(minutes).padStart(2, '0');
-      container.querySelector('[data-unit="seconds"]').textContent = String(seconds).padStart(2, '0');
+      const daysUnit = container.querySelector('[data-unit="days"]');
+      if (daysUnit) daysUnit.textContent = String(days).padStart(2, '0');
+      const hoursUnit = container.querySelector('[data-unit="hours"]');
+      if (hoursUnit) hoursUnit.textContent = String(hours).padStart(2, '0');
+      const minutesUnit = container.querySelector('[data-unit="minutes"]');
+      if (minutesUnit) minutesUnit.textContent = String(minutes).padStart(2, '0');
+      const secondsUnit = container.querySelector('[data-unit="seconds"]');
+      if (secondsUnit) secondsUnit.textContent = String(seconds).padStart(2, '0');
     });
 
     // Update card badges
@@ -2542,11 +2567,14 @@ document.addEventListener('keydown', function(e) {
       const daysEl = badge.querySelector('.days-num');
 
       if (diff <= 0) {
-        daysEl.textContent = '0';
+        if (daysEl) daysEl.textContent = '0';
         badge.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Happening Now';
         badge.className = 'nh-countdown-badge urgent';
+        badge.removeAttribute('data-target');
         return;
       }
+
+      if (!daysEl) return;
 
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
       daysEl.textContent = days;
@@ -2619,6 +2647,6 @@ document.getElementById('eventStartDate').addEventListener('change', function() 
 });
 
 </script>
-
+<script src="/js/newshub-api.js"></script>
 </body>
 </html>

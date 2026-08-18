@@ -5,6 +5,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Africa's Premier News Aggregator — NewsHub Africa</title>
   <meta name="description" content="Comprehensive business, technology, agriculture, mining, and energy news across the African continent.">
+
+  <meta name="keywords" content="African news, AfCFTA, African stock exchanges, JSE, NGX, African tech, African mining, business in Africa">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://newshub-africa.com/">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌍</text></svg>">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://newshub-africa.com/">
+  <meta property="og:title" content="NewsHub Africa — Pan-African Business, Tech, Mining & Markets Intelligence">
+  <meta property="og:description" content="Africa's premier news and market intelligence platform. Real-time African bourses, AfCFTA trade analysis, energy, tech, and agribusiness insights.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=80">
+  <meta property="og:site_name" content="NewsHub Africa">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://newshub-africa.com/">
+  <meta name="twitter:title" content="NewsHub Africa — Pan-African Business, Tech, Mining & Markets Intelligence">
+  <meta name="twitter:description" content="Africa's premier news and market intelligence platform. Real-time African bourses, AfCFTA trade analysis, energy, tech, and agribusiness insights.">
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=80">
+
+  <!-- Structured Data JSON-LD (Schema.org) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "NewsMediaOrganization",
+    "name": "NewsHub Africa",
+    "url": "https://newshub-africa.com",
+    "logo": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=500&auto=format&fit=crop&q=80",
+    "sameAs": [
+      "https://twitter.com/NewsHubAfrica",
+      "https://linkedin.com/company/newshub-africa"
+    ],
+    "description": "Premier Pan-African news aggregator and real-time financial markets intelligence platform covering 54 African nations under AfCFTA."
+  }
+  </script>
+
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
 
@@ -994,15 +1031,17 @@ button:focus-visible, input:focus-visible, a:focus-visible {
       <a href="energy.html" class="nh-nav-item ">Energy</a>
       <a href="markets_v13_linked.html" class="nh-nav-item ">Markets</a>
       <a href="events.html" class="nh-nav-item ">Events</a>
+      <a href="dashboard.html" class="nh-nav-item" style="color:var(--nh-blue);font-weight:700">✍️ Studio CMS</a>
 
-          <div class="nh-live" id="navQuote" role="status" aria-live="polite" style="cursor:default;animation:none;flex:1;max-width:420px;overflow:hidden;position:relative;mask-image:linear-gradient(90deg,transparent,black 5%,black 95%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,black 5%,black 95%,transparent)">
-        <span class="dot" style="background:var(--nh-blue);animation:blink 1.5s infinite;flex-shrink:0"></span>
-        <div id="nav-qod-track" style="display:flex;gap:60px;width:max-content;animation:breaking-scroll 25s linear infinite;white-space:nowrap;padding-left:10px">
-          <span class="nav-qod-item" style="flex-shrink:0">Loading today's wisdom...</span>
-          <span class="nav-qod-item" style="flex-shrink:0">Loading today's wisdom...</span>
+      <div class="nh-nav-quote-pill" id="navQuotePill" role="button" tabindex="0" aria-label="Wisdom of Africa - Daily Quotes" title="Click to explore African Leadership & Market Wisdom">
+        <span class="nh-nav-quote-badge"><span class="nh-pulse-dot"></span> Wisdom</span>
+        <div class="nh-nav-quote-content">
+          <span class="nh-nav-quote-text">"The future of Africa is in trade, investment, and ingenuity..."</span>
+          <span class="nh-nav-quote-author">— Aliko Dangote</span>
         </div>
+        <span class="nh-nav-quote-spark">✦</span>
       </div>
-</nav>
+    </nav>
   </div>
 </header>
 
@@ -1562,57 +1601,7 @@ function toggleLiveUpdates(show) {
     el.setAttribute('data-live-active', 'false');
   }
 }
-
-// Quote of the Day — Curated African Business Leaders (reliably fast, no external API)
-(function() {
-  var africanQuotes = [
-    { text: "The future of Africa is not in aid. It is in trade, investment, and the ingenuity of its people.", author: "Aliko Dangote" },
-    { text: "To build a successful business, you must start small and dream big.", author: "Aliko Dangote" },
-    { text: "The future we all want for ourselves is one of our own making.", author: "Tony O. Elumelu" },
-    { text: "The harder you work, the luckier you get.", author: "Mike Adenuga" },
-    { text: "Aim very high. Work very hard. Care very deeply.", author: "Odunayo Eweniyi" },
-    { text: "Done is better than perfect. Whatever you have in your hands, get going with it.", author: "Charles Igwe" },
-    { text: "True success is about a passion to create a better world.", author: "Dr. Ola Orekunrin" },
-    { text: "Failure is an opportunity to learn and to do better next time.", author: "Khanyi Dhlomo" },
-    { text: "Our problem in Africa is not skills but opportunities.", author: "Adewale Yusuf" },
-    { text: "What are you fixing? What are you making? Who are you helping?", author: "Juliana Rotich" },
-    { text: "The potential of the African market is huge.", author: "Anas Sefrioui" },
-    { text: "Teams make the whole better than the part.", author: "Hakeem Belo-Osagie" },
-    { text: "If I can change the life of one person it makes a whole difference.", author: "Victoria Kisyombe" },
-    { text: "Have a vision and passion. Be courageous, focused and disciplined.", author: "Monica Musonda" },
-    { text: "If you know how to operate in Africa, there are unbelievable opportunities.", author: "Nicky Oppenheimer" },
-    { text: "Stay focused on your dream.", author: "Lilly Alfonso" },
-    { text: "Courage and persistence are key for entrepreneurs in Africa.", author: "Gervais Djondo" },
-    { text: "Focus on making your product awesome. The money will follow.", author: "Alex Fourie" },
-    { text: "A vision on its own is not enough. Hard work is required.", author: "Strive Masiyiwa" },
-    { text: "Don't be transactional. Be genuine — trust will grow.", author: "Strive Masiyiwa" },
-    { text: "75% of Africans own phones, a revolution driven by entrepreneurs.", author: "Strive Masiyiwa" },
-    { text: "Face challenges with positive energy.", author: "Adenike Ogunlesi" },
-    { text: "Find your authentic self — everybody else is taken.", author: "Adenike Ogunlesi" },
-    { text: "Work hard and be patient.", author: "Francis Kibhisa" },
-    { text: "Constraints allow you to be innovative.", author: "Michael Jordaan" },
-    { text: "Businesses spoilt with capital make wrong decisions.", author: "Michael Jordaan" },
-    { text: "Your dream must be profitable.", author: "Olivier Madiba" },
-    { text: "In Africa there is space for innovation.", author: "Sizwe Nzima" },
-    { text: "With what you have, what can you do to achieve your goal?", author: "Heshan de Silva" },
-    { text: "Success depends on employees.", author: "Divine Ndhlukula" }
-  ];
-
-  function renderNavQuote(q) {
-    var items = document.querySelectorAll('.nav-qod-item');
-    var text = '"' + q.text + '" — ' + q.author;
-    items.forEach(function(el) { el.textContent = text; });
-  }
-
-  // Pick quote based on day of year (same quote all day, rotates daily)
-  var now = new Date();
-  var start = new Date(now.getFullYear(), 0, 0);
-  var dayOfYear = Math.floor((now - start) / 86400000);
-  var idx = dayOfYear % africanQuotes.length;
-  var quote = africanQuotes[idx];
-  renderNavQuote(quote);
-})();
 </script>
-
+<script src="/js/newshub-api.js"></script>
 </body>
 </html>
