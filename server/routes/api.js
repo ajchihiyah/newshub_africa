@@ -6,6 +6,7 @@ import { podcastsData, liveCoverageFeed } from '../data/podcastsData.js';
 import { africanQuotes, getQuoteOfDay } from '../data/quotesData.js';
 import { generateContinentalBrief, generateArticleSummary, askPanAfricanAnalyst, draftArticleAssistant } from '../geminiService.js';
 import { USERS, authenticateUser, validateSession, invalidateSession } from '../data/usersData.js';
+import { syncAfricanNewsRSS } from '../services/rssSync.js';
 
 const router = express.Router();
 
@@ -255,6 +256,16 @@ router.post('/articles', (req, res) => {
       message: 'Article published successfully and live on NewsHub Africa!',
       article: newArticle
     });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Sync latest African news from RSS feeds automatically
+router.post('/articles/sync-rss', async (req, res) => {
+  try {
+    const result = await syncAfricanNewsRSS();
+    res.json(result);
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
@@ -928,18 +939,6 @@ router.post('/newsletter/subscribe', (req, res) => {
 // AI INTELLIGENCE SUITE (GEMINI)
 // ----------------------------------------------------
 
-// Generate Daily AI Continental Briefing
-router.post('/ai/continental-brief', async (req, res) => {
-  try {
-    const { region, sector } = req.body;
-    const brief = await generateContinentalBrief({ region, sector });
-    res.json({ success: true, brief });
-  } catch (error) {
-    console.error('AI Brief error:', error);
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-
 // Generate 3-bullet AI summary for any article
 router.post('/ai/article-summary', async (req, res) => {
   try {
@@ -951,21 +950,6 @@ router.post('/ai/article-summary', async (req, res) => {
     res.json({ success: true, summary });
   } catch (error) {
     console.error('AI Article Summary error:', error);
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-
-// Ask Pan-African AI Analyst
-router.post('/ai/ask-analyst', async (req, res) => {
-  try {
-    const { question, history } = req.body;
-    if (!question) {
-      return res.status(400).json({ success: false, error: 'Question is required' });
-    }
-    const result = await askPanAfricanAnalyst({ question, conversationHistory: history || [] });
-    res.json({ success: true, ...result });
-  } catch (error) {
-    console.error('AI Ask Analyst error:', error);
     res.status(500).json({ success: false, error: error.message });
   }
 });

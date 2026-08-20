@@ -1455,8 +1455,8 @@ class FXRenderer {
       healthClass = 'offline';
     }
 
-    if (dataStatus) { dataStatus.textContent = statusText; dataStatus.className = status; }
-    if (apiHealth) { apiHealth.textContent = healthText; apiHealth.className = healthClass; }
+    if (dataStatus) { dataStatus.textContent = statusText; try { dataStatus.className = status; } catch(e) { dataStatus.setAttribute('class', status); } }
+    if (apiHealth) { apiHealth.textContent = healthText; try { apiHealth.className = healthClass; } catch(e) { apiHealth.setAttribute('class', healthClass); } }
     if (mobileStatus) { mobileStatus.textContent = statusText; mobileStatus.style.color = statusColor; }
     if (mobileHealth) { mobileHealth.textContent = healthText; mobileHealth.style.color = healthColor; }
   }

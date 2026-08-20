@@ -3028,7 +3028,7 @@ button:focus-visible, input:focus-visible, a:focus-visible {
 <div class="nh-ad-slot" style="background:var(--nh-surface-raised);border:1px dashed var(--nh-border);border-radius:var(--nh-radius-md);padding:8px 16px;margin-bottom:20px;text-align:center;position:relative;overflow:hidden">
   <span class="nh-ad-label">Advertisement</span>
   <a href="https://africanmediaagency.com" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none">
-    <img src="https://kimi-web-img.moonshot.cn/img/africanmediaagency.com/04912b6be587182aec4daa2dca4619d5a608e9a1.png" 
+    <img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=1200&h=200&fit=crop" 
          alt="Africa Money & DeFi Summit West Africa" 
          style="width:100%;max-width:970px;height:auto;min-height:90px;object-fit:cover;border-radius:6px;display:block;margin:0 auto">
   </a>
@@ -3989,7 +3989,7 @@ button:focus-visible, input:focus-visible, a:focus-visible {
 <div class="nh-ad-slot" style="background:var(--nh-surface-raised);border:1px dashed var(--nh-border);border-radius:var(--nh-radius-md);padding:8px 16px;margin-bottom:36px;text-align:center;position:relative">
   <span class="nh-ad-label">Advertisement</span>
   <a href="https://www.globalafricanetwork.com" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none">
-    <img src="https://kimi-web-img.moonshot.cn/img/www.globalafricanetwork.com/193ed8efeffe6900234c8e904d61e19282a62cd6.jpg" 
+    <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=600&h=500&fit=crop" 
          alt="Digital Finance Africa 2023" 
          style="width:100%;max-width:336px;height:auto;min-height:280px;object-fit:cover;border-radius:6px;display:block;margin:0 auto">
   </a>
@@ -4472,7 +4472,7 @@ button:focus-visible, input:focus-visible, a:focus-visible {
 <div class="nh-ad-slot" style="background:var(--nh-surface-raised);border:1px dashed var(--nh-border);border-radius:var(--nh-radius-md);padding:8px 16px;margin-bottom:36px;text-align:center;position:relative;overflow:hidden">
   <span class="nh-ad-label">Advertisement</span>
   <a href="https://mgtix.africa" target="_blank" rel="noopener noreferrer" style="display:block;text-decoration:none">
-    <img src="https://kimi-web-img.moonshot.cn/img/mgtix.africa/5220896a7b6e63fa56c581cab34917eb59925ca2" 
+    <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1200&h=200&fit=crop" 
          alt="Beyond Mobile Money: Fintech's Next Frontier" 
          style="width:100%;max-width:970px;height:auto;min-height:90px;object-fit:cover;border-radius:6px;display:block;margin:0 auto">
   </a>
@@ -4855,7 +4855,7 @@ class DataRenderer {
 
     setTimeout(() => {
       if (gaugeFill) {
-        gaugeFill.className = 'nh-gauge-fill ' + mood;
+        gaugeFill.setAttribute('class', 'nh-gauge-fill ' + mood);
         const offset = 251.2 - (normalized * 251.2);
         gaugeFill.style.strokeDashoffset = offset;
       }
@@ -4863,7 +4863,7 @@ class DataRenderer {
         gaugeNeedle.style.transform = 'translateX(-50%) rotate(' + angle + 'deg)';
       }
       if (moodBadge) {
-        moodBadge.className = 'nh-mood-badge ' + mood;
+        moodBadge.setAttribute('class', 'nh-mood-badge ' + mood);
         moodBadge.innerHTML = '<span class="dot"></span><span>' + moodText + '</span>';
       }
     }, 300);
@@ -5143,13 +5143,13 @@ class DataRenderer {
     const apiHealth = document.getElementById('apiHealth');
 
     if (dataStatus) {
-      dataStatus.className = '';
+      try { dataStatus.className = ''; } catch(e) { dataStatus.setAttribute('class', ''); }
       dataStatus.classList.add(status);
       dataStatus.textContent = status === 'live' ? '● Live' : (status === 'cached' ? '● Cached' : '● Demo');
     }
 
     if (apiHealth) {
-      apiHealth.className = '';
+      try { apiHealth.className = ''; } catch(e) { apiHealth.setAttribute('class', ''); }
       if (status === 'live') {
         apiHealth.classList.add('healthy');
         apiHealth.textContent = 'API: Online';

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>This Week in Africa: Comprehensive Pan-African Weekly Recap — NewsHub Africa</title>
+  <meta name="description" content="The definitive weekly editorial review of key political, economic, mining, technology, and market developments across the African continent.">
+  <meta name="keywords" content="This Week in Africa, weekly recap, African markets, ECOWAS, Safaricom, Lobito Corridor, JSE, NGX">
+  <link rel="canonical" href="https://newshub-africa.com/weekly-recap.html">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌍</text></svg>">
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --nh-blue: #0033cc;
+      --nh-blue-light: #1a53ff;
+      --nh-blue-dark: #002080;
+      --nh-black: #0a0a0a;
+      --nh-white: #ffffff;
+      --nh-surface: #ffffff;
+      --nh-surface-raised: #f8f9fa;
+      --nh-text-primary: #0a0a0a;
+      --nh-text-secondary: #495057;
+      --nh-text-muted: #adb5bd;
+      --nh-border: #dee2e6;
+      --nh-shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+      --nh-shadow-md: 0 4px 12px rgba(0,0,0,0.10);
+      --nh-radius-sm: 6px;
+      --nh-radius-md: 10px;
+      --nh-radius-lg: 14px;
+      --nh-transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    [data-theme="dark"] {
+      --nh-surface: #0f1115;
+      --nh-surface-raised: #1a1d23;
+      --nh-text-primary: #f0f0f5;
+      --nh-text-secondary: #8a8b97;
+      --nh-text-muted: #5a5a6b;
+      --nh-border: #2a2d35;
+      --nh-shadow-sm: 0 1px 3px rgba(0,0,0,0.30);
+      --nh-shadow-md: 0 4px 12px rgba(0,0,0,0.40);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Google Sans', 'Roboto', -apple-system, sans-serif;
+      background: var(--nh-surface-raised);
+      color: var(--nh-text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    header {
+      background: var(--nh-surface);
+      border-bottom: 1px solid var(--nh-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+
+    .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nh-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .nh-brand-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--nh-blue);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .nh-brand-text {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+    .nh-brand-text span { color: var(--nh-blue); }
+    .nh-brand-tagline { font-size: 11px; color: var(--nh-text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav-link {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--nh-text-secondary);
+      text-decoration: none;
+      transition: var(--nh-transition);
+    }
+    .nav-link:hover, .nav-link.active { color: var(--nh-blue); }
+
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 24px;
+    }
+
+    .recap-hero {
+      background: var(--nh-surface);
+      border: 1px solid var(--nh-border);
+      border-radius: var(--nh-radius-lg);
+      padding: 40px;
+      margin-bottom: 32px;
+      box-shadow: var(--nh-shadow-sm);
+    }
+
+    .recap-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--nh-text-muted);
+      margin-bottom: 12px;
+    }
+
+    .recap-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--nh-text-primary);
+      margin-bottom: 16px;
+    }
+
+    .recap-subtitle {
+      font-size: 16px;
+      color: var(--nh-text-secondary);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .audio-player-card {
+      background: var(--nh-surface-raised);
+      border: 1px solid var(--nh-border);
+      border-radius: var(--nh-radius-md);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .play-btn {
+      width: 48px;
+      height: 48px;
+      background: var(--nh-blue);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      cursor: pointer;
+      transition: var(--nh-transition);
+      flex-shrink: 0;
+    }
+    .play-btn:hover { background: var(--nh-blue-light); transform: scale(1.05); }
+
+    .audio-info h4 { font-size: 14px; font-weight: 600; color: var(--nh-text-primary); margin-bottom: 2px; }
+    .audio-info p { font-size: 12px; color: var(--nh-text-secondary); }
+
+    .recap-section {
+      background: var(--nh-surface);
+      border: 1px solid var(--nh-border);
+      border-radius: var(--nh-radius-lg);
+      padding: 36px;
+      margin-bottom: 28px;
+      box-shadow: var(--nh-shadow-sm);
+    }
+
+    .recap-section h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--nh-text-primary);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--nh-blue);
+      display: inline-block;
+    }
+
+    .recap-article-card {
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--nh-border);
+    }
+    .recap-article-card:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+
+    .recap-article-card h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--nh-text-primary);
+      margin-bottom: 8px;
+    }
+
+    .recap-article-card p {
+      font-size: 14.5px;
+      color: var(--nh-text-secondary);
+      line-height: 1.65;
+      margin-bottom: 10px;
+    }
+
+    .recap-tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      background: rgba(0, 51, 204, 0.08);
+      color: var(--nh-blue);
+      margin-bottom: 8px;
+    }
+
+    footer {
+      background: var(--nh-surface);
+      border-top: 1px solid var(--nh-border);
+      padding: 40px 24px;
+      text-align: center;
+      margin-top: 60px;
+      color: var(--nh-text-secondary);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="nh-brand">
+      <div class="nh-brand-icon">N</div>
+      <div>
+        <div class="nh-brand-text">newshub <span>AFRICA</span></div>
+        <div class="nh-brand-tagline">The pulse of the continent</div>
+      </div>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html" class="nav-link">&larr; Home</a>
+      <a href="newsletters.html" class="nav-link">Newsletters</a>
+      <a href="podcasts.html" class="nav-link">Podcasts</a>
+      <a href="dashboard.html" class="nav-link" style="color: var(--nh-blue); font-weight: 600;">Editorial Studio</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <div class="recap-hero">
+    <div class="recap-meta">
+      <span>📅 Week of August 10 – August 16, 2026</span>
+      <span>•</span>
+      <span>Edition #142</span>
+      <span>•</span>
+      <span>Pan-African Intelligence Desk</span>
+    </div>
+    <h1 class="recap-title">This Week in Africa: Regional Diplomacy, Telecom Milestones & Mining Corridor Expansion</h1>
+    <p class="recap-subtitle">An exhaustive weekly editorial briefing covering diplomatic breakthroughs in West Africa, Safaricom's explosive subscriber growth in Ethiopia, a massive $5B Copperbelt transport injection, and pan-African equity performance.</p>
+
+    <div class="audio-player-card">
+      <button class="play-btn" id="audioPlayBtn" onclick="toggleAudioBriefing()">▶</button>
+      <div class="audio-info">
+        <h4 id="audioTitle">Listen to This Week's 5-Minute Audio Briefing</h4>
+        <p id="audioSub">Narrated by Ashley Jordan Chihiya • AI Voice Synthesis</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: POLITICS & DIPLOMACY -->
+  <div class="recap-section" id="ecowas">
+    <span class="recap-tag">Politics & Diplomacy</span>
+    <h2>ECOWAS Lifts Sanctions on Niger, Mali & Burkina Faso</h2>
+    <div class="recap-article-card">
+      <p>In a major diplomatic pivot, the Economic Community of West African States (ECOWAS) officially lifted severe economic and travel restrictions imposed on Niger, Mali, and Burkina Faso following their military transitions.</p>
+      <p>The decision, announced after an extraordinary summit in Abuja, aims to restore regional cohesion and ease the cost-of-living burden on millions of citizens across the Sahel. Trade corridors that had remained shuttered for over 18 months are expected to reopen fully, allowing vital agricultural commodities and fuel supplies to flow unhindered.</p>
+      <p><strong>Key Takeaway:</strong> While diplomatic ties are thawing, regional monitors note that security cooperation against insurgencies in the Liptako-Gourma region remains complex and requires sustained bilateral frameworks.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 2: BUSINESS & TECH -->
+  <div class="recap-section" id="safaricom">
+    <span class="recap-tag">Business & Technology</span>
+    <h2>Safaricom Ethiopia Hits 10 Million Active Subscribers</h2>
+    <div class="recap-article-card">
+      <p>Safaricom Ethiopia announced a historic milestone this week, crossing 10 million active subscribers across 45 cities and towns just 18 months after commencing commercial operations.</p>
+      <p>Driven by aggressive network expansion, affordable data bundles, and the rapid adoption of M-Pesa mobile money services, the telecom consortium is rapidly closing the gap in Africa's second-most populous nation. M-Pesa transaction volumes surpassed $120 million monthly, cementing mobile financial inclusion as a primary economic catalyst in East Africa.</p>
+      <p><strong>Key Takeaway:</strong> Ethiopia's telecom liberalization is proving to be one of the most successful market openings in recent emerging market history, drawing intense interest from international fintech investors.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 3: MINING & INFRASTRUCTURE -->
+  <div class="recap-section" id="copperbelt">
+    <span class="recap-tag">Mining & Infrastructure</span>
+    <h2>Zambia-DRC Copperbelt Corridor Secures $5 Billion Upgrade</h2>
+    <div class="recap-article-card">
+      <p>A multi-lateral consortium led by the African Development Bank, the US International Development Finance Corporation (DFC), and European export credit agencies formally signed a $5 billion financing package to modernize the Lobito Corridor.</p>
+      <p>The strategic transport artery connects the mineral-rich Copperbelt in Zambia and the Democratic Republic of Congo directly to Angola's Atlantic port of Lobito. The upgrade will slash transit times for copper and cobalt exports to global markets from weeks to days, reducing carbon emissions and shipping bottlenecks.</p>
+      <p><strong>Key Takeaway:</strong> As global demand for critical energy transition minerals surges, secure rail and logistics corridors are becoming the linchpin of African industrialization strategies.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 4: MARKETS & BOURSES -->
+  <div class="recap-section">
+    <span class="recap-tag">Capital Markets</span>
+    <h2>African Bourses Weekly Roundup: JSE & NGX Lead Rally</h2>
+    <div class="recap-article-card">
+      <p>African stock exchanges experienced robust bullish momentum this week, buoyed by stellar Q2 earnings reports from major financial institutions and telecommunication giants.</p>
+      <ul style="margin-left: 20px; font-size: 14.5px; color: var(--nh-text-secondary); line-height: 1.7; margin-top: 8px;">
+        <li><strong>Johannesburg Stock Exchange (JSE Top 40):</strong> Rose +0.49% to close at 110,027, driven by strong mining and retail performances.</li>
+        <li><strong>Nigerian Exchange (NGX All-Share):</strong> Climbed +0.67% to 205,831, powered by aggressive buying in banking stocks (Zenith, GTCO) and Airtel Africa.</li>
+        <li><strong>Egyptian Exchange (EGX 30):</strong> Gained +0.54% to 52,312 amidst strong foreign institutional portfolio inflows.</li>
+        <li><strong>Currency Watch:</strong> The Kenyan Shilling maintained its steady appreciation against the US Dollar for the third consecutive week, trading at 129.50/USD.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- NEWSLETTER PROMO -->
+  <div style="background: var(--nh-surface); border: 1px solid var(--nh-border); border-radius: var(--nh-radius-lg); padding: 36px; text-align: center; margin-top: 40px;">
+    <h3 style="font-size: 22px; font-weight: 700; margin-bottom: 10px;">Get "This Week in Africa" Delivered Every Sunday</h3>
+    <p style="font-size: 14px; color: var(--nh-text-secondary); max-width: 600px; margin: 0 auto 20px auto;">Join 250,000+ executives, policymakers, and investors who rely on our Sunday briefing for actionable intelligence.</p>
+    <form onsubmit="event.preventDefault(); alert('Successfully subscribed to the weekly briefing!');" style="display: flex; gap: 10px; max-width: 440px; margin: 0 auto;">
+      <input type="email" placeholder="Enter your email address" required style="flex: 1; padding: 12px 16px; border: 1px solid var(--nh-border); border-radius: 8px; font-size: 14px; background: var(--nh-surface-raised); color: var(--nh-text-primary);" />
+      <button type="submit" style="padding: 12px 24px; background: var(--nh-blue); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Subscribe</button>
+    </form>
+  </div>
+</main>
+
+<footer>
+  <p>&copy; 2026 NewsHub Africa. All rights reserved. The premier source for pan-African business, politics, and market intelligence.</p>
+</footer>
+
+<script>
+  let isPlaying = false;
+  function toggleAudioBriefing() {
+    isPlaying = !isPlaying;
+    const btn = document.getElementById('audioPlayBtn');
+    const title = document.getElementById('audioTitle');
+    const sub = document.getElementById('audioSub');
+    if (isPlaying) {
+      btn.textContent = '⏸';
+      title.textContent = 'Playing Weekly Audio Summary...';
+      sub.textContent = 'Duration: 4:48 • Streaming Live AI Voice';
+    } else {
+      btn.textContent = '▶';
+      title.textContent = "Listen to This Week's 5-Minute Audio Briefing";
+      sub.textContent = 'Narrated by Ashley Jordan Chihiya • AI Voice Synthesis';
+    }
+  }
+</script>
+<script src="/js/newshub-api.js"></script>
+</body>
+</html>

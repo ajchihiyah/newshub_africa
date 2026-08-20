@@ -1,0 +1,35 @@
+# NewsHub Africa Netlify Redirects & Rewrites
+
+# Clean URLs & Page Shortcuts
+/markets.html       /markets_v13_linked.html    301!
+/markets            /markets_v13_linked.html    301!
+/business           /business.html              301!
+/technology         /technology.html            301!
+/tech               /technology.html            301!
+/energy             /energy.html                301!
+/mining             /mining.html                301!
+/agriculture        /agriculture.html           301!
+/events             /events.html                301!
+/dashboard          /dashboard.html             301!
+/studio             /dashboard.html             301!
+/watchlist          /watchlist.html             301!
+/podcasts           /podcasts.html              301!
+/live               /live-coverage.html         301!
+/newsletters        /newsletters.html           301!
+/about              /about.html                 301!
+/contact            /contact.html               301!
+/careers            /careers.html               301!
+/privacy            /privacy.html               301!
+/terms              /terms.html                 301!
+/cookies            /cookies.html               301!
+/advertise          /advertise.html             301!
+/submit-event       /submit-event.html          301!
+/commodities        /commodities.html           301!
+/calendar           /calendar.html              301!
+/fx-heatmap         /fx-heatmap.html            301!
+/weekly-recap.html  /newsletters.html           301!
+
+# Dynamic Article Rewrites & Fallbacks
+/article/:id        /article.html               200
+/article/*          /article.html               200
+/article_*.html     /article.html               200

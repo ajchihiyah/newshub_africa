@@ -6,6 +6,25 @@
 (function () {
   'use strict';
 
+  // Global Image Error Recovery: ensures every thumbnail and avatar on the site loads seamlessly
+  const DEFAULT_THUMBNAIL = 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop';
+  const DEFAULT_AVATAR = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&h=120&fit=crop';
+
+  window.addEventListener('error', function (e) {
+    if (e && e.target && e.target.tagName === 'IMG') {
+      const img = e.target;
+      if (!img.dataset.hasFallback) {
+        img.dataset.hasFallback = 'true';
+        const isAvatar = img.classList.contains('nh-author-avatar') || 
+                         img.classList.contains('speaker-avatar') || 
+                         img.classList.contains('nh-user-avatar') || 
+                         img.closest('.nh-card-author') ||
+                         (img.width && img.width <= 60 && img.height && img.height <= 60);
+        img.src = isAvatar ? DEFAULT_AVATAR : DEFAULT_THUMBNAIL;
+      }
+    }
+  }, true);
+
   // Inject UI Styles for AI features, Modals, Live Ticker, and Toasts
   const styleEl = document.createElement('style');
   styleEl.id = 'nh-dynamic-styles';
@@ -818,225 +837,6 @@
     }, 6000);
   }
 
-  // 2. Inject AI Continental Briefing & Analyst Floating Action Bar
-  function initAIFeatures() {
-    const bar = document.createElement('div');
-    bar.className = 'nh-ai-bar';
-    bar.innerHTML = `
-      <button class="nh-ai-btn analyst-btn" id="nh-open-analyst-btn" title="Ask NewsHub AI Pan-African Market Analyst">
-        <span>💬</span>
-        <span>Ask AI Analyst</span>
-      </button>
-      <button class="nh-ai-btn" id="nh-open-brief-btn" title="Generate Pan-African AI Intelligence Briefing">
-        <span>✨</span>
-        <span>AI Daily Briefing</span>
-      </button>
-    `;
-    document.body.appendChild(bar);
-
-    // Modal Markup for Continental Briefing
-    const briefModal = document.createElement('div');
-    briefModal.className = 'nh-modal-overlay';
-    briefModal.id = 'nh-brief-modal';
-    briefModal.innerHTML = `
-      <div class="nh-modal-card">
-        <div class="nh-modal-header">
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <span class="nh-ai-pill">✨ Gemini AI Powered</span>
-            <h3 style="font-size: 18px; font-weight: 600; margin: 0;">Pan-African Daily Intelligence Briefing</h3>
-          </div>
-          <button class="nh-modal-close" onclick="document.getElementById('nh-brief-modal').classList.remove('active')">&times;</button>
-        </div>
-        <div class="nh-modal-body" id="nh-brief-body">
-          <div style="display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;">
-            <select id="nh-brief-region" style="padding: 8px 14px; border-radius: 8px; border: 1px solid var(--nh-border); background: var(--nh-surface-raised); color: var(--nh-text-primary); font-family: inherit;">
-              <option value="All Africa">Continent-Wide (All Africa)</option>
-              <option value="East Africa">East Africa (Kenya, Rwanda, Tanzania, Ethiopia)</option>
-              <option value="West Africa">West Africa (Nigeria, Ghana, Senegal, Côte d'Ivoire)</option>
-              <option value="Southern Africa">Southern Africa (South Africa, Zambia, Zimbabwe)</option>
-              <option value="North Africa">North Africa (Egypt, Morocco, Algeria)</option>
-            </select>
-            <select id="nh-brief-sector" style="padding: 8px 14px; border-radius: 8px; border: 1px solid var(--nh-border); background: var(--nh-surface-raised); color: var(--nh-text-primary); font-family: inherit;">
-              <option value="All Sectors">All Key Sectors</option>
-              <option value="Business & AfCFTA">Business & AfCFTA Trade</option>
-              <option value="Tech & Telecoms">Tech Startups & AI Compute</option>
-              <option value="Mining & Critical Minerals">Mining & Energy Transition</option>
-              <option value="Agribusiness & Food Security">Agribusiness & Climate-Smart Farming</option>
-              <option value="Energy & Infrastructure">Clean Energy & Infrastructure</option>
-            </select>
-            <button class="nh-btn" id="nh-generate-brief-btn" style="padding: 8px 18px;">Refresh Briefing</button>
-          </div>
-          <div id="nh-brief-content">
-            <div style="text-align: center; padding: 40px; color: var(--nh-text-muted);">
-              Loading real-time continental intelligence...
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(briefModal);
-
-    // Drawer Markup for Ask AI Analyst
-    const analystOverlay = document.createElement('div');
-    analystOverlay.className = 'nh-drawer-overlay';
-    analystOverlay.id = 'nh-analyst-overlay';
-    analystOverlay.onclick = () => {
-      document.getElementById('nh-analyst-overlay').classList.remove('active');
-      document.getElementById('nh-analyst-drawer').classList.remove('active');
-    };
-    document.body.appendChild(analystOverlay);
-
-    const analystDrawer = document.createElement('div');
-    analystDrawer.className = 'nh-drawer';
-    analystDrawer.id = 'nh-analyst-drawer';
-    analystDrawer.innerHTML = `
-      <div class="nh-modal-header">
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <div style="width: 28px; height: 28px; background: #0033cc; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: bold;">AI</div>
-          <div>
-            <h4 style="font-size: 15px; font-weight: 600; margin: 0;">Pan-African Market Analyst</h4>
-            <div style="font-size: 11px; color: #2a9d8f;">● Online & Grounded</div>
-          </div>
-        </div>
-        <button class="nh-modal-close" id="nh-close-analyst-drawer">&times;</button>
-      </div>
-      <div class="nh-chat-messages" id="nh-chat-messages">
-        <div class="nh-chat-msg analyst">
-          Hello! I am your <strong>NewsHub Pan-African Market Intelligence Analyst</strong>. Ask me anything about African bourses (JSE, NGX, EGX), commodity prices, AfCFTA trade corridors, fintech investments, or mining policies.
-        </div>
-      </div>
-      <div class="nh-chat-input-area">
-        <input type="text" class="nh-chat-input" id="nh-chat-input" placeholder="Ask about markets, policies, or GDP..." />
-        <button class="nh-btn" id="nh-send-chat-btn" style="padding: 8px 16px;">Send</button>
-      </div>
-    `;
-    document.body.appendChild(analystDrawer);
-
-    // Event listeners
-    document.getElementById('nh-open-brief-btn').onclick = () => {
-      document.getElementById('nh-brief-modal').classList.add('active');
-      loadBriefing();
-    };
-
-    document.getElementById('nh-generate-brief-btn').onclick = () => {
-      loadBriefing();
-    };
-
-    document.getElementById('nh-open-analyst-btn').onclick = () => {
-      document.getElementById('nh-analyst-overlay').classList.add('active');
-      document.getElementById('nh-analyst-drawer').classList.add('active');
-      document.getElementById('nh-chat-input').focus();
-    };
-
-    document.getElementById('nh-close-analyst-drawer').onclick = () => {
-      document.getElementById('nh-analyst-overlay').classList.remove('active');
-      document.getElementById('nh-analyst-drawer').classList.remove('active');
-    };
-
-    // Chat submission
-    const chatInput = document.getElementById('nh-chat-input');
-    const sendChatBtn = document.getElementById('nh-send-chat-btn');
-    const chatContainer = document.getElementById('nh-chat-messages');
-    let chatHistory = [];
-
-    async function handleChat() {
-      const q = chatInput.value.trim();
-      if (!q) return;
-
-      // Add user message
-      const userDiv = document.createElement('div');
-      userDiv.className = 'nh-chat-msg user';
-      userDiv.textContent = q;
-      chatContainer.appendChild(userDiv);
-      chatInput.value = '';
-      chatContainer.scrollTop = chatContainer.scrollHeight;
-
-      // Add typing indicator
-      const typingDiv = document.createElement('div');
-      typingDiv.className = 'nh-chat-msg analyst';
-      typingDiv.innerHTML = '<em>Analyzing continental data...</em>';
-      chatContainer.appendChild(typingDiv);
-      chatContainer.scrollTop = chatContainer.scrollHeight;
-
-      try {
-        const res = await fetch('/api/ai/ask-analyst', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ question: q, history: chatHistory })
-        });
-        const data = await res.json();
-        typingDiv.innerHTML = data.answer.replace(/\n/g, '<br/>');
-
-        chatHistory.push({ role: 'user', content: q });
-        chatHistory.push({ role: 'model', content: data.answer });
-      } catch (err) {
-        typingDiv.textContent = 'Sorry, could not connect to analyst server. Please try again.';
-      }
-      chatContainer.scrollTop = chatContainer.scrollHeight;
-    }
-
-    sendChatBtn.onclick = handleChat;
-    chatInput.onkeypress = (e) => {
-      if (e.key === 'Enter') handleChat();
-    };
-
-    async function loadBriefing() {
-      const region = document.getElementById('nh-brief-region').value;
-      const sector = document.getElementById('nh-brief-sector').value;
-      const content = document.getElementById('nh-brief-content');
-      content.innerHTML = '<div style="text-align: center; padding: 40px;">Generating real-time Pan-African intelligence brief with Gemini...</div>';
-
-      try {
-        const res = await fetch('/api/ai/continental-brief', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ region, sector })
-        });
-        const data = await res.json();
-        if (data.success && data.brief) {
-          const b = data.brief;
-          let html = `
-            <div style="margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--nh-border);">
-              <h4 style="font-size: 17px; font-weight: 700; margin-bottom: 8px; color: var(--nh-blue);">${b.title}</h4>
-              <p style="font-size: 13.5px; line-height: 1.6; color: var(--nh-text-secondary);">${b.executiveSummary}</p>
-            </div>
-            <h5 style="font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; color: var(--nh-text-muted);">Regional & Sector Highlights</h5>
-          `;
-
-          if (b.highlights && b.highlights.length) {
-            b.highlights.forEach(h => {
-              html += `
-                <div class="nh-ai-card">
-                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                    <span style="font-size: 11px; font-weight: 700; color: var(--nh-blue); text-transform: uppercase;">${h.region}</span>
-                    <span class="nh-ai-pill">${h.sentiment}</span>
-                  </div>
-                  <div class="nh-ai-card-title">${h.headline}</div>
-                  <div style="font-size: 12.5px; color: var(--nh-text-secondary);">${h.impact}</div>
-                </div>
-              `;
-            });
-          }
-
-          if (b.keyMarketTakeaways && b.keyMarketTakeaways.length) {
-            html += `
-              <div style="margin-top: 18px; padding: 14px; background: rgba(0,51,204,0.05); border-radius: 10px;">
-                <h5 style="font-size: 13px; font-weight: 700; color: var(--nh-blue); margin-bottom: 8px;">Key Market Takeaways</h5>
-                <ul style="margin: 0; padding-left: 18px; font-size: 13px; color: var(--nh-text-secondary);">
-                  ${b.keyMarketTakeaways.map(t => `<li style="margin-bottom: 4px;">${t}</li>`).join('')}
-                </ul>
-              </div>
-            `;
-          }
-
-          content.innerHTML = html;
-        }
-      } catch (err) {
-        content.innerHTML = '<div style="color: #e94560; text-align: center; padding: 20px;">Failed to generate brief. Please try again.</div>';
-      }
-    }
-  }
-
   // Time formatting helper
   function formatTimeAgo(isoString) {
     if (!isoString) return 'Recent';
@@ -1160,7 +960,7 @@
             return `
               <a href="/article.html?id=${encodeURIComponent(art.id)}" class="nh-card" tabindex="0" style="text-decoration:none; color:inherit; display:flex; flex-direction:column;">
                 <div style="position:relative; overflow:hidden; height:180px; width:100%;">
-                  <img src="${art.image || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop'}" alt="${art.title}" loading="lazy" style="width:100%; height:100%; object-fit:cover;">
+                  <img src="${art.image || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop'}" alt="${art.title}" loading="lazy" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop';">
                   ${art.isBreaking ? `<span style="position:absolute; top:10px; right:10px; background:#e94560; color:white; font-size:10px; font-weight:700; padding:3px 8px; border-radius:4px; box-shadow:0 2px 8px rgba(233,69,96,0.5);">BREAKING</span>` : ''}
                 </div>
                 <div class="nh-card-body" style="flex:1; display:flex; flex-direction:column;">
@@ -1168,7 +968,7 @@
                   <h3 style="margin-top:6px; margin-bottom:8px; font-size:16px; font-weight:600; line-height:1.35; color:var(--nh-text-primary);">${art.title}</h3>
                   <p style="font-size:13px; color:var(--nh-text-secondary); line-height:1.5; margin-bottom:14px; flex:1;">${art.summary || (art.content ? art.content.slice(0, 110) + '...' : '')}</p>
                   <div class="nh-card-author" style="margin-top:auto;">
-                    <img src="${art.authorImage || '/Ashley Jordan Chihiya.jpg'}" alt="${art.author || 'Author'}" style="width:24px; height:24px; border-radius:50%; object-fit:cover;">
+                    <img src="${art.authorImage || '/ashley-jordan-chihiya.jpg'}" alt="${art.author || 'Author'}" style="width:24px; height:24px; border-radius:50%; object-fit:cover;" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&h=120&fit=crop';">
                     <span style="font-size:12px; font-weight:500; color:var(--nh-text-primary);">${art.author || 'NewsHub'}</span>
                     <span style="font-size:11px; color:var(--nh-text-muted); margin-left:auto;">${formatTimeAgo(art.publishedAt)}</span>
                   </div>
@@ -1218,7 +1018,7 @@
             const stackArticles = catArticles.slice(1, 4);
             featuredStack.innerHTML = stackArticles.map(art => `
               <a href="/article.html?id=${encodeURIComponent(art.id)}" class="nh-card" style="display:flex; gap:16px; padding:16px; align-items:center; flex:1; text-decoration:none; color:inherit;">
-                <img src="${art.image || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop'}" alt="${art.title}" style="width:120px; height:90px; object-fit:cover; border-radius:var(--nh-radius-sm); flex-shrink:0;">
+                <img src="${art.image || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop'}" alt="${art.title}" style="width:120px; height:90px; object-fit:cover; border-radius:var(--nh-radius-sm); flex-shrink:0;" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop';">
                 <div>
                   <span class="nh-card-tag nh-tag-${catKey}" style="margin-bottom:6px;">${art.categoryLabel || art.category}</span>
                   <h3 style="font-size:15px; font-weight:500; line-height:1.3; color:var(--nh-text-primary); margin-bottom:6px;">${art.title}</h3>
@@ -1232,13 +1032,13 @@
             const moreArticles = catArticles.slice(3);
             categoryGrid.innerHTML = moreArticles.map(art => `
               <a href="/article.html?id=${encodeURIComponent(art.id)}" class="nh-card" tabindex="0" style="text-decoration:none; color:inherit;">
-                <img src="${art.image || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop'}" alt="${art.title}" loading="lazy" style="width:100%; height:180px; object-fit:cover;">
+                <img src="${art.image || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop'}" alt="${art.title}" loading="lazy" style="width:100%; height:180px; object-fit:cover;" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop';">
                 <div class="nh-card-body">
                   <span class="nh-card-tag nh-tag-${catKey}">${art.categoryLabel || art.category}</span>
                   <h3 style="font-size:15px; font-weight:500; line-height:1.3; margin-top:6px; margin-bottom:6px; color:var(--nh-text-primary);">${art.title}</h3>
                   <p style="font-size:13px; color:var(--nh-text-secondary); line-height:1.5;">${art.summary || (art.content ? art.content.slice(0, 110) + '...' : '')}</p>
                   <div class="nh-card-author">
-                    <img src="${art.authorImage || '/Ashley Jordan Chihiya.jpg'}" alt="${art.author || 'Author'}">
+                    <img src="${art.authorImage || '/ashley-jordan-chihiya.jpg'}" alt="${art.author || 'Author'}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&h=120&fit=crop';">
                     <span>${art.author || 'NewsHub'}</span>
                     <span>${formatTimeAgo(art.publishedAt)}</span>
                   </div>
@@ -2059,7 +1859,6 @@
       initLiveMarketTicker();
       initNavQuotes();
       initAutomatedLiveCoverage();
-      initAIFeatures();
       initLiveSearch();
       initDynamicArticles();
       initNewsletterForm();
@@ -2069,7 +1868,6 @@
     initLiveMarketTicker();
     initNavQuotes();
     initAutomatedLiveCoverage();
-    initAIFeatures();
     initLiveSearch();
     initDynamicArticles();
     initNewsletterForm();
