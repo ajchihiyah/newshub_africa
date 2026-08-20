@@ -1,5 +1,8 @@
 # NewsHub Africa Netlify Redirects & Rewrites
 
+# API Serverless Functions
+/api/*              /.netlify/functions/api/:splat    200
+
 # Clean URLs & Page Shortcuts
 /markets.html       /markets_v13_linked.html    301!
 /markets            /markets_v13_linked.html    301!
