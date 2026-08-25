@@ -172,6 +172,124 @@
       background: var(--nh-surface-raised);
     }
 
+    /* Mobile Navigation */
+    .nh-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 40px;
+      height: 40px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      gap: 5px;
+      padding: 8px;
+      border-radius: 8px;
+      transition: var(--nh-transition);
+    }
+    .nh-hamburger:hover { background: var(--nh-surface-raised); }
+    .nh-hamburger span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--nh-text-primary);
+      border-radius: 2px;
+      transition: var(--nh-transition);
+      transform-origin: center;
+    }
+    .nh-hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nh-hamburger.active span:nth-child(2) { opacity: 0; }
+    .nh-hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .nh-mobile-nav {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--nh-surface);
+      z-index: 2000;
+      padding: 80px 24px 24px;
+      overflow-y: auto;
+      transform: translateX(-100%);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .nh-mobile-nav.open { transform: translateX(0); }
+    .nh-mobile-nav-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--nh-border);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: var(--nh-surface);
+      z-index: 2001;
+    }
+    .nh-mobile-nav-close {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      border-radius: 8px;
+      color: var(--nh-text-primary);
+    }
+    .nh-mobile-nav-close:hover { background: var(--nh-surface-raised); }
+    .nh-mobile-nav-list { list-style: none; padding: 0; }
+    .nh-mobile-nav-list li { border-bottom: 1px solid var(--nh-border); }
+    .nh-mobile-nav-list a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+      color: var(--nh-text-primary);
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 500;
+      transition: var(--nh-transition);
+    }
+    .nh-mobile-nav-list a:hover { color: var(--nh-blue); padding-left: 8px; }
+    .nh-mobile-nav-list a svg {
+      width: 20px;
+      height: 20px;
+      color: var(--nh-text-muted);
+    }
+    .nh-mobile-section-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--nh-text-muted);
+      margin: 24px 0 12px;
+    }
+    .nh-mobile-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1999;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .nh-mobile-overlay.open { opacity: 1; }
+
+    @media (max-width: 1024px) {
+      .nh-nav-links { display: none; }
+      .nh-hamburger { display: flex; }
+      .nh-header-inner { padding: 0 16px; }
+    }
+
     /* Main Article Container */
     .nh-article-layout {
       max-width: 1360px;
@@ -514,6 +632,43 @@
 </head>
 <body>
 
+<!-- Mobile Overlay -->
+<div class="nh-mobile-overlay" id="mobileOverlay" onclick="closeMobileNav()"></div>
+
+<!-- Mobile Navigation Drawer -->
+<div class="nh-mobile-nav" id="mobileNav">
+  <div class="nh-mobile-nav-header">
+    <a href="/index.html" class="nh-brand" style="text-decoration:none">
+      <div class="nh-brand-icon" aria-hidden="true">N</div>
+      <div>
+        <div class="nh-brand-text">newshub <span>AFRICA</span></div>
+      </div>
+    </a>
+    <button class="nh-mobile-nav-close" onclick="closeMobileNav()" aria-label="Close menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <div class="nh-mobile-section-title">Sections</div>
+  <ul class="nh-mobile-nav-list">
+    <li><a href="/index.html">Home <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="/business.html">Business <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="/technology.html">Technology <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="/agriculture.html">Agriculture <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="/mining.html">Mining <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="/energy.html">Energy <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="/markets_v13_linked.html">Markets <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="/events.html">Events <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="/dashboard.html" style="color:var(--nh-blue);font-weight:700;">✍️ Studio CMS <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+  </ul>
+
+  <div class="nh-mobile-section-title">Account</div>
+  <ul class="nh-mobile-nav-list">
+    <li><a href="#" onclick="alert('Subscribe feature coming soon!'); closeMobileNav(); return false;">Subscribe <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+    <li><a href="#" onclick="toggleTheme(); closeMobileNav(); return false;">Toggle Dark Mode <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></a></li>
+  </ul>
+</div>
+
 <div id="readingProgress"></div>
 
 <!-- Header -->
@@ -524,17 +679,22 @@
       <div class="nh-brand-text">newshub <span>AFRICA</span></div>
     </a>
 
-    <nav class="nh-nav-links">
-      <a href="/index.html" class="nh-nav-item">Home</a>
-      <a href="/business.html" class="nh-nav-item">Business</a>
-      <a href="/technology.html" class="nh-nav-item">Technology</a>
-      <a href="/agriculture.html" class="nh-nav-item">Agriculture</a>
-      <a href="/mining.html" class="nh-nav-item">Mining</a>
-      <a href="/energy.html" class="nh-nav-item">Energy</a>
-      <a href="/markets_v13_linked.html" class="nh-nav-item">Markets</a>
-      <a href="/events.html" class="nh-nav-item">Events</a>
-      <a href="/dashboard.html" class="nh-nav-item" style="color:var(--nh-blue);font-weight:700">✍️ Studio CMS</a>
-    </nav>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <nav class="nh-nav-links">
+        <a href="/index.html" class="nh-nav-item">Home</a>
+        <a href="/business.html" class="nh-nav-item">Business</a>
+        <a href="/technology.html" class="nh-nav-item">Technology</a>
+        <a href="/agriculture.html" class="nh-nav-item">Agriculture</a>
+        <a href="/mining.html" class="nh-nav-item">Mining</a>
+        <a href="/energy.html" class="nh-nav-item">Energy</a>
+        <a href="/markets_v13_linked.html" class="nh-nav-item">Markets</a>
+        <a href="/events.html" class="nh-nav-item">Events</a>
+        <a href="/dashboard.html" class="nh-nav-item" style="color:var(--nh-blue);font-weight:700">✍️ Studio CMS</a>
+      </nav>
+      <button class="nh-hamburger" id="hamburgerBtn" onclick="toggleMobileNav()" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -937,6 +1097,59 @@
       console.error(e);
     }
   }
+
+  function toggleTheme() {
+    const html = document.documentElement;
+    if (html.getAttribute('data-theme') === 'dark') {
+      html.removeAttribute('data-theme');
+    } else {
+      html.setAttribute('data-theme', 'dark');
+    }
+  }
+
+  function toggleMobileNav() {
+    const nav = document.getElementById('mobileNav');
+    const overlay = document.getElementById('mobileOverlay');
+    const btn = document.getElementById('hamburgerBtn');
+    const isOpen = nav.classList.contains('open');
+
+    if (isOpen) {
+      closeMobileNav();
+    } else {
+      nav.style.display = 'block';
+      overlay.style.display = 'block';
+      void nav.offsetWidth;
+      void overlay.offsetWidth;
+      nav.classList.add('open');
+      overlay.classList.add('open');
+      btn.classList.add('active');
+      btn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function closeMobileNav() {
+    const nav = document.getElementById('mobileNav');
+    const overlay = document.getElementById('mobileOverlay');
+    const btn = document.getElementById('hamburgerBtn');
+
+    nav.classList.remove('open');
+    overlay.classList.remove('open');
+    btn.classList.remove('active');
+    btn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+
+    setTimeout(() => {
+      if (!nav.classList.contains('open')) {
+        nav.style.display = 'none';
+        overlay.style.display = 'none';
+      }
+    }, 300);
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeMobileNav();
+  });
 
   document.addEventListener('DOMContentLoaded', loadArticle);
 </script>

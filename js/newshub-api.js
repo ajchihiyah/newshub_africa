@@ -947,11 +947,44 @@
         breakingTrack.innerHTML = breakingHtml + breakingTrack.innerHTML;
       }
 
-      // 4. Hydrate Homepage Latest News Grid (#latest)
+      // 4. Hydrate Homepage Hero and Latest News Grid
       const pathname = window.location.pathname;
       const isHomepage = pathname === '/' || pathname.endsWith('index.html') || pathname === '';
       
       if (isHomepage) {
+        // Hydrate Hero Main
+        const heroMain = document.querySelector('.nh-hero-main');
+        if (heroMain && articles[0]) {
+          const topArt = articles[0];
+          heroMain.href = `/article.html?id=${encodeURIComponent(topArt.id)}`;
+          const heroImg = heroMain.querySelector('img');
+          if (heroImg && topArt.image) heroImg.src = topArt.image;
+          const heroH2 = heroMain.querySelector('h2');
+          if (heroH2) heroH2.textContent = topArt.title;
+          const heroP = heroMain.querySelector('p');
+          if (heroP) heroP.textContent = topArt.summary || (topArt.content ? topArt.content.slice(0, 150) + '...' : '');
+          const authorSpan = heroMain.querySelector('div span:nth-of-type(1)');
+          if (authorSpan) authorSpan.textContent = topArt.author || 'NewsHub';
+          const timeSpan = heroMain.querySelector('div span:nth-of-type(2)');
+          if (timeSpan) timeSpan.textContent = '• ' + formatTimeAgo(topArt.publishedAt);
+        }
+
+        // Hydrate Hero Side Stack
+        const heroSide = document.querySelector('.nh-hero-side');
+        if (heroSide && articles.length > 1) {
+          const sideArts = articles.slice(1, 4);
+          heroSide.innerHTML = sideArts.map(art => `
+            <a href="/article.html?id=${encodeURIComponent(art.id)}" class="nh-card" style="display:flex;gap:16px;padding:16px;align-items:center;flex:1;text-decoration:none;color:inherit;">
+              <img src="${art.image || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=200&h=150&fit=crop'}" alt="${art.title}" style="width:140px;height:100px;object-fit:cover;border-radius:var(--nh-radius-sm);flex-shrink:0;" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=200&h=150&fit=crop';">
+              <div>
+                <span style="display:inline-block;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;background:rgba(0,51,204,0.12);color:var(--nh-blue);margin-bottom:6px">${art.categoryLabel || art.category}</span>
+                <h3 style="font-size:15px;font-weight:500;line-height:1.3;color:var(--nh-text-primary);margin-bottom:6px">${art.title}</h3>
+                <span style="font-size:11px;color:var(--nh-text-muted);">${art.author || 'NewsHub'} • ${formatTimeAgo(art.publishedAt)}</span>
+              </div>
+            </a>
+          `).join('');
+        }
+
         const latestGrid = document.getElementById('latest');
         if (latestGrid) {
           // Render the articles dynamically into latest news
@@ -981,13 +1014,15 @@
         }
       }
 
-      // 5. Hydrate Category Pages (business.html, technology.html, agriculture.html, mining.html, energy.html)
+      // 5. Hydrate Category Pages (business.html, technology.html, agriculture.html, mining.html, energy.html, markets.html)
       const categoryMap = {
         'business.html': 'business',
         'technology.html': 'technology',
         'agriculture.html': 'agriculture',
         'mining.html': 'mining',
-        'energy.html': 'energy'
+        'energy.html': 'energy',
+        'markets.html': 'markets',
+        'markets_v13_linked.html': 'markets'
       };
 
       const matchedCat = Object.keys(categoryMap).find(page => pathname.endsWith(page));
@@ -996,7 +1031,6 @@
         const catArticles = articles.filter(a => (a.category || '').toLowerCase() === catKey);
 
         if (catArticles.length > 0) {
-          const featuredRow = document.querySelector('.nh-featured-row');
           const featuredLarge = document.querySelector('.nh-featured-large');
           const featuredStack = document.querySelector('.nh-featured-stack');
           const categoryGrid = document.querySelector('.nh-grid');
@@ -1010,7 +1044,11 @@
             const h2 = featuredLarge.querySelector('h2');
             if (h2) h2.textContent = top.title;
             const p = featuredLarge.querySelector('p');
-            if (p) p.textContent = top.summary || (top.content.slice(0, 150) + '...');
+            if (p) p.textContent = top.summary || (top.content ? top.content.slice(0, 150) + '...' : '');
+            const authorSpan = featuredLarge.querySelector('.overlay div span:nth-of-type(1)');
+            if (authorSpan) authorSpan.textContent = top.author || 'NewsHub';
+            const timeSpan = featuredLarge.querySelector('.overlay div span:nth-of-type(2)');
+            if (timeSpan) timeSpan.textContent = '• ' + formatTimeAgo(top.publishedAt);
           }
 
           // Prepend newly published articles to the featured stack or grid
@@ -1863,6 +1901,8 @@
       initDynamicArticles();
       initNewsletterForm();
       initSubmitEvent();
+      initBrandLogo();
+      initDynamicVideos();
     });
   } else {
     initLiveMarketTicker();
@@ -1872,5 +1912,93 @@
     initDynamicArticles();
     initNewsletterForm();
     initSubmitEvent();
+    initBrandLogo();
+    initDynamicVideos();
+  }
+
+  async function initDynamicVideos() {
+    const videoGrids = document.querySelectorAll('.nh-video-grid');
+    if (!videoGrids.length) return;
+    try {
+      const res = await fetch('/api/videos');
+      const data = await res.json();
+      if (!data.success || !data.videos || !data.videos.length) return;
+      
+      const videos = data.videos;
+      const mainVid = videos.find(v => v.isMain) || videos[0];
+      const sideVids = videos.filter(v => v.id !== mainVid.id).slice(0, 4);
+
+      videoGrids.forEach(grid => {
+        const isEmbed = mainVid.videoUrl.includes('embed/') || mainVid.videoUrl.includes('youtube.com') || mainVid.videoUrl.includes('facebook.com');
+        const mainOnClick = mainVid.videoUrl.includes('facebook.com')
+          ? `window.open('${mainVid.videoUrl}', '_blank')`
+          : `openVideoModal('${mainVid.title.replace(/'/g, "\\'")}', '${mainVid.videoUrl}', '${mainVid.duration}')`;
+
+        let sideHtml = '';
+        sideVids.forEach(v => {
+          const isFb = v.videoUrl.includes('facebook.com');
+          const sideOnClick = isFb
+            ? `window.open('${v.videoUrl}', '_blank')" title="Watch on Facebook`
+            : `openVideoModal('${v.title.replace(/'/g, "\\'")}', '${v.videoUrl}', '${v.duration}')`;
+          
+          sideHtml += `
+            <div class="nh-card" onclick="${sideOnClick}" style="display:flex;gap:12px;padding:12px;cursor:pointer">
+              <div style="position:relative;flex-shrink:0">
+                <img src="${v.thumbnail}" alt="${v.title}" style="width:120px;height:72px;object-fit:cover;border-radius:var(--nh-radius-sm)">
+                <div style="position:absolute;bottom:4px;right:4px;padding:2px 6px;background:rgba(0,0,0,0.7);border-radius:3px;font-size:10px;color:white;font-weight:500">${v.duration}</div>
+              </div>
+              <div>
+                <h4 style="font-size:13px;font-weight:500;line-height:1.3;color:var(--nh-text-primary);margin-bottom:4px">${v.title}${isFb ? ' ↗' : ''}</h4>
+                <span style="font-size:11px;color:var(--nh-text-muted)">${v.category} • ${v.author}</span>
+              </div>
+            </div>
+          `;
+        });
+
+        grid.innerHTML = `
+          <div onclick="${mainOnClick}" class="nh-card nh-video-main" style="position:relative;overflow:hidden;display:block;cursor:pointer">
+            <img src="${mainVid.thumbnail}" alt="${mainVid.title}" style="width:100%;height:320px;object-fit:cover;display:block">
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.3)">
+              <div style="width:64px;height:64px;background:var(--nh-blue);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,51,204,0.4)">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><polygon points="8,5 19,12 8,19"/></svg>
+              </div>
+            </div>
+            <div style="position:absolute;bottom:16px;left:16px;right:16px">
+              <span style="display:inline-block;padding:3px 10px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;background:rgba(0,0,0,0.7);color:white;margin-bottom:8px">${mainVid.duration}</span>
+              <h3 style="font-size:18px;font-weight:500;color:white;text-shadow:0 2px 4px rgba(0,0,0,0.5)">${mainVid.title}</h3>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            ${sideHtml}
+          </div>
+        `;
+      });
+    } catch (err) {
+      console.error('Error loading dynamic videos:', err);
+    }
+  }
+
+  function initBrandLogo() {
+    const brandElements = document.querySelectorAll('.nh-brand');
+    brandElements.forEach(brand => {
+      if (brand.dataset.logoUpdated === 'true') return;
+      brand.dataset.logoUpdated = 'true';
+
+      const isMobileHeader = brand.closest('.nh-mobile-nav-header');
+      if (isMobileHeader) {
+        isMobileHeader.style.cssText += ' align-items: center !important; padding: 12px 20px !important; min-height: 72px !important;';
+        brand.style.cssText = 'display: flex !important; flex-direction: column !important; align-items: flex-start !important; justify-content: center !important; gap: 0 !important; text-decoration: none !important;';
+      } else {
+        brand.style.cssText = 'display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; gap: 0 !important; text-decoration: none !important;';
+      }
+
+      brand.innerHTML = `
+        <div style="display: flex; align-items: center; justify-content: center; gap: 6px; line-height: 1;">
+          <span aria-hidden="true" style="display: inline-block; width: 12px; height: 12px; background: #0033cc; border-radius: 50%; vertical-align: middle; flex-shrink: 0;"></span>
+          <span style="font-size: 22px; font-weight: 700; letter-spacing: -0.5px; color: #0033cc; font-family: inherit; line-height: 1;">News</span><span style="font-size: 22px; font-weight: 700; letter-spacing: -0.5px; color: var(--nh-text-primary, #111); font-family: inherit; line-height: 1;">Hub</span>
+        </div>
+        <div class="nh-brand-tagline" style="font-size: 13px; font-weight: 500; color: var(--nh-text-secondary); letter-spacing: 0.2px; text-transform: none; margin-top: 3px; line-height: 1.2; text-align: ${isMobileHeader ? 'left' : 'center'}; font-family: inherit;">The Pulse Of The Continent</div>
+      `;
+    });
   }
 })();

@@ -1,5 +1,6 @@
 import express from 'express';
 import { articlesStore, saveArticlesStore } from '../data/newsData.js';
+import { videosStore, saveVideosStore } from '../data/videosData.js';
 import { getLiveMarketSnapshot, marketIndices, foreignExchangeRates, commoditiesData, topEquities } from '../data/marketData.js';
 import { eventsStore } from '../data/eventsData.js';
 import { podcastsData, liveCoverageFeed } from '../data/podcastsData.js';
@@ -256,6 +257,82 @@ router.post('/articles', (req, res) => {
       message: 'Article published successfully and live on NewsHub Africa!',
       article: newArticle
     });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// ----------------------------------------------------
+// VIDEO ENDPOINTS
+// ----------------------------------------------------
+
+router.get('/videos', (req, res) => {
+  try {
+    res.json({ success: true, videos: videosStore });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.post('/videos', (req, res) => {
+  try {
+    const { title, videoUrl, duration, category, thumbnail, isMain, author } = req.body;
+    if (!title || !videoUrl) {
+      return res.status(400).json({ success: false, error: 'Title and video URL are required' });
+    }
+
+    if (isMain) {
+      videosStore.forEach(v => { v.isMain = false; });
+    }
+
+    const newVideo = {
+      id: `vid-${Date.now()}`,
+      title: title.trim(),
+      videoUrl: videoUrl.trim(),
+      duration: duration || '10:00',
+      category: category || 'General',
+      thumbnail: thumbnail || 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=450&fit=crop',
+      date: new Date().toISOString().split('T')[0],
+      isMain: Boolean(isMain),
+      author: author || 'Ashley Jordan Chihiya'
+    };
+
+    if (isMain || videosStore.length === 0) {
+      videosStore.forEach(v => { v.isMain = false; });
+      newVideo.isMain = true;
+      videosStore.unshift(newVideo);
+    } else {
+      videosStore.push(newVideo);
+    }
+
+    saveVideosStore();
+
+    res.status(201).json({
+      success: true,
+      message: 'Video uploaded and published successfully!',
+      video: newVideo,
+      videos: videosStore
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.delete('/videos/:id', (req, res) => {
+  try {
+    const { id } = req.params;
+    const index = videosStore.findIndex(v => v.id === id);
+    if (index === -1) {
+      return res.status(404).json({ success: false, error: 'Video not found' });
+    }
+
+    const deleted = videosStore.splice(index, 1)[0];
+    if (deleted.isMain && videosStore.length > 0) {
+      videosStore[0].isMain = true;
+    }
+    saveVideosStore();
+
+    res.json({ success: true, message: 'Video deleted successfully', videos: videosStore });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }

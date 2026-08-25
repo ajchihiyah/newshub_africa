@@ -700,7 +700,7 @@
 
     <div class="nh-login-heading">
       <h1 class="nh-login-title">NewsHub Africa Newsroom Access</h1>
-      <p class="nh-login-sub">Please enter your authorized editorial credentials to access the continental publishing workspace.</p>
+      <p class="nh-login-sub">Please enter your authorized editorial credentials or use quick role pre-sets to access the continental publishing workspace.</p>
     </div>
 
     <div id="loginErrorMsg" style="display:none; background: rgba(233, 69, 96, 0.12); color: #e94560; border: 1px solid rgba(233, 69, 96, 0.3); border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 16px; text-align: center;">
@@ -893,6 +893,9 @@
     <button class="nh-tab-btn" onclick="switchTab('marketdesk')" id="tab-btn-marketdesk">
       <span>📈</span> Live African Bourses Desk
     </button>
+    <button class="nh-tab-btn" onclick="switchTab('videos')" id="tab-btn-videos">
+      <span>🎥</span> Manage & Upload Videos (<span id="tabVideoCount">0</span>)
+    </button>
   </div>
 
   <!-- ============================================== -->
@@ -1007,8 +1010,14 @@
           </div>
 
           <div class="nh-form-group">
-            <label class="nh-label">Featured Cover Image URL</label>
-            <input type="url" id="artImage" class="nh-input" value="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1000&auto=format&fit=crop&q=80" />
+            <label class="nh-label">Featured Cover Image (Upload File or URL)</label>
+            <div style="display: flex; gap: 10px; margin-bottom: 8px;">
+              <input type="url" id="artImage" class="nh-input" value="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1000&auto=format&fit=crop&q=80" style="flex: 1;" />
+              <label class="nh-btn nh-btn-outline" style="cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; margin: 0; padding: 0 14px; font-size: 13px;">
+                📁 Upload Custom Image
+                <input type="file" id="artImageFile" accept="image/*" style="display: none;" onchange="handleImageUpload(event, 'artImage')" />
+              </label>
+            </div>
             
             <div style="margin-top: 8px;">
               <span style="font-size: 11px; color: var(--nh-text-muted); font-weight: 600;">1-Click Image Presets:</span>
@@ -1296,6 +1305,97 @@
     </div>
   </div>
 
+  <!-- ============================================== -->
+  <!-- TAB 5: MANAGE & UPLOAD VIDEOS                  -->
+  <!-- ============================================== -->
+  <div class="nh-tab-pane" id="pane-videos">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+      <!-- Upload Video Form -->
+      <div class="nh-card">
+        <div class="nh-card-header">
+          <div class="nh-card-title">
+            <span>🎥</span> Upload & Publish Video
+          </div>
+        </div>
+        <form id="uploadVideoForm" onsubmit="handleUploadVideo(event)" style="display: flex; flex-direction: column; gap: 16px;">
+          <div class="nh-form-group">
+            <label class="nh-label">Video Title *</label>
+            <input type="text" id="vidTitle" class="nh-input" placeholder="e.g. Africa's Green Energy Transition" required />
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div class="nh-form-group">
+              <label class="nh-label">Video URL / Embed URL *</label>
+              <input type="text" id="vidUrl" class="nh-input" placeholder="https://www.youtube.com/embed/..." required />
+            </div>
+            <div class="nh-form-group">
+              <label class="nh-label">Duration</label>
+              <input type="text" id="vidDuration" class="nh-input" placeholder="e.g. 12:34" value="10:00" />
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div class="nh-form-group">
+              <label class="nh-label">Category</label>
+              <select id="vidCategory" class="nh-select">
+                <option value="Technology">Technology</option>
+                <option value="Business">Business</option>
+                <option value="Energy">Energy</option>
+                <option value="Mining">Mining</option>
+                <option value="Agriculture">Agriculture</option>
+                <option value="Markets">Markets</option>
+              </select>
+            </div>
+            <div class="nh-form-group">
+              <label class="nh-label">Author / Journalist</label>
+              <input type="text" id="vidAuthor" class="nh-input" value="Ashley Jordan Chihiya" />
+            </div>
+          </div>
+          <div class="nh-form-group">
+            <label class="nh-label">Thumbnail Image (Upload File or URL)</label>
+            <div style="display: flex; gap: 10px;">
+              <input type="text" id="vidThumbnail" class="nh-input" placeholder="https://images.unsplash.com/..." value="https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=450&fit=crop" style="flex: 1;" />
+              <label class="nh-btn nh-btn-outline" style="cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; margin: 0; padding: 0 14px; font-size: 13px;">
+                📁 Upload Custom Image
+                <input type="file" id="vidThumbnailFile" accept="image/*" style="display: none;" onchange="handleImageUpload(event, 'vidThumbnail')" />
+              </label>
+            </div>
+          </div>
+          <div class="nh-form-group" style="display: flex; align-items: center; gap: 8px;">
+            <input type="checkbox" id="vidIsMain" style="width: 16px; height: 16px; accent-color: var(--nh-blue);" />
+            <label for="vidIsMain" style="font-size: 13px; font-weight: 500; cursor: pointer;">Set as Main Featured Video (Hero Player)</label>
+          </div>
+          <button type="submit" class="nh-btn nh-btn-primary" style="justify-content: center; padding: 12px;">
+            Publish Video 🚀
+          </button>
+        </form>
+      </div>
+
+      <!-- Manage Videos Table -->
+      <div class="nh-card">
+        <div class="nh-card-header">
+          <div class="nh-card-title">
+            <span>📚</span> Published Videos Library (<span id="videosLibraryCount">0</span>)
+          </div>
+        </div>
+        <div class="nh-table-container" style="max-height: 480px; overflow-y: auto;">
+          <table class="nh-table">
+            <thead>
+              <tr>
+                <th>Video Title</th>
+                <th>Category</th>
+                <th>Duration</th>
+                <th>Featured</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="videosTableBody">
+              <tr><td colspan="5">Loading videos...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- Modal for Editing Articles -->
@@ -1337,8 +1437,14 @@
         <textarea id="editArtContent" class="nh-textarea" style="min-height: 200px;" required></textarea>
       </div>
       <div class="nh-form-group">
-        <label class="nh-label">Cover Image URL</label>
-        <input type="url" id="editArtImage" class="nh-input" />
+        <label class="nh-label">Cover Image (Upload File or URL)</label>
+        <div style="display: flex; gap: 10px;">
+          <input type="url" id="editArtImage" class="nh-input" style="flex: 1;" />
+          <label class="nh-btn nh-btn-outline" style="cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; margin: 0; padding: 0 14px; font-size: 13px;">
+            📁 Upload Custom Image
+            <input type="file" id="editArtImageFile" accept="image/*" style="display: none;" onchange="handleImageUpload(event, 'editArtImage')" />
+          </label>
+        </div>
       </div>
       <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
         <button type="button" class="nh-btn nh-btn-outline" onclick="closeEditModal()">Cancel</button>
@@ -1388,11 +1494,18 @@
     const idInput = document.getElementById('loginIdentifier');
     const passInput = document.getElementById('loginPassword');
     if (idInput) idInput.value = creds.identifier;
-    if (passInput) passInput.value = creds.password;
+    if (passInput) {
+      passInput.value = '';
+      passInput.focus();
+    }
     const errEl = document.getElementById('loginErrorMsg');
-    if (errEl) errEl.style.display = 'none';
-    const submitBtn = document.getElementById('cmsLoginSubmitBtn');
-    if (submitBtn) submitBtn.focus();
+    if (errEl) {
+      errEl.textContent = `Selected ${roleKey === 'admin' ? 'Administrator' : 'Staff Writer'} role. Please write your password to sign in.`;
+      errEl.style.backgroundColor = 'rgba(0, 51, 204, 0.08)';
+      errEl.style.color = '#0033cc';
+      errEl.style.borderColor = 'rgba(0, 51, 204, 0.2)';
+      errEl.style.display = 'block';
+    }
   }
 
   function togglePasswordVisibility() {
@@ -1420,8 +1533,14 @@
 
     if (submitBtn) {
       submitBtn.disabled = false;
-      submitBtn.innerHTML = '<span>Sign In to Studio CMS →</span>';
+      submitBtn.innerHTML = '<span>Sign In to NewsHub Newsroom →</span>';
     }
+  }
+
+  async function quickLoginAs(roleKey) {
+    const creds = CREDENTIAL_PRESETS[roleKey];
+    if (!creds) return;
+    await performLogin(creds.identifier, creds.password);
   }
 
   async function performLogin(identifier, password) {
@@ -1599,6 +1718,26 @@
   function setImagePreset(url, label) {
     imageInput.value = url;
     syncPreview();
+  }
+
+  function handleImageUpload(event, targetInputId) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const dataUrl = e.target.result;
+      const inputEl = document.getElementById(targetInputId);
+      if (inputEl) {
+        inputEl.value = dataUrl;
+        if (targetInputId === 'artImage') {
+          syncPreview();
+        }
+      }
+      if (typeof window.showNewsHubToast === 'function') {
+        window.showNewsHubToast('Custom image uploaded successfully!', '🖼️');
+      }
+    };
+    reader.readAsDataURL(file);
   }
 
   function updateCoverPreset() {
@@ -1835,6 +1974,9 @@
 
       // 4. Live Markets Desk
       loadMarketDesk();
+
+      // 5. Videos Library
+      loadDashboardVideos();
     } catch (err) {
       console.error('Error loading dashboard data:', err);
     }
@@ -2098,7 +2240,8 @@
       if (!data.success) return;
 
       const indicesBody = document.getElementById('deskIndicesBody');
-      indicesBody.innerHTML = data.indices.map(idx => `
+      const indicesArr = Array.isArray(data.indicesList) ? data.indicesList : Object.values(data.indices || {});
+      indicesBody.innerHTML = indicesArr.map(idx => `
         <tr>
           <td>
             <strong>${idx.symbol}</strong>
@@ -2159,6 +2302,105 @@
       }
     } catch (e) {
       alert('Network error during RSS sync.');
+    }
+  }
+
+  async function loadDashboardVideos() {
+    try {
+      const res = await fetch('/api/videos');
+      const data = await res.json();
+      if (data.success && data.videos) {
+        const videos = data.videos;
+        document.getElementById('tabVideoCount').textContent = videos.length;
+        document.getElementById('videosLibraryCount').textContent = videos.length;
+
+        const tbody = document.getElementById('videosTableBody');
+        if (!videos.length) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--nh-text-muted);">No videos published yet.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = videos.map(v => `
+          <tr>
+            <td>
+              <div style="font-weight: 500; font-size: 13px; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${v.title}">
+                ${v.title}
+              </div>
+              <div style="font-size: 11px; color: var(--nh-text-muted);">${v.date}</div>
+            </td>
+            <td><span class="nh-tag-badge nh-tag-${v.category.toLowerCase()}">${v.category}</span></td>
+            <td><code>${v.duration}</code></td>
+            <td>
+              ${v.isMain ? '<span style="color:var(--nh-blue); font-weight:700;">★ Hero Main</span>' : '<span style="color:var(--nh-text-muted);">Side</span>'}
+            </td>
+            <td>
+              <div style="display:flex; gap:6px;">
+                <button class="nh-btn nh-btn-outline" style="padding:4px 10px; font-size:11px;" onclick="window.open('${v.videoUrl}', '_blank')">Preview</button>
+                <button class="nh-btn nh-btn-outline" style="padding:4px 10px; font-size:11px; color:var(--nh-red); border-color:var(--nh-red);" onclick="deleteVideo('${v.id}')">Delete</button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      }
+    } catch (e) {
+      console.error('Error loading dashboard videos:', e);
+    }
+  }
+
+  async function handleUploadVideo(event) {
+    event.preventDefault();
+    const title = document.getElementById('vidTitle').value.trim();
+    const videoUrl = document.getElementById('vidUrl').value.trim();
+    const duration = document.getElementById('vidDuration').value.trim() || '10:00';
+    const category = document.getElementById('vidCategory').value;
+    const author = document.getElementById('vidAuthor').value.trim();
+    const thumbnail = document.getElementById('vidThumbnail').value.trim();
+    const isMain = document.getElementById('vidIsMain').checked;
+
+    if (!title || !videoUrl) {
+      alert('Please fill in Title and Video URL');
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/videos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, videoUrl, duration, category, author, thumbnail, isMain })
+      });
+      const data = await res.json();
+      if (data.success) {
+        if (typeof window.showNewsHubToast === 'function') {
+          window.showNewsHubToast('Video published successfully!', '🎥');
+        } else {
+          alert('Video published successfully!');
+        }
+        document.getElementById('uploadVideoForm').reset();
+        document.getElementById('vidIsMain').checked = false;
+        loadDashboardVideos();
+      } else {
+        alert('Failed to publish video: ' + (data.error || 'Unknown error'));
+      }
+    } catch (e) {
+      alert('Network error while publishing video.');
+    }
+  }
+
+  async function deleteVideo(id) {
+    if (!confirm('Are you sure you want to delete this video?')) return;
+    try {
+      const res = await fetch(`/api/videos/${id}`, { method: 'DELETE' });
+      const data = await res.json();
+      if (data.success) {
+        if (typeof window.showNewsHubToast === 'function') {
+          window.showNewsHubToast('Video deleted successfully', '🗑️');
+        }
+        loadDashboardVideos();
+      } else {
+        alert('Failed to delete video.');
+      }
+    } catch (e) {
+      alert('Network error while deleting video.');
     }
   }
 
