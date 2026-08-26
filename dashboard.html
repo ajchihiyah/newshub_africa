@@ -1704,7 +1704,7 @@
     document.getElementById('prevTag').textContent = categorySelect.options[categorySelect.selectedIndex].text.split('&')[0].trim();
     document.getElementById('prevTag').className = 'nh-tag-badge nh-tag-' + categorySelect.value;
     document.getElementById('prevCountry').textContent = countrySelect.value;
-    document.getElementById('prevAuthor').textContent = 'By ' + (authorInput.value || currentUser.name || 'Ashley Jordan Chihiya');
+    document.getElementById('prevAuthor').textContent = 'By ' + (authorInput.value || (currentUser && currentUser.name) || 'Ashley Jordan Chihiya');
     if (imageInput.value) {
       document.getElementById('prevImg').src = imageInput.value;
     }
@@ -1889,7 +1889,17 @@
         headers,
         body: JSON.stringify(payload)
       });
-      const data = await res.json();
+
+      let data;
+      const contentType = res.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        data = await res.json();
+      } else {
+        const text = await res.text();
+        console.error('Server returned non-JSON response:', text);
+        throw new Error('Server returned an unexpected response format (HTTP ' + res.status + ').');
+      }
+
       if (data.success && data.article) {
         // Save to localStorage as backup
         try {
@@ -1898,7 +1908,7 @@
           localStorage.setItem('newshub_published_articles', JSON.stringify(stored));
         } catch (err) {}
 
-        window.showNewsHubToast(`Article published by ${currentUser.name}!`, '🚀');
+        window.showNewsHubToast(`Article published by ${currentUser ? currentUser.name : 'NewsHub Africa'}!`, '🚀');
         
         // Show publication success confirmation with quick links
         const confirmBox = document.createElement('div');
@@ -1924,8 +1934,8 @@
         alert('Error publishing article: ' + (data.error || 'Unknown error'));
       }
     } catch (err) {
-      console.error(err);
-      alert('Failed to publish article. Please check your connection.');
+      console.error('Publish error:', err);
+      alert('Failed to publish article: ' + (err.message || 'Connection error. Please try again.'));
     } finally {
       btn.disabled = false;
       btn.textContent = '🚀 Publish Article to NewsHub';
