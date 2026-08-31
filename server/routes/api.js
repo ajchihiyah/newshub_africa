@@ -274,6 +274,33 @@ router.get('/videos', (req, res) => {
   }
 });
 
+function toEmbedUrl(url) {
+  if (!url) return '';
+  if (url.includes('youtube.com/embed/')) return url;
+  let videoId = '';
+  if (url.includes('youtu.be/')) {
+    const parts = url.split('youtu.be/');
+    if (parts[1]) videoId = parts[1].split('?')[0].split('&')[0];
+  } else if (url.includes('youtube.com/watch')) {
+    const match = url.match(/[?&]v=([^&]+)/);
+    if (match && match[1]) videoId = match[1];
+  } else if (url.includes('youtube.com/shorts/')) {
+    const parts = url.split('youtube.com/shorts/');
+    if (parts[1]) videoId = parts[1].split('?')[0].split('&')[0];
+  }
+  if (videoId) {
+    const queryIndex = url.indexOf('?');
+    let extraParams = '';
+    if (queryIndex !== -1) {
+      const queryStr = url.substring(queryIndex + 1);
+      const params = queryStr.split('&').filter(p => !p.startsWith('v='));
+      if (params.length > 0) extraParams = '&' + params.join('&');
+    }
+    return `https://www.youtube.com/embed/${videoId}?${extraParams ? extraParams.substring(1) : ''}`;
+  }
+  return url;
+}
+
 router.post('/videos', (req, res) => {
   try {
     const { title, videoUrl, duration, category, thumbnail, isMain, author } = req.body;
@@ -285,10 +312,12 @@ router.post('/videos', (req, res) => {
       videosStore.forEach(v => { v.isMain = false; });
     }
 
+    const normalizedUrl = toEmbedUrl(videoUrl.trim());
+
     const newVideo = {
       id: `vid-${Date.now()}`,
       title: title.trim(),
-      videoUrl: videoUrl.trim(),
+      videoUrl: normalizedUrl,
       duration: duration || '10:00',
       category: category || 'General',
       thumbnail: thumbnail || 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=450&fit=crop',
