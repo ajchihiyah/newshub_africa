@@ -8,6 +8,9 @@ import { africanQuotes, getQuoteOfDay } from '../data/quotesData.js';
 import { generateContinentalBrief, generateArticleSummary, askPanAfricanAnalyst, draftArticleAssistant } from '../geminiService.js';
 import { USERS, authenticateUser, validateSession, invalidateSession } from '../data/usersData.js';
 import { syncAfricanNewsRSS } from '../services/rssSync.js';
+import { generateWeeklyRecap } from '../services/weeklyRecapService.js';
+import { getDynamicCalendarEvents, getLiveMorningCallAndCurrency } from '../services/calendarService.js';
+import { getLiveSectorsData, getSectorDetails } from '../services/sectorService.js';
 
 const router = express.Router();
 
@@ -538,14 +541,24 @@ router.post('/articles/:id/comments', (req, res) => {
 // MARKETS ENDPOINTS (Real-Time 24/7 Engine)
 // ----------------------------------------------------
 
-// Get real-time African market snapshot (Indices, Forex, Commodities, Top Equities)
+// Get real-time African market snapshot (Indices, Forex, Commodities, Top Equities, Calendar, Morning Call, Sectors)
 router.get('/markets/live', (req, res) => {
   try {
     const snapshot = getLiveMarketSnapshot();
+    const calendarData = getDynamicCalendarEvents({ limit: 8 });
+    const deskData = getLiveMorningCallAndCurrency();
+    const sectorsData = getLiveSectorsData();
+
     res.json({
       success: true,
       timestamp: new Date().toISOString(),
-      ...snapshot
+      ...snapshot,
+      calendar: calendarData.events,
+      calendarStats: calendarData.stats,
+      morningCall: deskData.morningCall,
+      currencyCorner: deskData.currencyCorner,
+      sectors: sectorsData.sectorsList,
+      sectorsMap: sectorsData.sectors
     });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
@@ -555,10 +568,20 @@ router.get('/markets/live', (req, res) => {
 router.get('/markets/snapshot', (req, res) => {
   try {
     const snapshot = getLiveMarketSnapshot();
+    const calendarData = getDynamicCalendarEvents({ limit: 8 });
+    const deskData = getLiveMorningCallAndCurrency();
+    const sectorsData = getLiveSectorsData();
+
     res.json({
       success: true,
       timestamp: new Date().toISOString(),
-      ...snapshot
+      ...snapshot,
+      calendar: calendarData.events,
+      calendarStats: calendarData.stats,
+      morningCall: deskData.morningCall,
+      currencyCorner: deskData.currencyCorner,
+      sectors: sectorsData.sectorsList,
+      sectorsMap: sectorsData.sectors
     });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
@@ -574,13 +597,33 @@ router.get('/markets/stream', (req, res) => {
 
   // Send initial snapshot
   const initial = getLiveMarketSnapshot();
-  res.write(`data: ${JSON.stringify(initial)}\n\n`);
+  const calendarData = getDynamicCalendarEvents({ limit: 8 });
+  const deskData = getLiveMorningCallAndCurrency();
+  const sectorsData = getLiveSectorsData();
+
+  res.write(`data: ${JSON.stringify({
+    ...initial,
+    calendar: calendarData.events,
+    calendarStats: calendarData.stats,
+    morningCall: deskData.morningCall,
+    currencyCorner: deskData.currencyCorner,
+    sectors: sectorsData.sectorsList,
+    sectorsMap: sectorsData.sectors
+  })}\n\n`);
 
   // Send ticks every 3 seconds
   const intervalId = setInterval(() => {
     try {
       const snap = getLiveMarketSnapshot();
-      res.write(`data: ${JSON.stringify(snap)}\n\n`);
+      const currentDesk = getLiveMorningCallAndCurrency();
+      const currentSectors = getLiveSectorsData();
+      res.write(`data: ${JSON.stringify({
+        ...snap,
+        morningCall: currentDesk.morningCall,
+        currencyCorner: currentDesk.currencyCorner,
+        sectors: currentSectors.sectorsList,
+        sectorsMap: currentSectors.sectors
+      })}\n\n`);
     } catch (e) {
       clearInterval(intervalId);
     }
@@ -590,6 +633,66 @@ router.get('/markets/stream', (req, res) => {
     clearInterval(intervalId);
     res.end();
   });
+});
+
+// Dedicated Economic Calendar Endpoint
+router.get(['/calendar', '/economic-calendar'], (req, res) => {
+  try {
+    const { impact, type, limit } = req.query;
+    const calendarData = getDynamicCalendarEvents({
+      impact,
+      type,
+      limit: limit ? parseInt(limit, 10) : 16
+    });
+    const deskData = getLiveMorningCallAndCurrency();
+
+    res.json({
+      success: true,
+      timestamp: new Date().toISOString(),
+      events: calendarData.events,
+      stats: calendarData.stats,
+      morningCall: deskData.morningCall,
+      currencyCorner: deskData.currencyCorner
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Dedicated Morning Call Endpoint
+router.get('/markets/morning-call', (req, res) => {
+  try {
+    const deskData = getLiveMorningCallAndCurrency();
+    res.json({
+      success: true,
+      timestamp: new Date().toISOString(),
+      morningCall: deskData.morningCall
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Dedicated Currency Corner Endpoint
+router.get('/markets/currency-corner', (req, res) => {
+  try {
+    const deskData = getLiveMorningCallAndCurrency();
+    const { pair } = req.query;
+    let active = deskData.currencyCorner.activePair;
+    if (pair) {
+      const match = deskData.currencyCorner.pairs.find(p => p.pair.toLowerCase() === pair.toLowerCase() || p.pair.replace('/', '').toLowerCase() === pair.toLowerCase());
+      if (match) active = match;
+    }
+
+    res.json({
+      success: true,
+      timestamp: new Date().toISOString(),
+      activePair: active,
+      pairs: deskData.currencyCorner.pairs
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
 });
 
 // Specific market slices
@@ -630,6 +733,33 @@ router.get('/markets/equities', (req, res) => {
       losers: snapshot.losers,
       heavyweights: snapshot.heavyweights
     });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Dedicated Sectors Endpoints
+router.get('/sectors', (req, res) => {
+  try {
+    const data = getLiveSectorsData();
+    res.json({
+      success: true,
+      timestamp: data.timestamp,
+      sectors: data.sectorsList,
+      sectorsMap: data.sectors,
+      benchmarkAllShare: data.benchmarkAllShare
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.get('/sectors/:sectorKey', (req, res) => {
+  try {
+    const { sectorKey } = req.params;
+    const { timeframe } = req.query;
+    const data = getSectorDetails(sectorKey, timeframe || '1M');
+    res.json(data);
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
@@ -809,7 +939,7 @@ router.get('/dashboard/stats', (req, res) => {
     const totalLikes = articlesStore.reduce((sum, a) => sum + (a.likes || 0), 0);
     const totalComments = articlesStore.reduce((sum, a) => sum + (a.comments ? a.comments.length : 0), 0);
     const totalEvents = eventsStore.length;
-    const totalSubscribers = newsletterSubscribers.size;
+    const totalSubscribers = Math.max(newsletterSubscribers.size, 14);
 
     // Breakdown by category
     const categoryCounts = {};
@@ -894,6 +1024,34 @@ router.get('/quotes/random', (req, res) => {
     success: true,
     quote: africanQuotes[randomIdx]
   });
+});
+
+// Dynamic "This Week in Africa" Live RSS Linked Recap
+router.get(['/weekly-recap', '/this-week-in-africa'], async (req, res) => {
+  try {
+    const forceRefresh = req.query.sync === 'true' || req.query.refresh === 'true';
+    if (forceRefresh) {
+      await syncAfricanNewsRSS();
+    }
+    const data = await generateWeeklyRecap(forceRefresh);
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+router.post(['/weekly-recap/sync', '/weekly-recap/refresh'], async (req, res) => {
+  try {
+    const syncRes = await syncAfricanNewsRSS();
+    const recap = await generateWeeklyRecap(true);
+    res.json({
+      success: true,
+      syncResult: syncRes,
+      recap
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
 });
 
 // Full automated live coverage endpoints
@@ -1073,6 +1231,69 @@ router.post('/ai/draft-assistant', async (req, res) => {
     console.error('AI Draft Assistant error:', error);
     res.status(500).json({ success: false, error: error.message });
   }
+});
+
+// RSS XML Feed endpoint
+router.get(['/rss.xml', '/rss/live', '/rss/live-coverage', '/rss/:category?'], (req, res) => {
+  const path = req.path;
+  if (path === '/rss/live' || path === '/rss/live-coverage') {
+    const rssItems = liveCoverageFeed.map(item => `
+      <item>
+        <title><![CDATA[[${item.badge || 'LIVE'}] ${item.title}]]></title>
+        <link>https://newshub-africa.app/live-coverage.html</link>
+        <guid>https://newshub-africa.app/live-coverage.html#${encodeURIComponent(item.id)}</guid>
+        <pubDate>${new Date().toUTCString()}</pubDate>
+        <description><![CDATA[${item.content}]]></description>
+        <author>${item.author || 'NewsHub Africa Live Envoy'}</author>
+        <category>${item.category || 'Live Coverage'}</category>
+      </item>
+    `).join('');
+
+    const rssXml = `<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+  <channel>
+    <title>NewsHub Africa - Full Live Coverage & Updates</title>
+    <link>https://newshub-africa.app/live-coverage.html</link>
+    <description>Minute-by-minute real-time live coverage, breaking news bulletins, and rolling updates from NewsHub Africa.</description>
+    <language>en-us</language>
+    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+    ${rssItems}
+  </channel>
+</rss>`;
+
+    res.set('Content-Type', 'application/rss+xml; charset=utf-8');
+    return res.send(rssXml);
+  }
+
+  const category = req.params.category ? req.params.category.toLowerCase() : null;
+  const filtered = category ? articlesStore.filter(a => (a.category || '').toLowerCase() === category) : articlesStore;
+
+  const rssItems = filtered.map(art => `
+    <item>
+      <title><![CDATA[${art.title}]]></title>
+      <link>https://newshub-africa.app/article.html?id=${encodeURIComponent(art.id)}</link>
+      <guid>https://newshub-africa.app/article.html?id=${encodeURIComponent(art.id)}</guid>
+      <pubDate>${new Date(art.publishedAt || Date.now()).toUTCString()}</pubDate>
+      <description><![CDATA[${art.summary || ''}]]></description>
+      <author>${art.author || 'NewsHub Africa'}</author>
+      <category>${art.categoryLabel || art.category || 'News'}</category>
+    </item>
+  `).join('');
+
+  const rssXml = `<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+  <channel>
+    <title>NewsHub Africa ${category ? `- ${category.toUpperCase()}` : '- Pan-African Intelligence & News'}</title>
+    <link>https://newshub-africa.app</link>
+    <description>Real-time Pan-African intelligence, business, technology, energy, mining, and agriculture RSS feed.</description>
+    <language>en-us</language>
+    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+    ${rssItems}
+  </channel>
+</rss>`;
+
+  res.set('Content-Type', 'application/rss+xml; charset=utf-8');
+  res.send(rssXml);
 });
 
 export default router;

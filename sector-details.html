@@ -240,6 +240,71 @@ body {
 .nh-timeframe-toggle button:hover { border-color: var(--nh-blue); color: var(--nh-blue); }
 .nh-timeframe-toggle button.active { background: var(--nh-blue); color: white; border-color: var(--nh-blue); }
 
+/* Real-Time Price Flash & Chart Tooltip */
+@keyframes nhPriceFlashGreen {
+  0% { background-color: rgba(42, 157, 143, 0.35); }
+  100% { background-color: transparent; }
+}
+@keyframes nhPriceFlashRed {
+  0% { background-color: rgba(233, 69, 96, 0.35); }
+  100% { background-color: transparent; }
+}
+.price-flash-up {
+  animation: nhPriceFlashGreen 1.5s ease-out;
+}
+.price-flash-down {
+  animation: nhPriceFlashRed 1.5s ease-out;
+}
+
+.nh-chart-tooltip {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  background: var(--nh-surface);
+  border: 1px solid var(--nh-border);
+  padding: 8px 14px;
+  border-radius: var(--nh-radius-sm);
+  box-shadow: var(--nh-shadow-md);
+  pointer-events: none;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transition: opacity 0.2s ease;
+  z-index: 10;
+}
+.nh-chart-tooltip-date {
+  color: var(--nh-text-muted);
+  font-size: 11px;
+}
+.nh-chart-tooltip-val {
+  color: var(--nh-text-primary);
+  font-weight: 700;
+  font-size: 16px;
+}
+.nh-chart-crosshair {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--nh-blue);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+.nh-chart-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--nh-blue);
+  border: 2px solid white;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
 @media (max-width: 1024px) {
   .nh-sector-overview { grid-template-columns: 1fr; }
   .nh-sector-news-grid { grid-template-columns: repeat(2, 1fr); }
@@ -265,6 +330,30 @@ body {
 }
 button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid var(--nh-blue); outline-offset: 2px; }
   </style>
+
+  <style class="nh-dynamic-hide">
+    .nh-hero-main, .nh-hero-side, #latest, #homeCategoryHighlights, .nh-featured-large, .nh-featured-stack, .nh-grid, .nh-video-grid, #thisWeekInAfricaGrid, .nh-calendar-grid, .nh-currency-corner {
+      transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    html.js-loading .nh-hero-main,
+    html.js-loading .nh-hero-side,
+    html.js-loading #latest,
+    html.js-loading #homeCategoryHighlights,
+    html.js-loading .nh-featured-large,
+    html.js-loading .nh-featured-stack,
+    html.js-loading .nh-grid,
+    html.js-loading .nh-video-grid,
+    html.js-loading #thisWeekInAfricaGrid,
+    html.js-loading .nh-calendar-grid,
+    html.js-loading .nh-currency-corner {
+      opacity: 0 !important;
+      pointer-events: none;
+    }
+  </style>
+  <script>
+    document.documentElement.classList.add('js-loading');
+    setTimeout(() => { document.documentElement.classList.remove('js-loading'); }, 2000);
+  </script>
 </head>
 <body>
 
@@ -363,7 +452,13 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
           <button onclick="setChartTimeframe(this,'YTD')">YTD</button>
         </div>
       </div>
-      <div class="nh-sector-big-chart" id="sectorChartContainer">
+      <div class="nh-sector-big-chart" id="sectorChartContainer" style="position:relative;cursor:crosshair">
+        <div class="nh-chart-tooltip" id="chartTooltip" style="opacity:0">
+          <span class="nh-chart-tooltip-date" id="chartTooltipDate">--</span>
+          <span class="nh-chart-tooltip-val" id="chartTooltipVal">--</span>
+        </div>
+        <div class="nh-chart-crosshair" id="chartCrosshair"></div>
+        <div class="nh-chart-dot" id="chartDot"></div>
         <svg id="sectorBigChart" width="100%" height="100%" viewBox="0 0 800 320" preserveAspectRatio="none">
           <defs>
             <linearGradient id="chartGradUp" x1="0" y1="0" x2="0" y2="1">
@@ -451,7 +546,7 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
   <!-- Sector News -->
   <div class="nh-section-header">
     <h2 class="nh-section-title">Sector News</h2>
-    <a href="#" class="nh-view-all">All News &rarr;</a>
+    <a href="business.html" class="nh-view-all" id="allSectorNewsLink">All News &rarr;</a>
   </div>
   <div class="nh-sector-news-grid" id="newsGrid"></div>
 
@@ -634,144 +729,414 @@ const SECTOR_DATA = {
 };
 
 let currentSector = 'banking';
+let currentTimeframe = '1M';
+let currentTableTimeframe = 'today';
 let currentSort = { col: -1, dir: 'asc' };
+let currentSectorData = null;
+let currentTimeSeries = [];
+let previousPrices = new Map();
+let isFetching = false;
+let sseEventSource = null;
+let pollTimer = null;
+
+// ==========================
+// REAL-TIME API FETCHING
+// ==========================
+async function fetchSectorData(sectorKey, timeframe = currentTimeframe, isBackground = false) {
+  if (isFetching && !isBackground) return;
+  isFetching = true;
+  currentSector = sectorKey;
+  currentTimeframe = timeframe;
+
+  try {
+    const res = await fetch(`/api/sectors/${sectorKey}?timeframe=${timeframe}`);
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.sector) {
+        currentSectorData = data.sector;
+        currentTimeSeries = data.timeSeries || [];
+        renderSectorData(currentSectorData, currentTimeSeries, isBackground);
+        return;
+      }
+    }
+  } catch (err) {
+    console.warn('[SectorDetails] Failed to fetch live sector data, using local fallback:', err);
+  } finally {
+    isFetching = false;
+  }
+
+  // Fallback to local data
+  const fallback = SECTOR_DATA[sectorKey] || SECTOR_DATA.banking;
+  currentSectorData = fallback;
+  renderSectorData(fallback, null, isBackground);
+}
 
 // ==========================
 // RENDER FUNCTIONS
 // ==========================
-function renderSector(sectorKey) {
-  const data = SECTOR_DATA[sectorKey];
+function renderSectorData(data, timeSeries, isBackground = false) {
   if (!data) return;
-  currentSector = sectorKey;
 
-  // Hero
-  document.getElementById('breadcrumbName').textContent = data.name;
-  document.getElementById('sectorTitle').textContent = data.name;
-  document.getElementById('sectorDesc').textContent = data.desc;
-  document.getElementById('heroIndex').textContent = data.index;
-  const hc = document.getElementById('heroChange');
-  hc.textContent = data.change + ' today';
-  hc.className = 'change ' + (data.isUp ? 'up' : 'down');
-  document.getElementById('heroMktCap').textContent = data.mktCap;
-  document.getElementById('heroPE').textContent = data.pe;
-  document.getElementById('heroDiv').textContent = data.divYield;
+  // Hero Section
+  const breadcrumbName = document.getElementById('breadcrumbName');
+  if (breadcrumbName) breadcrumbName.textContent = data.name;
 
-  // Overview
-  document.getElementById('sectorOverviewText').textContent = data.overview;
-  document.getElementById('metricStocks').textContent = data.metrics.stocks;
-  document.getElementById('metricExchanges').textContent = data.metrics.exchanges;
-  document.getElementById('metricAvgPE').textContent = data.metrics.avgPE;
-  document.getElementById('metricAvgYield').textContent = data.metrics.avgYield;
-  document.getElementById('metricAvgROE').textContent = data.metrics.avgROE;
-  document.getElementById('metricNPL').textContent = data.metrics.avgNPL;
+  const sectorTitle = document.getElementById('sectorTitle');
+  if (sectorTitle) sectorTitle.textContent = data.name;
 
-  // Breakdown
-  const r = data.returns;
-  document.getElementById('ret1d').textContent = r.d;
-  document.getElementById('ret1d').className = 'return ' + (r.d.includes('+') ? 'up' : 'down');
-  document.getElementById('ret1w').textContent = r.w;
-  document.getElementById('ret1w').className = 'return ' + (r.w.includes('+') ? 'up' : 'down');
-  document.getElementById('ret1m').textContent = r.m;
-  document.getElementById('ret1m').className = 'return ' + (r.m.includes('+') ? 'up' : 'down');
-  document.getElementById('retytd').textContent = r.ytd;
-  document.getElementById('retytd').className = 'return ' + (r.ytd.includes('+') ? 'up' : 'down');
+  const sectorDesc = document.getElementById('sectorDesc');
+  if (sectorDesc) sectorDesc.textContent = data.desc || '';
 
-  // Constituents
-  renderConstituents(data.constituents);
+  const heroIndex = document.getElementById('heroIndex');
+  if (heroIndex) heroIndex.textContent = data.index || data.price || '1,000.00';
 
-  // Valuation
-  renderValuation(data.constituents);
+  const heroChange = document.getElementById('heroChange');
+  if (heroChange) {
+    const isUp = data.isUp !== undefined ? data.isUp : ((data.changePct || 0) >= 0);
+    const sign = isUp && !String(data.change || '').startsWith('+') ? '+' : '';
+    const chgText = data.change ? (data.change.includes('%') ? data.change : `${data.change}%`) : `${sign}${(data.changePct || 0).toFixed(2)}%`;
+    heroChange.textContent = `${chgText} today`;
+    heroChange.className = 'change ' + (isUp ? 'up' : 'down');
+  }
 
-  // News
-  renderNews(data.news);
+  const heroMktCap = document.getElementById('heroMktCap');
+  if (heroMktCap) heroMktCap.textContent = data.mktCap || '$0.0B';
 
-  // Chart
-  renderSectorChart(data.isUp);
+  const heroPE = document.getElementById('heroPE');
+  if (heroPE) heroPE.textContent = data.pe || (data.metrics?.avgPE || 'N/A');
 
-  // Tabs
+  const heroDiv = document.getElementById('heroDiv');
+  if (heroDiv) heroDiv.textContent = data.divYield || (data.metrics?.avgYield || 'N/A');
+
+  // Overview Section
+  const sectorOverviewText = document.getElementById('sectorOverviewText');
+  if (sectorOverviewText) sectorOverviewText.textContent = data.overview || data.desc || '';
+
+  if (data.metrics) {
+    const mStocks = document.getElementById('metricStocks');
+    if (mStocks) mStocks.textContent = data.metrics.stocks || (data.constituents?.length || '—');
+
+    const mExchanges = document.getElementById('metricExchanges');
+    if (mExchanges) mExchanges.textContent = data.metrics.exchanges || '—';
+
+    const mAvgPE = document.getElementById('metricAvgPE');
+    if (mAvgPE) mAvgPE.textContent = data.metrics.avgPE || '—';
+
+    const mAvgYield = document.getElementById('metricAvgYield');
+    if (mAvgYield) mAvgYield.textContent = data.metrics.avgYield || '—';
+
+    const mAvgROE = document.getElementById('metricAvgROE');
+    if (mAvgROE) mAvgROE.textContent = data.metrics.avgROE || '—';
+
+    const mNPL = document.getElementById('metricNPL');
+    if (mNPL) mNPL.textContent = data.metrics.avgNPL || '—';
+  }
+
+  // Performance Breakdown
+  if (data.returns) {
+    const r = data.returns;
+    const r1d = document.getElementById('ret1d');
+    if (r1d) {
+      r1d.textContent = r.d || '+0.00%';
+      r1d.className = 'return ' + (String(r.d || '').includes('-') ? 'down' : 'up');
+    }
+    const r1w = document.getElementById('ret1w');
+    if (r1w) {
+      r1w.textContent = r.w || '+0.00%';
+      r1w.className = 'return ' + (String(r.w || '').includes('-') ? 'down' : 'up');
+    }
+    const r1m = document.getElementById('ret1m');
+    if (r1m) {
+      r1m.textContent = r.m || '+0.00%';
+      r1m.className = 'return ' + (String(r.m || '').includes('-') ? 'down' : 'up');
+    }
+    const rytd = document.getElementById('retytd');
+    if (rytd) {
+      rytd.textContent = r.ytd || '+0.00%';
+      rytd.className = 'return ' + (String(r.ytd || '').includes('-') ? 'down' : 'up');
+    }
+  }
+
+  // Constituents Table
+  if (data.constituents && data.constituents.length) {
+    renderConstituents(data.constituents);
+    renderValuation(data.constituents);
+  }
+
+  // News Grid
+  if (data.news && data.news.length) {
+    renderNews(data.news);
+  }
+
+  // Update All News link based on active sector
+  const allNewsLink = document.getElementById('allSectorNewsLink');
+  if (allNewsLink) {
+    const categoryPages = {
+      banking: 'business.html',
+      telecom: 'technology.html',
+      mining: 'mining.html',
+      energy: 'energy.html',
+      cement: 'business.html',
+      tech: 'technology.html'
+    };
+    allNewsLink.href = categoryPages[currentSector] || 'business.html';
+    const sectorShortName = (data.name || '').replace(/^African\s+/i, '');
+    allNewsLink.textContent = `All ${sectorShortName} News →`;
+  }
+
+  // Time Series Chart
+  renderSectorChart(data.isUp !== undefined ? data.isUp : ((data.changePct || 0) >= 0), timeSeries);
+
+  // Active Tab Highlight
   document.querySelectorAll('.nh-sector-tab').forEach(t => {
-    t.classList.toggle('active', t.dataset.sector === sectorKey);
+    t.classList.toggle('active', t.dataset.sector === currentSector);
   });
+
+  // Page Title
+  document.title = `${data.name} — NewsHub Africa Markets`;
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&')
+    .replace(/</g, '<')
+    .replace(/>/g, '>')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }
 
 function renderConstituents(stocks) {
   const tbody = document.getElementById('constituentsBody');
-  tbody.innerHTML = stocks.map(s => {
+  if (!tbody || !stocks) return;
+
+  // Apply current sorting if active
+  let list = [...stocks];
+  if (currentSort.col !== -1) {
+    list = sortStockArray(list, currentSort.col, currentSort.dir);
+  }
+
+  tbody.innerHTML = list.map(s => {
     const isUp = s.changePct >= 0;
     const sign = isUp ? '+' : '';
-    const sparkPoints = generateSparklinePoints(s.trend, 80, 28);
+    const sparkPoints = generateSparklinePoints(s.trend || (isUp ? 'up' : 'down'), 80, 28);
+    
+    // Detect price movement for flash animation
+    const prevPrice = previousPrices.get(s.ticker);
+    let flashClass = '';
+    if (prevPrice !== undefined && prevPrice !== null && s.price !== prevPrice) {
+      flashClass = s.price > prevPrice ? 'price-flash-up' : 'price-flash-down';
+    }
+    previousPrices.set(s.ticker, s.price);
+
+    const formattedPrice = formatPrice(s.price);
+    const displayChange = s.change !== undefined ? `${sign}${Number(s.change).toFixed(2)}` : `${sign}0.00`;
+    const displayPct = s.changePct !== undefined ? `${sign}${Number(s.changePct).toFixed(2)}%` : `${sign}0.00%`;
+
     return `<tr>
-      <td><div class="nh-stock-cell"><div class="nh-stock-logo" style="background:${s.logoBg}">${s.logo}</div><div class="nh-stock-info"><span class="name">${s.name}</span><span class="ticker">${s.ticker}</span></div></div></td>
-      <td>${s.exchange}</td>
-      <td>${formatPrice(s.price)}</td>
-      <td style="color:${isUp?'var(--nh-green)':'var(--nh-red)'}">${sign}${s.change.toFixed(2)}</td>
-      <td><span class="nh-change-badge ${isUp?'up':'down'}">${sign}${s.changePct.toFixed(2)}%</span></td>
-      <td><svg class="nh-mini-spark ${isUp?'up':'down'}" viewBox="0 0 80 28"><path d="${sparkPoints}"/></svg></td>
-      <td>${s.mktCap}</td>
-      <td>${s.pe > 0 ? s.pe.toFixed(1) + 'x' : 'N/A'}</td>
-      <td>${s.yield > 0 ? s.yield.toFixed(1) + '%' : 'N/A'}</td>
+      <td>
+        <div class="nh-stock-cell">
+          <div class="nh-stock-logo" style="background:${s.logoBg || 'linear-gradient(135deg,#0033cc,#2a9d8f)'}">${s.logo || s.ticker?.substring(0, 1) || '•'}</div>
+          <div class="nh-stock-info">
+            <span class="name">${s.name}</span>
+            <span class="ticker">${s.ticker}</span>
+          </div>
+        </div>
+      </td>
+      <td>${s.exchange || '—'}</td>
+      <td class="${flashClass}"><strong>${formattedPrice}</strong></td>
+      <td style="color:${isUp ? 'var(--nh-green)' : 'var(--nh-red)'};font-weight:600">${displayChange}</td>
+      <td><span class="nh-change-badge ${isUp ? 'up' : 'down'}">${displayPct}</span></td>
+      <td><svg class="nh-mini-spark ${isUp ? 'up' : 'down'}" viewBox="0 0 80 28"><path d="${sparkPoints}"/></svg></td>
+      <td>${s.mktCap || '—'}</td>
+      <td>${s.pe > 0 ? Number(s.pe).toFixed(1) + 'x' : 'N/A'}</td>
+      <td>${s.yield > 0 ? Number(s.yield).toFixed(1) + '%' : 'N/A'}</td>
     </tr>`;
   }).join('');
 }
 
 function renderValuation(stocks) {
   const tbody = document.getElementById('valuationBody');
+  if (!tbody || !stocks) return;
+
   tbody.innerHTML = stocks.map(s => {
-    const vs52wColor = s.vs52w > 0 ? 'var(--nh-green)' : (s.vs52w < 0 ? 'var(--nh-red)' : 'var(--nh-text-muted)');
+    const vsVal = s.vs52w !== undefined ? s.vs52w : 0;
+    const vs52wColor = vsVal > 0 ? 'var(--nh-green)' : (vsVal < 0 ? 'var(--nh-red)' : 'var(--nh-text-muted)');
     return `<tr>
       <td><strong>${s.name}</strong></td>
-      <td>${s.pe > 0 ? s.pe.toFixed(1) + 'x' : 'N/A'}</td>
-      <td>${s.pb > 0 ? s.pb.toFixed(1) + 'x' : 'N/A'}</td>
-      <td>${s.evEbitda > 0 ? s.evEbitda.toFixed(1) + 'x' : 'N/A'}</td>
-      <td>${s.roe !== 0 ? s.roe.toFixed(1) + '%' : 'N/A'}</td>
-      <td>${s.npl > 0 ? s.npl.toFixed(1) + '%' : '—'}</td>
-      <td>${s.car > 0 ? s.car.toFixed(1) + '%' : '—'}</td>
-      <td style="color:${vs52wColor};font-weight:600">${s.vs52w > 0 ? '+' : ''}${s.vs52w}%</td>
+      <td>${s.pe > 0 ? Number(s.pe).toFixed(1) + 'x' : 'N/A'}</td>
+      <td>${s.pb > 0 ? Number(s.pb).toFixed(1) + 'x' : 'N/A'}</td>
+      <td>${s.evEbitda > 0 ? Number(s.evEbitda).toFixed(1) + 'x' : 'N/A'}</td>
+      <td>${s.roe !== 0 && s.roe !== undefined ? Number(s.roe).toFixed(1) + '%' : 'N/A'}</td>
+      <td>${s.npl > 0 ? Number(s.npl).toFixed(1) + '%' : '—'}</td>
+      <td>${s.car > 0 ? Number(s.car).toFixed(1) + '%' : '—'}</td>
+      <td style="color:${vs52wColor};font-weight:600">${vsVal > 0 ? '+' : ''}${vsVal}%</td>
     </tr>`;
   }).join('');
 }
 
 function renderNews(newsItems) {
   const grid = document.getElementById('newsGrid');
-  grid.innerHTML = newsItems.map(n => `
-    <a href="#" class="nh-sector-news-card">
-      <img src="${n.img}" alt="${n.title}" loading="lazy">
-      <div class="nh-sector-news-card-body">
-        <span class="tag" style="background:${n.tagColor};color:${n.tagText}">${n.tag}</span>
-        <h4>${n.title}</h4>
-        <div class="meta">${n.meta}</div>
-      </div>
-    </a>
-  `).join('');
+  if (!grid || !newsItems) return;
+
+  grid.innerHTML = newsItems.map(n => {
+    const targetUrl = n.id ? `article.html?id=${encodeURIComponent(n.id)}` : (n.slug ? `article.html?id=${encodeURIComponent(n.slug)}` : (n.sourceUrl || 'article.html'));
+    const safeTitle = escapeHtml(n.title);
+    const safeTag = escapeHtml(n.tag || 'MARKETS');
+    const safeMeta = escapeHtml(n.meta || 'Recent');
+    const safeImg = n.img || 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=600&h=380&fit=crop';
+
+    return `
+      <a href="${targetUrl}" class="nh-sector-news-card" title="${safeTitle}">
+        <img src="${safeImg}" alt="${safeTitle}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=600&h=380&fit=crop'">
+        <div class="nh-sector-news-card-body">
+          <span class="tag" style="background:${n.tagColor || 'rgba(0,51,204,0.12)'};color:${n.tagText || '#0033cc'}">${safeTag}</span>
+          <h4>${safeTitle}</h4>
+          <div class="meta">${safeMeta}</div>
+        </div>
+      </a>
+    `;
+  }).join('');
 }
 
-function renderSectorChart(isUp) {
+// Chart state and caching for interactive hover
+let chartPointsCache = [];
+
+function renderSectorChart(isUp, timeSeries) {
   const areaPath = document.getElementById('sectorAreaPath');
   const linePath = document.getElementById('sectorLinePath');
+  if (!areaPath || !linePath) return;
+
   const color = isUp ? 'var(--nh-green)' : 'var(--nh-red)';
+  const svgWidth = 800;
+  const svgHeight = 320;
+  const padTop = 30;
+  const padBottom = 40;
+  const padLeft = 20;
+  const padRight = 20;
+  const usableWidth = svgWidth - padLeft - padRight;
+  const usableHeight = svgHeight - padTop - padBottom;
 
-  const points = [];
-  const areaPoints = [];
-  const segments = 30;
-  const seed = currentSector.length;
+  chartPointsCache = [];
 
-  for (let i = 0; i <= segments; i++) {
-    const x = (i / segments) * 800;
-    const baseY = isUp
-      ? 260 - (i / segments) * 200
-      : 60 + (i / segments) * 200;
-    const noise = Math.sin(i * 0.8 + seed) * 30 + Math.sin(i * 2.1) * 15 + (Math.random() - 0.5) * 20;
-    const y = Math.max(20, Math.min(300, baseY + noise));
-    points.push((i === 0 ? 'M' : 'L') + x.toFixed(1) + ',' + y.toFixed(1));
-    areaPoints.push({ x, y });
+  let points = [];
+  if (timeSeries && timeSeries.length > 2) {
+    const vals = timeSeries.map(pt => pt.value);
+    const minVal = Math.min(...vals);
+    const maxVal = Math.max(...vals);
+    const range = (maxVal - minVal) || 1;
+
+    points = timeSeries.map((pt, i) => {
+      const x = padLeft + (i / (timeSeries.length - 1)) * usableWidth;
+      const y = padTop + (1 - (pt.value - minVal) / range) * usableHeight;
+      const pointObj = {
+        x,
+        y,
+        xPct: (x / svgWidth) * 100,
+        yPct: (y / svgHeight) * 100,
+        date: pt.date || `Day ${i + 1}`,
+        value: pt.value
+      };
+      chartPointsCache.push(pointObj);
+      return `${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)}`;
+    });
+  } else {
+    // Algorithmic fallback
+    const segments = 30;
+    const seed = (currentSector || 'banking').length;
+    for (let i = 0; i <= segments; i++) {
+      const x = padLeft + (i / segments) * usableWidth;
+      const baseY = isUp
+        ? (svgHeight - padBottom) - (i / segments) * usableHeight * 0.85
+        : padTop + (i / segments) * usableHeight * 0.85;
+      const noise = Math.sin(i * 0.8 + seed) * 20 + Math.sin(i * 2.1) * 10;
+      const y = Math.max(padTop, Math.min(svgHeight - padBottom, baseY + noise));
+      
+      chartPointsCache.push({
+        x,
+        y,
+        xPct: (x / svgWidth) * 100,
+        yPct: (y / svgHeight) * 100,
+        date: `Point ${i + 1}`,
+        value: parseFloat((1000 + (svgHeight - y) * 2.5).toFixed(2))
+      });
+
+      points.push(`${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)}`);
+    }
   }
 
-  linePath.setAttribute('d', points.join(' '));
+  const lineD = points.join(' ');
+  linePath.setAttribute('d', lineD);
   linePath.setAttribute('stroke', color);
 
-  const areaD = points.join(' ') + ' L800,300 L0,300 Z';
+  const lastX = chartPointsCache.length ? chartPointsCache[chartPointsCache.length - 1].x : 800;
+  const firstX = chartPointsCache.length ? chartPointsCache[0].x : 0;
+  const areaD = `${lineD} L${lastX.toFixed(1)},300 L${firstX.toFixed(1)},300 Z`;
   areaPath.setAttribute('d', areaD);
   areaPath.setAttribute('fill', isUp ? 'url(#chartGradUp)' : 'url(#chartGradDown)');
+
+  setupChartInteractions();
+}
+
+function setupChartInteractions() {
+  const container = document.getElementById('sectorChartContainer');
+  const tooltip = document.getElementById('chartTooltip');
+  const tooltipDate = document.getElementById('chartTooltipDate');
+  const tooltipVal = document.getElementById('chartTooltipVal');
+  const crosshair = document.getElementById('chartCrosshair');
+  const dot = document.getElementById('chartDot');
+
+  if (!container || !tooltip || container._hasListener) return;
+  container._hasListener = true;
+
+  function handlePointer(clientX) {
+    if (!chartPointsCache.length) return;
+    const rect = container.getBoundingClientRect();
+    const mouseX = clientX - rect.left;
+    const ratio = Math.max(0, Math.min(1, mouseX / rect.width));
+    const targetX = ratio * 800;
+
+    let closest = chartPointsCache[0];
+    let minDiff = Math.abs(closest.x - targetX);
+    for (let i = 1; i < chartPointsCache.length; i++) {
+      const diff = Math.abs(chartPointsCache[i].x - targetX);
+      if (diff < minDiff) {
+        minDiff = diff;
+        closest = chartPointsCache[i];
+      }
+    }
+
+    if (closest) {
+      tooltip.style.opacity = '1';
+      crosshair.style.opacity = '1';
+      dot.style.opacity = '1';
+
+      tooltipDate.textContent = closest.date;
+      tooltipVal.textContent = typeof closest.value === 'number'
+        ? closest.value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+        : closest.value;
+
+      crosshair.style.left = `${closest.xPct}%`;
+      dot.style.left = `${closest.xPct}%`;
+      dot.style.top = `${closest.yPct}%`;
+    }
+  }
+
+  container.addEventListener('mousemove', (e) => handlePointer(e.clientX));
+  container.addEventListener('touchmove', (e) => {
+    if (e.touches && e.touches[0]) handlePointer(e.touches[0].clientX);
+  }, { passive: true });
+
+  container.addEventListener('mouseleave', () => {
+    tooltip.style.opacity = '0';
+    crosshair.style.opacity = '0';
+    dot.style.opacity = '0';
+  });
+  container.addEventListener('touchend', () => {
+    tooltip.style.opacity = '0';
+    crosshair.style.opacity = '0';
+    dot.style.opacity = '0';
+  });
 }
 
 function generateSparklinePoints(trend, w, h) {
@@ -789,35 +1154,54 @@ function generateSparklinePoints(trend, w, h) {
 }
 
 function formatPrice(p) {
-  if (p >= 1000) return p.toLocaleString('en-US', { maximumFractionDigits: 2 });
-  return p.toFixed(2);
+  if (p === undefined || p === null) return '—';
+  const num = Number(p);
+  if (isNaN(num)) return String(p);
+  if (num >= 1000) return num.toLocaleString('en-US', { maximumFractionDigits: 2 });
+  return num.toFixed(2);
 }
 
 // ==========================
-// INTERACTION
+// INTERACTIONS & TIME FRAMES
 // ==========================
 function switchSector(key) {
-  renderSector(key);
+  if (currentSector === key) return;
+  currentSector = key;
+
+  // Update URL state without page reload
+  try {
+    const url = new URL(window.location.href);
+    url.searchParams.set('sector', key);
+    window.history.pushState({ sector: key }, '', url.toString());
+  } catch (e) {}
+
+  previousPrices.clear();
+  fetchSectorData(key, currentTimeframe, false);
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function setChartTimeframe(btn, tf) {
-  btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  // Regenerate chart with timeframe-appropriate volatility
-  const data = SECTOR_DATA[currentSector];
-  renderSectorChart(data.isUp);
+  if (btn && btn.parentElement) {
+    btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  currentTimeframe = tf;
+  fetchSectorData(currentSector, tf, false);
 }
 
 function setTableTimeframe(btn, tf) {
-  btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  // In a real app, this would fetch different data
+  if (btn && btn.parentElement) {
+    btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  currentTableTimeframe = tf;
+  if (currentSectorData && currentSectorData.constituents) {
+    renderConstituents(currentSectorData.constituents);
+  }
 }
 
 function sortConstituents(col) {
-  const data = SECTOR_DATA[currentSector];
-  if (!data) return;
+  if (!currentSectorData || !currentSectorData.constituents) return;
 
   if (currentSort.col === col) {
     currentSort.dir = currentSort.dir === 'asc' ? 'desc' : 'asc';
@@ -826,38 +1210,41 @@ function sortConstituents(col) {
     currentSort.dir = 'desc';
   }
 
-  // Update header state
+  // Update header UI
   document.querySelectorAll('#constituentsTable th').forEach(th => th.classList.remove('sort-asc', 'sort-desc'));
   const headers = document.querySelectorAll('#constituentsTable th');
   if (headers[col]) headers[col].classList.add(currentSort.dir === 'asc' ? 'sort-asc' : 'sort-desc');
 
-  const sorted = [...data.constituents].sort((a, b) => {
+  renderConstituents(currentSectorData.constituents);
+}
+
+function sortStockArray(arr, col, dir) {
+  return [...arr].sort((a, b) => {
     let av, bv;
     switch(col) {
-      case 0: av = a.name.toLowerCase(); bv = b.name.toLowerCase(); break;
-      case 1: av = a.exchange; bv = b.exchange; break;
-      case 2: av = a.price; bv = b.price; break;
-      case 3: av = a.change; bv = b.change; break;
-      case 4: av = a.changePct; bv = b.changePct; break;
+      case 0: av = (a.name || '').toLowerCase(); bv = (b.name || '').toLowerCase(); break;
+      case 1: av = a.exchange || ''; bv = b.exchange || ''; break;
+      case 2: av = Number(a.price) || 0; bv = Number(b.price) || 0; break;
+      case 3: av = Number(a.change) || 0; bv = Number(b.change) || 0; break;
+      case 4: av = Number(a.changePct) || 0; bv = Number(b.changePct) || 0; break;
       case 6: av = parseMktCap(a.mktCap); bv = parseMktCap(b.mktCap); break;
-      case 7: av = a.pe; bv = b.pe; break;
-      case 8: av = a.yield; bv = b.yield; break;
-      default: av = a.name; bv = b.name;
+      case 7: av = Number(a.pe) || 0; bv = Number(b.pe) || 0; break;
+      case 8: av = Number(a.yield) || 0; bv = Number(b.yield) || 0; break;
+      default: av = (a.name || '').toLowerCase(); bv = (b.name || '').toLowerCase();
     }
     if (typeof av === 'string') {
-      return currentSort.dir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
+      return dir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
     }
-    return currentSort.dir === 'asc' ? av - bv : bv - av;
+    return dir === 'asc' ? av - bv : bv - av;
   });
-
-  renderConstituents(sorted);
 }
 
 function parseMktCap(str) {
-  const num = parseFloat(str.replace(/[^0-9.]/g, '')) || 0;
-  if (str.includes('T')) return num * 1e12;
-  if (str.includes('B')) return num * 1e9;
-  if (str.includes('M')) return num * 1e6;
+  if (!str) return 0;
+  const num = parseFloat(String(str).replace(/[^0-9.]/g, '')) || 0;
+  if (String(str).includes('T')) return num * 1e12;
+  if (String(str).includes('B')) return num * 1e9;
+  if (String(str).includes('M')) return num * 1e6;
   return num;
 }
 
@@ -877,13 +1264,64 @@ function toggleTheme() {
 }
 
 // ==========================
-// INIT
+// 24/7 SSE STREAM & REFRESH
+// ==========================
+function startSectorRealtimeStream() {
+  if (!!window.EventSource) {
+    try {
+      sseEventSource = new EventSource('/api/markets/stream');
+      sseEventSource.onmessage = (e) => {
+        try {
+          const streamData = JSON.parse(e.data);
+          if (streamData && streamData.sectorsMap && streamData.sectorsMap[currentSector]) {
+            const liveSector = streamData.sectorsMap[currentSector];
+            if (currentSectorData) {
+              currentSectorData.index = liveSector.index || currentSectorData.index;
+              currentSectorData.change = liveSector.change || currentSectorData.change;
+              currentSectorData.changePct = liveSector.changePct !== undefined ? liveSector.changePct : currentSectorData.changePct;
+              currentSectorData.isUp = liveSector.isUp !== undefined ? liveSector.isUp : currentSectorData.isUp;
+              if (liveSector.constituents && liveSector.constituents.length) {
+                currentSectorData.constituents = liveSector.constituents;
+              }
+              renderSectorData(currentSectorData, currentTimeSeries, true);
+            }
+          }
+        } catch (err) {}
+      };
+      sseEventSource.onerror = () => {
+        if (sseEventSource) sseEventSource.close();
+      };
+    } catch (err) {}
+  }
+
+  // Backup continuous background polling
+  if (pollTimer) clearInterval(pollTimer);
+  pollTimer = setInterval(() => {
+    if (!document.hidden) {
+      fetchSectorData(currentSector, currentTimeframe, true);
+    }
+  }, 4000);
+}
+
+// ==========================
+// INITIALIZATION
 // ==========================
 document.addEventListener('DOMContentLoaded', () => {
-  // Check URL param for sector
   const params = new URLSearchParams(window.location.search);
   const sector = params.get('sector') || 'banking';
-  renderSector(sector);
+  currentSector = sector;
+
+  fetchSectorData(sector, currentTimeframe, false);
+  startSectorRealtimeStream();
+
+  // Listen to browser navigation
+  window.addEventListener('popstate', (e) => {
+    const p = new URLSearchParams(window.location.search);
+    const sec = p.get('sector') || 'banking';
+    if (sec !== currentSector) {
+      fetchSectorData(sec, currentTimeframe, false);
+    }
+  });
 });
 </script>
 

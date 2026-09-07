@@ -71,7 +71,7 @@ Key highlights of the expansion include:
 - Subsea fiber-optic cable activations increasing total continental bandwidth redundancy by over 300%.
 
 The continent's rapid demographic dividend and mobile-first population are driving unprecedented demand for decentralized cloud infrastructure and fintech APIs.`,
-    author: "Tariq Adeleke",
+    author: "Ashley Jordan Chihiya",
     authorTitle: "Senior Tech & Telecoms Analyst",
     authorImage: "/Ashley Jordan Chihiya.jpg",
     publishedAt: "2026-08-17T07:45:00Z",
@@ -106,7 +106,7 @@ The continent's rapid demographic dividend and mobile-first population are drivi
 The newly inaugurated multi-billion dollar refining hub in Ndola and Lubumbashi will process raw battery-grade lithium, cobalt, nickel, and manganese into cathode active materials (CAM) directly on African soil.
 
 "Exporting raw dirt for pennies while importing refined components for thousands of dollars is a relic of the past," affirmed the Minister of Mines. "Africa produces over 70% of global cobalt and substantial lithium reserves; we are now positioning the continent at the high-margin pinnacle of the global energy transition."`,
-    author: "Farai Chitepo",
+    author: "Ashley Jordan Chihiya",
     authorTitle: "Resources & Energy Correspondent",
     authorImage: "/Ashley Jordan Chihiya.jpg",
     publishedAt: "2026-08-17T06:15:00Z",
@@ -163,7 +163,7 @@ The projects span:
 - Morocco's Noor Ouarzazate hybrid solar-thermal expansion with subsea power links to Europe.
 - Egypt's Ain Sokhna green methanol plant servicing maritime container ships transiting the Suez Canal.
 - South Africa's Just Energy Transition renewable grid interconnections in Mpumalanga.`,
-    author: "Farai Chitepo",
+    author: "Ashley Jordan Chihiya",
     authorTitle: "Resources & Energy Correspondent",
     authorImage: "/Ashley Jordan Chihiya.jpg",
     publishedAt: "2026-08-16T11:10:00Z",

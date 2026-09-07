@@ -27,7 +27,7 @@ export const initialVideos = [
     thumbnail: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=200&h=120&fit=crop",
     date: "2026-08-23",
     isMain: false,
-    author: "Farai Chitepo"
+    author: "Ashley Jordan Chihiya"
   },
   {
     id: "vid-3",
@@ -38,7 +38,7 @@ export const initialVideos = [
     thumbnail: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=200&h=120&fit=crop",
     date: "2026-08-22",
     isMain: false,
-    author: "Tariq Adeleke"
+    author: "Ashley Jordan Chihiya"
   },
   {
     id: "vid-4",

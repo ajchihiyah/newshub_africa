@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import apiRouter from './server/routes/api.js';
+import { syncAfricanNewsRSS } from './server/services/rssSync.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -46,6 +47,8 @@ app.get('/watchlist', (req, res) => res.redirect(301, '/watchlist.html'));
 app.get('/podcasts', (req, res) => res.redirect(301, '/podcasts.html'));
 app.get('/live', (req, res) => res.redirect(301, '/live-coverage.html'));
 app.get('/newsletters', (req, res) => res.redirect(301, '/newsletters.html'));
+app.get('/weekly-recap', (req, res) => res.sendFile(path.join(__dirname, 'weekly-recap.html')));
+app.get('/this-week-in-africa', (req, res) => res.sendFile(path.join(__dirname, 'weekly-recap.html')));
 app.get('/about', (req, res) => res.redirect(301, '/about.html'));
 app.get('/contact', (req, res) => res.redirect(301, '/contact.html'));
 app.get('/careers', (req, res) => res.redirect(301, '/careers.html'));
@@ -57,7 +60,8 @@ app.get('/submit-event', (req, res) => res.redirect(301, '/submit-event.html'));
 app.get('/commodities', (req, res) => res.redirect(301, '/commodities.html'));
 app.get('/calendar', (req, res) => res.redirect(301, '/calendar.html'));
 app.get('/fx-heatmap', (req, res) => res.redirect(301, '/fx-heatmap.html'));
-app.get('/weekly-recap.html', (req, res) => res.redirect(301, '/newsletters.html'));
+app.get('/sector-details', (req, res) => res.sendFile(path.join(__dirname, 'sector-details.html')));
+app.get('/sectors', (req, res) => res.sendFile(path.join(__dirname, 'sector-details.html')));
 
 // Article detail view routes
 app.get('/article/:id', (req, res) => {
@@ -86,5 +90,11 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`NewsHub Africa server running at http://0.0.0.0:${PORT}`);
+
+  // Automated background RSS sync every 10 minutes
+  syncAfricanNewsRSS().catch(err => console.warn('[Initial RSS Sync Error]:', err.message));
+  setInterval(() => {
+    syncAfricanNewsRSS().catch(err => console.warn('[Background RSS Sync Error]:', err.message));
+  }, 10 * 60 * 1000);
 });
 

@@ -269,6 +269,30 @@ body {
 }
 button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid var(--nh-blue); outline-offset: 2px; }
 </style>
+
+  <style class="nh-dynamic-hide">
+    .nh-hero-main, .nh-hero-side, #latest, #homeCategoryHighlights, .nh-featured-large, .nh-featured-stack, .nh-grid, .nh-video-grid, #thisWeekInAfricaGrid, .nh-calendar-grid, .nh-currency-corner {
+      transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    html.js-loading .nh-hero-main,
+    html.js-loading .nh-hero-side,
+    html.js-loading #latest,
+    html.js-loading #homeCategoryHighlights,
+    html.js-loading .nh-featured-large,
+    html.js-loading .nh-featured-stack,
+    html.js-loading .nh-grid,
+    html.js-loading .nh-video-grid,
+    html.js-loading #thisWeekInAfricaGrid,
+    html.js-loading .nh-calendar-grid,
+    html.js-loading .nh-currency-corner {
+      opacity: 0 !important;
+      pointer-events: none;
+    }
+  </style>
+  <script>
+    document.documentElement.classList.add('js-loading');
+    setTimeout(() => { document.documentElement.classList.remove('js-loading'); }, 2000);
+  </script>
 </head>
 <body>
 

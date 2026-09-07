@@ -9,6 +9,7 @@
   <meta name="keywords" content="live African news, breaking news Africa, live market updates, real time news feed">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://newshub-africa.com/live-coverage.html">
+  <link rel="alternate" type="application/rss+xml" href="/rss/live" title="Live Coverage & Updates RSS Feed">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌍</text></svg>">
   
   <!-- Open Graph / Facebook -->
@@ -1071,6 +1072,30 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   .nh-related-live { grid-template-columns: 1fr; }
 }
 </style>
+
+  <style class="nh-dynamic-hide">
+    .nh-hero-main, .nh-hero-side, #latest, #homeCategoryHighlights, .nh-featured-large, .nh-featured-stack, .nh-grid, .nh-video-grid, #thisWeekInAfricaGrid, .nh-calendar-grid, .nh-currency-corner {
+      transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    html.js-loading .nh-hero-main,
+    html.js-loading .nh-hero-side,
+    html.js-loading #latest,
+    html.js-loading #homeCategoryHighlights,
+    html.js-loading .nh-featured-large,
+    html.js-loading .nh-featured-stack,
+    html.js-loading .nh-grid,
+    html.js-loading .nh-video-grid,
+    html.js-loading #thisWeekInAfricaGrid,
+    html.js-loading .nh-calendar-grid,
+    html.js-loading .nh-currency-corner {
+      opacity: 0 !important;
+      pointer-events: none;
+    }
+  </style>
+  <script>
+    document.documentElement.classList.add('js-loading');
+    setTimeout(() => { document.documentElement.classList.remove('js-loading'); }, 2000);
+  </script>
 </head>
 <body>
 

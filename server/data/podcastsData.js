@@ -18,7 +18,7 @@ export const podcastsData = [
     id: "pod-2",
     title: "AfriTech Unplugged: Episode 28",
     episodeTitle: "Sovereign AI Infrastructure: Why Africa Must Train Its Own LLMs",
-    host: "Tariq Adeleke",
+    host: "Ashley Jordan Chihiya",
     guest: "Dr. Nneka Eze (Founder, DeepAfrica AI Labs)",
     duration: "28:45",
     releaseDate: "2026-08-11",
@@ -33,7 +33,7 @@ export const podcastsData = [
     id: "pod-3",
     title: "Continental Mining & Energy Pulse: Episode 19",
     episodeTitle: "From Raw Ore to Cathodes: The Great Beneficiation Pivot",
-    host: "Farai Chitepo",
+    host: "Ashley Jordan Chihiya",
     guest: "Hon. Chileshe Mwewa (Zambia Chamber of Mines)",
     duration: "31:10",
     releaseDate: "2026-08-08",
@@ -64,7 +64,7 @@ export const liveCoverageFeed = [
     badgeColor: "#0033cc",
     title: "Central Bank of Nigeria reports $1.4B monthly remittance surge via official channels",
     content: "Foreign exchange reforms and automated non-resident bank verification numbers (BVN) channel record inflows into official banking windows.",
-    author: "Tariq Adeleke",
+    author: "Ashley Jordan Chihiya",
     category: "Banking"
   },
   {
@@ -84,7 +84,7 @@ export const liveCoverageFeed = [
     badgeColor: "#e9c46a",
     title: "Egypt signs $1.2B green ammonia bunkering agreement for Suez Canal transits",
     content: "Suez Canal Economic Zone (SCZone) finalizes definitive off-take pact with European shipping consortium for zero-carbon maritime fuel supply starting in 2027.",
-    author: "Farai Chitepo",
+    author: "Ashley Jordan Chihiya",
     category: "Energy"
   }
 ];

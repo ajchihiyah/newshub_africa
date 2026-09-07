@@ -62,15 +62,41 @@ function detectCountry(text) {
   return 'Pan-African';
 }
 
-function getCategoryImage(category) {
-  const images = {
-    business: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1000&auto=format&fit=crop&q=80',
-    technology: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1000&auto=format&fit=crop&q=80',
-    energy: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1000&auto=format&fit=crop&q=80',
-    mining: 'https://images.unsplash.com/photo-1605218427306-022ba6c584a5?w=1000&auto=format&fit=crop&q=80',
-    agriculture: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1000&auto=format&fit=crop&q=80'
-  };
-  return images[category] || images.business;
+const CATEGORY_IMAGES = {
+  business: [
+    'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1000&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1000&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1000&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=1000&auto=format&fit=crop&q=80'
+  ],
+  technology: [
+    'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1000&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1553729459-efe14ef6055d?w=1000&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1000&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1512428559087-560fa5ceab42?w=1000&auto=format&fit=crop&q=80'
+  ],
+  energy: [
+    'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1000&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?w=1000&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1000&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=1000&auto=format&fit=crop&q=80'
+  ],
+  mining: [
+    'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?w=1000&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1610375461246-83df859d849d?w=1000&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=1000&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1605218427306-022ba6c584a5?w=1000&auto=format&fit=crop&q=80'
+  ],
+  agriculture: [
+    'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1000&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=1000&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1586771107445-d3ca888129ff?w=1000&auto=format&fit=crop&q=80'
+  ]
+};
+
+function getCategoryImage(category, index = 0) {
+  const pool = CATEGORY_IMAGES[category] || CATEGORY_IMAGES.business;
+  return pool[index % pool.length];
 }
 
 export async function syncAfricanNewsRSS() {

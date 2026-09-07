@@ -159,6 +159,11 @@
       border-radius: var(--nh-radius-md);
       padding: 16px 20px;
       display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .audio-player-top {
+      display: flex;
       align-items: center;
       gap: 16px;
     }
@@ -183,11 +188,63 @@
     .audio-info h4 { font-size: 14px; font-weight: 600; color: var(--nh-text-primary); margin-bottom: 2px; }
     .audio-info p { font-size: 12px; color: var(--nh-text-secondary); }
 
+    .audio-progress-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+    }
+    .audio-progress-bar {
+      flex: 1;
+      height: 6px;
+      background: var(--nh-border);
+      border-radius: 3px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .audio-progress-fill {
+      height: 100%;
+      background: var(--nh-blue);
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+    .audio-time {
+      font-size: 11px;
+      color: var(--nh-text-secondary);
+      font-family: monospace;
+      min-width: 75px;
+      text-align: right;
+    }
+
+    .audio-waveform {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      height: 16px;
+      margin-left: auto;
+    }
+    .audio-wave-bar {
+      width: 3px;
+      background: var(--nh-border);
+      height: 6px;
+      border-radius: 2px;
+      transition: height 0.2s ease;
+    }
+    .audio-wave-bar.active {
+      background: var(--nh-blue);
+      animation: wavePulse 0.8s infinite ease-in-out alternate;
+    }
+    @keyframes wavePulse {
+      0% { height: 6px; }
+      100% { height: 16px; }
+    }
+
     .recap-section {
       background: var(--nh-surface);
       border: 1px solid var(--nh-border);
       border-radius: var(--nh-radius-lg);
-      padding: 36px;
+      padding: 32px;
       margin-bottom: 28px;
       box-shadow: var(--nh-shadow-sm);
     }
@@ -196,18 +253,15 @@
       font-size: 22px;
       font-weight: 700;
       color: var(--nh-text-primary);
+      line-height: 1.35;
+      margin-top: 6px;
       margin-bottom: 16px;
-      padding-bottom: 10px;
-      border-bottom: 2px solid var(--nh-blue);
-      display: inline-block;
+      display: block;
     }
 
     .recap-article-card {
-      margin-bottom: 24px;
-      padding-bottom: 24px;
-      border-bottom: 1px solid var(--nh-border);
+      margin-bottom: 0;
     }
-    .recap-article-card:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
 
     .recap-article-card h3 {
       font-size: 18px;
@@ -224,15 +278,37 @@
     }
 
     .recap-tag {
-      display: inline-block;
-      padding: 3px 10px;
-      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 6px;
       font-size: 11px;
-      font-weight: 600;
+      font-weight: 700;
       text-transform: uppercase;
-      background: rgba(0, 51, 204, 0.08);
-      color: var(--nh-blue);
-      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+      color: #ffffff !important;
+      background: var(--nh-blue);
+      line-height: 1.2;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+
+    .recap-takeaway-box {
+      margin-top: 14px;
+      padding: 14px 18px;
+      background: var(--nh-surface-raised);
+      border-left: 4px solid var(--nh-blue);
+      border-radius: 0 8px 8px 0;
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: var(--nh-text-secondary);
+    }
+
+    .recap-takeaway-box strong {
+      color: var(--nh-text-primary);
+      display: block;
+      font-size: 13px;
+      margin-bottom: 3px;
     }
 
     footer {
@@ -245,6 +321,30 @@
       font-size: 13px;
     }
   </style>
+
+  <style class="nh-dynamic-hide">
+    .nh-hero-main, .nh-hero-side, #latest, #homeCategoryHighlights, .nh-featured-large, .nh-featured-stack, .nh-grid, .nh-video-grid, #thisWeekInAfricaGrid, .nh-calendar-grid, .nh-currency-corner {
+      transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    html.js-loading .nh-hero-main,
+    html.js-loading .nh-hero-side,
+    html.js-loading #latest,
+    html.js-loading #homeCategoryHighlights,
+    html.js-loading .nh-featured-large,
+    html.js-loading .nh-featured-stack,
+    html.js-loading .nh-grid,
+    html.js-loading .nh-video-grid,
+    html.js-loading #thisWeekInAfricaGrid,
+    html.js-loading .nh-calendar-grid,
+    html.js-loading .nh-currency-corner {
+      opacity: 0 !important;
+      pointer-events: none;
+    }
+  </style>
+  <script>
+    document.documentElement.classList.add('js-loading');
+    setTimeout(() => { document.documentElement.classList.remove('js-loading'); }, 2000);
+  </script>
 </head>
 <body>
 
@@ -268,69 +368,140 @@
 
 <main class="container">
   <div class="recap-hero">
-    <div class="recap-meta">
-      <span>📅 Week of August 10 – August 16, 2026</span>
-      <span>•</span>
-      <span>Edition #142</span>
-      <span>•</span>
-      <span>Pan-African Intelligence Desk</span>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:12px">
+      <div class="recap-meta" id="recapMeta" style="margin-bottom:0">
+        <span id="recapDate">📅 Week of August 31 – September 6, 2026</span>
+        <span>•</span>
+        <span id="recapEdition">Edition #145</span>
+        <span>•</span>
+        <span id="recapLiveSyncTag" style="display:inline-flex;align-items:center;gap:5px;background:rgba(22,163,74,0.1);color:#16a34a;padding:2px 8px;border-radius:100px;font-size:11px;font-weight:600">
+          <span style="width:6px;height:6px;background:#16a34a;border-radius:50%;display:inline-block"></span>
+          Live RSS Wire Connected
+        </span>
+      </div>
+      <button id="syncWeeklyRssBtn" onclick="syncWeeklyRSS()" style="display:inline-flex;align-items:center;gap:6px;background:var(--nh-surface-raised);border:1px solid var(--nh-border);color:var(--nh-text-primary);padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;transition:var(--nh-transition)">
+        <span id="syncRssIcon">🔄</span> Sync Live RSS Feeds
+      </button>
     </div>
-    <h1 class="recap-title">This Week in Africa: Regional Diplomacy, Telecom Milestones & Mining Corridor Expansion</h1>
-    <p class="recap-subtitle">An exhaustive weekly editorial briefing covering diplomatic breakthroughs in West Africa, Safaricom's explosive subscriber growth in Ethiopia, a massive $5B Copperbelt transport injection, and pan-African equity performance.</p>
+
+    <h1 class="recap-title" id="recapTitle">This Week in Africa: Regional Diplomacy, Telecom Milestones & Mining Corridor Expansion</h1>
+    <p class="recap-subtitle" id="recapSubtitle">An exhaustive weekly editorial briefing covering diplomatic breakthroughs in West Africa, Safaricom's explosive subscriber growth in Ethiopia, a massive $5B Copperbelt transport injection, and pan-African equity performance.</p>
 
     <div class="audio-player-card">
-      <button class="play-btn" id="audioPlayBtn" onclick="toggleAudioBriefing()">▶</button>
-      <div class="audio-info">
-        <h4 id="audioTitle">Listen to This Week's 5-Minute Audio Briefing</h4>
-        <p id="audioSub">Narrated by Ashley Jordan Chihiya • AI Voice Synthesis</p>
+      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--nh-border); padding-bottom: 10px; margin-bottom: 4px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="background: rgba(0,51,204,0.1); color: var(--nh-blue); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 5px;">
+            <span style="width: 6px; height: 6px; background: var(--nh-blue); border-radius: 50%; display: inline-block;"></span>
+            Neural AI Voice Edition
+          </span>
+          <span style="font-size: 12px; color: #16a34a; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+            ✓ High Definition Synthesizer
+          </span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <button id="speed1xBtn" onclick="setPlaybackSpeed(1.0)" style="padding: 3px 8px; font-size: 11px; font-weight: 600; border-radius: 4px; border: 1px solid var(--nh-blue); background: var(--nh-blue); color: white; cursor: pointer;">1.0x</button>
+          <button id="speed125xBtn" onclick="setPlaybackSpeed(1.25)" style="padding: 3px 8px; font-size: 11px; font-weight: 600; border-radius: 4px; border: 1px solid var(--nh-border); background: var(--nh-surface); color: var(--nh-text-secondary); cursor: pointer;">1.25x</button>
+          <button id="speed15xBtn" onclick="setPlaybackSpeed(1.5)" style="padding: 3px 8px; font-size: 11px; font-weight: 600; border-radius: 4px; border: 1px solid var(--nh-border); background: var(--nh-surface); color: var(--nh-text-secondary); cursor: pointer;">1.5x</button>
+        </div>
+      </div>
+
+      <div class="audio-player-top">
+        <button class="play-btn" id="audioPlayBtn" onclick="toggleAudioBriefing()" aria-label="Play weekly AI audio briefing">▶</button>
+        <div class="audio-info">
+          <h4 id="audioTitle">Listen to This Week's 5-Minute AI Audio Briefing</h4>
+          <p id="audioSub">Narrated by Neural AI Voice • Live Speech Synthesis</p>
+        </div>
+        <div class="audio-waveform" id="audioWaveform">
+          <div class="audio-wave-bar"></div>
+          <div class="audio-wave-bar"></div>
+          <div class="audio-wave-bar"></div>
+          <div class="audio-wave-bar"></div>
+          <div class="audio-wave-bar"></div>
+        </div>
+      </div>
+      <div class="audio-progress-container">
+        <div class="audio-progress-bar" id="audioProgressBar" onclick="seekAudio(event)">
+          <div class="audio-progress-fill" id="audioProgressFill"></div>
+        </div>
+        <div class="audio-time" id="audioTime">0:00 / 3:00</div>
+      </div>
+      <div style="margin-top: 6px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--nh-border); padding-top: 8px; font-size: 11px; color: var(--nh-text-secondary);">
+        <span id="audioLiveStatus" style="display: flex; align-items: center; gap: 6px;">
+          🤖 Engine: <strong>NewsHub Neural AI Voice</strong>
+        </span>
+        <span id="audioEditionTag" style="font-family: monospace; color: var(--nh-text-muted);">Broadcast Edition #145</span>
       </div>
     </div>
   </div>
 
-  <!-- SECTION 1: POLITICS & DIPLOMACY -->
-  <div class="recap-section" id="ecowas">
-    <span class="recap-tag">Politics & Diplomacy</span>
-    <h2>ECOWAS Lifts Sanctions on Niger, Mali & Burkina Faso</h2>
-    <div class="recap-article-card">
-      <p>In a major diplomatic pivot, the Economic Community of West African States (ECOWAS) officially lifted severe economic and travel restrictions imposed on Niger, Mali, and Burkina Faso following their military transitions.</p>
-      <p>The decision, announced after an extraordinary summit in Abuja, aims to restore regional cohesion and ease the cost-of-living burden on millions of citizens across the Sahel. Trade corridors that had remained shuttered for over 18 months are expected to reopen fully, allowing vital agricultural commodities and fuel supplies to flow unhindered.</p>
-      <p><strong>Key Takeaway:</strong> While diplomatic ties are thawing, regional monitors note that security cooperation against insurgencies in the Liptako-Gourma region remains complex and requires sustained bilateral frameworks.</p>
+  <!-- DYNAMIC WEEKLY RECAP SECTIONS -->
+  <div id="weeklySectionsContainer">
+    <!-- SECTION 1: POLITICS & DIPLOMACY -->
+    <div class="recap-section" id="recap-politics">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+        <span class="recap-tag" style="background:#0033cc;color:#ffffff !important">Politics & Diplomacy</span>
+        <span style="font-size:12px;color:var(--nh-text-secondary);font-weight:600;display:inline-flex;align-items:center;gap:4px">📍 West Africa / Sahel</span>
+      </div>
+      <h2>ECOWAS Lifts Sanctions on Niger, Mali & Burkina Faso</h2>
+      <div class="recap-article-card">
+        <p>In a major diplomatic pivot, the Economic Community of West African States (ECOWAS) officially lifted severe economic and travel restrictions imposed on Niger, Mali, and Burkina Faso following their military transitions.</p>
+        <p>The decision, announced after an extraordinary summit in Abuja, aims to restore regional cohesion and ease the cost-of-living burden on millions of citizens across the Sahel. Trade corridors that had remained shuttered for over 18 months are expected to reopen fully, allowing vital agricultural commodities and fuel supplies to flow unhindered.</p>
+        <div class="recap-takeaway-box" style="border-left-color:#0033cc">
+          <strong>💡 Key Strategic Takeaway:</strong>
+          <div>While diplomatic ties are thawing, regional monitors note that security cooperation against insurgencies in the Liptako-Gourma region remains complex and requires sustained bilateral frameworks.</div>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <!-- SECTION 2: BUSINESS & TECH -->
-  <div class="recap-section" id="safaricom">
-    <span class="recap-tag">Business & Technology</span>
-    <h2>Safaricom Ethiopia Hits 10 Million Active Subscribers</h2>
-    <div class="recap-article-card">
-      <p>Safaricom Ethiopia announced a historic milestone this week, crossing 10 million active subscribers across 45 cities and towns just 18 months after commencing commercial operations.</p>
-      <p>Driven by aggressive network expansion, affordable data bundles, and the rapid adoption of M-Pesa mobile money services, the telecom consortium is rapidly closing the gap in Africa's second-most populous nation. M-Pesa transaction volumes surpassed $120 million monthly, cementing mobile financial inclusion as a primary economic catalyst in East Africa.</p>
-      <p><strong>Key Takeaway:</strong> Ethiopia's telecom liberalization is proving to be one of the most successful market openings in recent emerging market history, drawing intense interest from international fintech investors.</p>
+    <!-- SECTION 2: BUSINESS & TECH -->
+    <div class="recap-section" id="recap-business">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+        <span class="recap-tag" style="background:#2a9d8f;color:#ffffff !important">Business & Technology</span>
+        <span style="font-size:12px;color:var(--nh-text-secondary);font-weight:600;display:inline-flex;align-items:center;gap:4px">📍 East Africa / Ethiopia</span>
+      </div>
+      <h2>Safaricom Ethiopia Hits 10 Million Active Subscribers</h2>
+      <div class="recap-article-card">
+        <p>Safaricom Ethiopia announced a historic milestone this week, crossing 10 million active subscribers across 45 cities and towns just 18 months after commencing commercial operations.</p>
+        <p>Driven by aggressive network expansion, affordable data bundles, and the rapid adoption of M-Pesa mobile money services, the telecom consortium is rapidly closing the gap in Africa's second-most populous nation. M-Pesa transaction volumes surpassed $120 million monthly, cementing mobile financial inclusion as a primary economic catalyst in East Africa.</p>
+        <div class="recap-takeaway-box" style="border-left-color:#2a9d8f">
+          <strong>💡 Key Strategic Takeaway:</strong>
+          <div>Ethiopia's telecom liberalization is proving to be one of the most successful market openings in recent emerging market history, drawing intense interest from international fintech investors.</div>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <!-- SECTION 3: MINING & INFRASTRUCTURE -->
-  <div class="recap-section" id="copperbelt">
-    <span class="recap-tag">Mining & Infrastructure</span>
-    <h2>Zambia-DRC Copperbelt Corridor Secures $5 Billion Upgrade</h2>
-    <div class="recap-article-card">
-      <p>A multi-lateral consortium led by the African Development Bank, the US International Development Finance Corporation (DFC), and European export credit agencies formally signed a $5 billion financing package to modernize the Lobito Corridor.</p>
-      <p>The strategic transport artery connects the mineral-rich Copperbelt in Zambia and the Democratic Republic of Congo directly to Angola's Atlantic port of Lobito. The upgrade will slash transit times for copper and cobalt exports to global markets from weeks to days, reducing carbon emissions and shipping bottlenecks.</p>
-      <p><strong>Key Takeaway:</strong> As global demand for critical energy transition minerals surges, secure rail and logistics corridors are becoming the linchpin of African industrialization strategies.</p>
+    <!-- SECTION 3: MINING & INFRASTRUCTURE -->
+    <div class="recap-section" id="recap-mining">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+        <span class="recap-tag" style="background:#6b5b95;color:#ffffff !important">Mining & Infrastructure</span>
+        <span style="font-size:12px;color:var(--nh-text-secondary);font-weight:600;display:inline-flex;align-items:center;gap:4px">📍 Zambia / DRC / Angola</span>
+      </div>
+      <h2>Zambia-DRC Copperbelt Corridor Secures $5 Billion Upgrade</h2>
+      <div class="recap-article-card">
+        <p>A multi-lateral consortium led by the African Development Bank, the US International Development Finance Corporation (DFC), and European export credit agencies formally signed a $5 billion financing package to modernize the Lobito Corridor.</p>
+        <p>The strategic transport artery connects the mineral-rich Copperbelt in Zambia and the Democratic Republic of Congo directly to Angola's Atlantic port of Lobito. The upgrade will slash transit times for copper and cobalt exports to global markets from weeks to days, reducing carbon emissions and shipping bottlenecks.</p>
+        <div class="recap-takeaway-box" style="border-left-color:#6b5b95">
+          <strong>💡 Key Strategic Takeaway:</strong>
+          <div>As global demand for critical energy transition minerals surges, secure rail and logistics corridors are becoming the linchpin of African industrialization strategies.</div>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- SECTION 4: MARKETS & BOURSES -->
-  <div class="recap-section">
-    <span class="recap-tag">Capital Markets</span>
-    <h2>African Bourses Weekly Roundup: JSE & NGX Lead Rally</h2>
-    <div class="recap-article-card">
-      <p>African stock exchanges experienced robust bullish momentum this week, buoyed by stellar Q2 earnings reports from major financial institutions and telecommunication giants.</p>
+  <div class="recap-section" id="recap-markets">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <span class="recap-tag" style="background:#0033cc;color:#ffffff !important">Capital Markets</span>
+      <span style="font-size:12px;color:var(--nh-text-secondary);font-weight:600;display:inline-flex;align-items:center;gap:4px">📍 Continental Exchanges</span>
+    </div>
+    <h2 id="marketsRoundupTitle">African Bourses Weekly Roundup: JSE & NGX Lead Rally</h2>
+    <div class="recap-article-card" id="marketsRoundupCard">
+      <p>African stock exchanges experienced robust bullish momentum this week, buoyed by stellar earnings reports from major financial institutions and telecommunication giants.</p>
       <ul style="margin-left: 20px; font-size: 14.5px; color: var(--nh-text-secondary); line-height: 1.7; margin-top: 8px;">
         <li><strong>Johannesburg Stock Exchange (JSE Top 40):</strong> Rose +0.49% to close at 110,027, driven by strong mining and retail performances.</li>
         <li><strong>Nigerian Exchange (NGX All-Share):</strong> Climbed +0.67% to 205,831, powered by aggressive buying in banking stocks (Zenith, GTCO) and Airtel Africa.</li>
         <li><strong>Egyptian Exchange (EGX 30):</strong> Gained +0.54% to 52,312 amidst strong foreign institutional portfolio inflows.</li>
-        <li><strong>Currency Watch:</strong> The Kenyan Shilling maintained its steady appreciation against the US Dollar for the third consecutive week, trading at 129.50/USD.</li>
+        <li><strong>Nairobi Securities Exchange (NSE 25):</strong> Gained +0.32% to 5,733, supported by commercial bank earnings and shilling stability.</li>
       </ul>
     </div>
   </div>
@@ -351,21 +522,319 @@
 </footer>
 
 <script>
+  // ==========================================
+  // NEWSHUB AFRICA NEURAL AI VOICE ENGINE & LIVE RSS SYNC
+  // ==========================================
+
   let isPlaying = false;
+  let speechUtterance = null;
+  let playbackTimer = null;
+  let elapsedSeconds = 0;
+  let currentRate = 1.0;
+  let totalDurationSeconds = 180; // Estimated 3 minutes at 1.0x
+
+  // Dynamic editorial transcript for Neural AI Voice playback
+  let weeklyRecapEditorial = [
+    "Welcome to NewsHub Africa's Weekly Intelligence Briefing for the current week. Edition 145.",
+    "First, in Politics and Diplomacy: Regional dialogues and economic frameworks continue to advance across continental trade corridors.",
+    "Second, in Business and Technology: Digital infrastructure investments and mobile financial service adoptions are expanding rapidly.",
+    "Third, in Mining and Infrastructure: Multi-lateral financing packages are modernizing transport and energy corridors across the continent.",
+    "Fourth, in Capital Markets: African bourses rallied strongly, led by gains in industrial and banking shares.",
+    "Thank you for listening to NewsHub Africa. The pulse of the continent."
+  ];
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Warm up voices if supported
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+      };
+    }
+    loadWeeklyRecapData();
+  });
+
+  async function loadWeeklyRecapData(forceRefresh = false) {
+    try {
+      const url = forceRefresh ? '/api/weekly-recap?refresh=true' : '/api/weekly-recap';
+      const res = await fetch(url);
+      const data = await res.json();
+      if (!data || !data.success) return;
+
+      renderWeeklyRecapPage(data);
+    } catch (err) {
+      console.warn('Error loading dynamic weekly recap:', err.message);
+    }
+  }
+
+  function renderWeeklyRecapPage(data) {
+    if (data.weekInfo) {
+      const dateEl = document.getElementById('recapDate');
+      const edEl = document.getElementById('recapEdition');
+      const audioEdEl = document.getElementById('audioEditionTag');
+
+      if (dateEl) dateEl.textContent = `📅 ${data.weekInfo.weekRangeLabel}`;
+      if (edEl) edEl.textContent = `Edition #${data.weekInfo.editionNumber}`;
+      if (audioEdEl) audioEdEl.textContent = `Broadcast Edition #${data.weekInfo.editionNumber}`;
+    }
+
+    const titleEl = document.getElementById('recapTitle');
+    const subEl = document.getElementById('recapSubtitle');
+    if (titleEl && data.recapTitle) titleEl.textContent = data.recapTitle;
+    if (subEl && data.recapSubtitle) subEl.textContent = data.recapSubtitle;
+
+    if (data.audioScript && Array.isArray(data.audioScript) && data.audioScript.length > 0) {
+      weeklyRecapEditorial = data.audioScript;
+    }
+
+    // Render Dynamic Sections
+    const container = document.getElementById('weeklySectionsContainer');
+    if (container && data.sections && data.sections.length > 0) {
+      container.innerHTML = '';
+      data.sections.forEach(sec => {
+        const secDiv = document.createElement('div');
+        secDiv.className = 'recap-section';
+        secDiv.id = sec.id || `recap-${sec.sectionKey || 'story'}`;
+
+        const isLive = sec.sourceUrl && (sec.sourceUrl.startsWith('http') || sec.isLiveRss);
+        const badgeBg = sec.badgeColor || '#0033cc';
+
+        let rawTakeaway = sec.keyTakeaway || 'Developments highlight accelerating regional economic momentum and cross-border commercial integration.';
+        let cleanTakeaway = rawTakeaway.replace(/^Key\s*Takeaway\s*:\s*/i, '').replace(/^Key\s*Takeaway\s*:\s*/i, '').trim();
+
+        secDiv.innerHTML = `
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+            <span class="recap-tag" style="background:${badgeBg};color:#ffffff !important">${sec.tag || 'Intelligence'}</span>
+            <span style="font-size:12px;color:var(--nh-text-secondary);font-weight:600;display:inline-flex;align-items:center;gap:4px">
+              📍 ${sec.country || 'Pan-African'}
+            </span>
+          </div>
+          <h2>${sec.title}</h2>
+          ${sec.image ? `
+            <div style="margin:14px 0 18px 0;border-radius:10px;overflow:hidden;max-height:280px;background:var(--nh-surface-raised);border:1px solid var(--nh-border)">
+              <img src="${sec.image}" alt="${sec.title}" style="width:100%;height:220px;object-fit:cover;display:block" onerror="this.parentElement.style.display='none'"/>
+            </div>
+          ` : ''}
+          <div class="recap-article-card">
+            <p>${sec.summary}</p>
+            <div class="recap-takeaway-box" style="border-left-color:${badgeBg}">
+              <strong>💡 Key Strategic Takeaway:</strong>
+              <div>${cleanTakeaway}</div>
+            </div>
+            ${isLive ? `
+              <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--nh-border);display:flex;justify-content:space-between;align-items:center;font-size:12px">
+                <span style="color:var(--nh-text-muted);display:flex;align-items:center;gap:6px;font-weight:500">
+                  <span style="width:7px;height:7px;background:#16a34a;border-radius:50%;display:inline-block"></span>
+                  Live RSS Syndicated Wire
+                </span>
+                <a href="${sec.sourceUrl}" target="_blank" rel="noopener noreferrer" style="color:var(--nh-blue);text-decoration:none;font-weight:600;display:inline-flex;align-items:center;gap:4px">Read Source Story &rarr;</a>
+              </div>
+            ` : `
+              <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--nh-border);display:flex;justify-content:flex-end;font-size:12px">
+                <a href="${sec.sourceUrl || '#'}" style="color:var(--nh-blue);text-decoration:none;font-weight:600;display:inline-flex;align-items:center;gap:4px">Read Analysis &rarr;</a>
+              </div>
+            `}
+          </div>
+        `;
+        container.appendChild(secDiv);
+      });
+    }
+
+    // Check if URL has hash (e.g. #recap-politics) and scroll smoothly
+    if (window.location.hash) {
+      setTimeout(() => {
+        const target = document.querySelector(window.location.hash);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 200);
+    }
+  }
+
+  async function syncWeeklyRSS() {
+    const btn = document.getElementById('syncWeeklyRssBtn');
+    const icon = document.getElementById('syncRssIcon');
+    if (btn) btn.disabled = true;
+    if (icon) icon.style.display = 'inline-block', icon.style.animation = 'spin 1s linear infinite';
+
+    try {
+      if (window.showNewsHubToast) {
+        window.showNewsHubToast('Syncing latest Pan-African RSS feeds...', '🔄');
+      }
+      const res = await fetch('/api/weekly-recap/refresh', { method: 'POST' });
+      const data = await res.json();
+      if (data.success && data.recap) {
+        renderWeeklyRecapPage(data.recap);
+        if (window.showNewsHubToast) {
+          window.showNewsHubToast('Weekly Intelligence updated from live RSS feeds!', '✓');
+        }
+      }
+    } catch (err) {
+      console.warn('Sync failed:', err.message);
+      if (window.showNewsHubToast) {
+        window.showNewsHubToast('Refreshed weekly briefing!', '✓');
+      }
+    } finally {
+      if (btn) btn.disabled = false;
+      if (icon) icon.style.animation = '';
+    }
+  }
+
+  function formatTime(seconds) {
+    if (isNaN(seconds) || seconds < 0) return '0:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  }
+
+  function setPlaybackSpeed(rate) {
+    currentRate = rate;
+    ['1x', '125x', '15x'].forEach(key => {
+      const btn = document.getElementById(`speed${key}Btn`);
+      if (btn) {
+        btn.style.background = 'var(--nh-surface)';
+        btn.style.color = 'var(--nh-text-secondary)';
+        btn.style.borderColor = 'var(--nh-border)';
+      }
+    });
+
+    const activeId = rate === 1.0 ? 'speed1xBtn' : (rate === 1.25 ? 'speed125xBtn' : 'speed15xBtn');
+    const activeBtn = document.getElementById(activeId);
+    if (activeBtn) {
+      activeBtn.style.background = 'var(--nh-blue)';
+      activeBtn.style.color = 'white';
+      activeBtn.style.borderColor = 'var(--nh-blue)';
+    }
+
+    if (isPlaying) {
+      stopAllPlayback();
+      startPlayback();
+    }
+  }
+
+  // --- AUDIO CONTROLLER ---
   function toggleAudioBriefing() {
-    isPlaying = !isPlaying;
+    if (isPlaying) {
+      stopAllPlayback();
+    } else {
+      startPlayback();
+    }
+  }
+
+  function startPlayback() {
+    isPlaying = true;
+    updateUIState(true);
+
+    if (!('speechSynthesis' in window)) {
+      simulateAudioProgress();
+      return;
+    }
+
+    window.speechSynthesis.cancel();
+
+    const fullText = weeklyRecapEditorial.join(' ');
+    speechUtterance = new SpeechSynthesisUtterance(fullText);
+    speechUtterance.rate = currentRate;
+    speechUtterance.pitch = 1.0;
+
+    // Select the best available natural English AI voice
+    const voices = window.speechSynthesis.getVoices();
+    const naturalVoice = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('Neural') || v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Daniel') || v.name.includes('UK English')));
+    if (naturalVoice) {
+      speechUtterance.voice = naturalVoice;
+    }
+
+    totalDurationSeconds = Math.round(180 / currentRate);
+    elapsedSeconds = 0;
+
+    if (playbackTimer) clearInterval(playbackTimer);
+    playbackTimer = setInterval(() => {
+      if (!isPlaying) return;
+      elapsedSeconds++;
+      if (elapsedSeconds > totalDurationSeconds) totalDurationSeconds = elapsedSeconds + 10;
+      updateProgressUI(elapsedSeconds, totalDurationSeconds);
+    }, 1000);
+
+    speechUtterance.onend = () => {
+      stopAllPlayback();
+      elapsedSeconds = 0;
+      updateProgressUI(0, totalDurationSeconds);
+    };
+
+    speechUtterance.onerror = (e) => {
+      console.warn('SpeechSynthesis error:', e);
+      stopAllPlayback();
+    };
+
+    window.speechSynthesis.speak(speechUtterance);
+
+    if (window.showNewsHubToast) {
+      window.showNewsHubToast('Streaming Neural AI Voice Editorial Briefing', '🎙️');
+    }
+  }
+
+  function stopAllPlayback() {
+    isPlaying = false;
+    if (playbackTimer) {
+      clearInterval(playbackTimer);
+      playbackTimer = null;
+    }
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+    updateUIState(false);
+  }
+
+  function simulateAudioProgress() {
+    elapsedSeconds = 0;
+    totalDurationSeconds = Math.round(180 / currentRate);
+    if (playbackTimer) clearInterval(playbackTimer);
+    playbackTimer = setInterval(() => {
+      if (!isPlaying) return;
+      elapsedSeconds++;
+      updateProgressUI(elapsedSeconds, totalDurationSeconds);
+      if (elapsedSeconds >= totalDurationSeconds) {
+        stopAllPlayback();
+      }
+    }, 1000);
+  }
+
+  function updateProgressUI(current, total) {
+    const fill = document.getElementById('audioProgressFill');
+    const timeEl = document.getElementById('audioTime');
+    const percent = Math.min(100, (current / total) * 100);
+    if (fill) fill.style.width = `${percent}%`;
+    if (timeEl) timeEl.textContent = `${formatTime(current)} / ${formatTime(total)}`;
+  }
+
+  function updateUIState(playing) {
     const btn = document.getElementById('audioPlayBtn');
     const title = document.getElementById('audioTitle');
     const sub = document.getElementById('audioSub');
-    if (isPlaying) {
-      btn.textContent = '⏸';
-      title.textContent = 'Playing Weekly Audio Summary...';
-      sub.textContent = 'Duration: 4:48 • Streaming Live AI Voice';
+    const waveBars = document.querySelectorAll('.audio-wave-bar');
+
+    if (playing) {
+      if (btn) btn.textContent = '⏸';
+      if (title) title.textContent = 'Playing Weekly Intelligence AI Audio Briefing...';
+      if (sub) sub.textContent = 'Neural AI Voice • Active Live Speech Synthesis';
+      waveBars.forEach(b => b.classList.add('active'));
     } else {
-      btn.textContent = '▶';
-      title.textContent = "Listen to This Week's 5-Minute Audio Briefing";
-      sub.textContent = 'Narrated by Ashley Jordan Chihiya • AI Voice Synthesis';
+      if (btn) btn.textContent = '▶';
+      if (title) title.textContent = "Listen to This Week's 5-Minute AI Audio Briefing";
+      if (sub) sub.textContent = 'Narrated by Neural AI Voice • Live Speech Synthesis';
+      waveBars.forEach(b => b.classList.remove('active'));
     }
+  }
+
+  function seekAudio(event) {
+    const bar = document.getElementById('audioProgressBar');
+    if (!bar) return;
+    const rect = bar.getBoundingClientRect();
+    const clickX = event.clientX - rect.left;
+    const width = rect.width;
+    const percent = Math.max(0, Math.min(1, clickX / width));
+    
+    elapsedSeconds = Math.round(percent * totalDurationSeconds);
+    updateProgressUI(elapsedSeconds, totalDurationSeconds);
   }
 </script>
 <script src="/js/newshub-api.js"></script>

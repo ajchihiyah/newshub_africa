@@ -913,28 +913,10 @@
   }
 
   // 4. Dynamic Article Publishing & Live Hydration Across the Entire Portal
-  async function initDynamicArticles() {
+  function applyArticles(articles) {
+    if (!Array.isArray(articles) || articles.length === 0) return;
     try {
-      // 1. Sync localStorage published articles with server in background
-      try {
-        const localArticles = JSON.parse(localStorage.getItem('newshub_published_articles') || '[]');
-        if (Array.isArray(localArticles) && localArticles.length > 0) {
-          fetch('/api/articles/sync', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ articles: localArticles })
-          }).catch(() => {});
-        }
-      } catch (e) {}
-
-      // 2. Fetch latest live articles from server
-      const res = await fetch('/api/articles?limit=50');
-      const data = await res.json();
-      if (!data.success || !data.articles || data.articles.length === 0) return;
-
-      const articles = data.articles;
-
-      // 3. Hydrate Breaking News Ticker if breaking articles exist
+      // Hydrate Breaking News Ticker if breaking articles exist
       const breakingArticles = articles.filter(a => a.isBreaking);
       const breakingTrack = document.querySelector('.nh-breaking-track');
       if (breakingTrack && breakingArticles.length > 0) {
@@ -947,7 +929,7 @@
         breakingTrack.innerHTML = breakingHtml + breakingTrack.innerHTML;
       }
 
-      // 4. Hydrate Homepage Hero and Latest News Grid
+      // Hydrate Homepage Hero and Latest News Grid
       const pathname = window.location.pathname;
       const isHomepage = pathname === '/' || pathname.endsWith('index.html') || pathname === '';
       
@@ -957,16 +939,19 @@
         if (heroMain && articles[0]) {
           const topArt = articles[0];
           heroMain.href = `/article.html?id=${encodeURIComponent(topArt.id)}`;
-          const heroImg = heroMain.querySelector('img');
-          if (heroImg && topArt.image) heroImg.src = topArt.image;
-          const heroH2 = heroMain.querySelector('h2');
-          if (heroH2) heroH2.textContent = topArt.title;
-          const heroP = heroMain.querySelector('p');
-          if (heroP) heroP.textContent = topArt.summary || (topArt.content ? topArt.content.slice(0, 150) + '...' : '');
-          const authorSpan = heroMain.querySelector('div span:nth-of-type(1)');
-          if (authorSpan) authorSpan.textContent = topArt.author || 'NewsHub';
-          const timeSpan = heroMain.querySelector('div span:nth-of-type(2)');
-          if (timeSpan) timeSpan.textContent = '• ' + formatTimeAgo(topArt.publishedAt);
+          heroMain.innerHTML = `
+            <img src="${topArt.image || 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&h=700&fit=crop'}" alt="${topArt.title}" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;z-index:0" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&h=700&fit=crop';">
+            <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));padding:32px;z-index:1">
+              <span style="display:inline-block;padding:4px 12px;border-radius:4px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;background:var(--nh-blue);color:white;margin-bottom:12px">Featured</span>
+              <h2 style="font-size:28px;font-weight:500;color:white;line-height:1.3;margin-bottom:12px">${topArt.title}</h2>
+              <p style="font-size:14px;color:rgba(255,255,255,0.75);line-height:1.5;margin-bottom:16px">${topArt.summary || (topArt.content ? topArt.content.slice(0, 150) + '...' : '')}</p>
+              <div style="display:flex;align-items:center;gap:12px">
+                <img src="${topArt.authorImage || '/Ashley Jordan Chihiya.jpg'}" alt="${topArt.author || 'NewsHub'}" style="width:28px;height:28px;border-radius:50%;object-fit:cover" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&h=120&fit=crop';">
+                <span style="font-size:12px;color:rgba(255,255,255,0.7)">${topArt.author || 'NewsHub'}</span>
+                <span style="font-size:12px;color:rgba(255,255,255,0.5)">• ${formatTimeAgo(topArt.publishedAt)}</span>
+              </div>
+            </div>
+          `;
         }
 
         // Hydrate Hero Side Stack
@@ -987,7 +972,6 @@
 
         const latestGrid = document.getElementById('latest');
         if (latestGrid) {
-          // Render the articles dynamically into latest news
           const dynamicCardsHtml = articles.slice(0, 8).map(art => {
             const tagClass = `nh-tag-${(art.category || 'business').toLowerCase()}`;
             return `
@@ -1012,9 +996,45 @@
 
           latestGrid.innerHTML = dynamicCardsHtml;
         }
+
+        const homeCatGrid = document.getElementById('homeCategoryHighlights');
+        if (homeCatGrid) {
+          const categories = ['business', 'technology', 'agriculture', 'mining', 'energy'];
+          const catCardsHtml = categories.map(cat => {
+            const catArt = articles.find(a => (a.category || '').toLowerCase() === cat) || {
+              id: `art-${cat}`,
+              title: `Latest ${cat.charAt(0).toUpperCase() + cat.slice(1)} Insights across Africa`,
+              summary: `Explore breaking developments and economic analysis in ${cat} throughout the continent.`,
+              category: cat,
+              categoryLabel: cat.charAt(0).toUpperCase() + cat.slice(1),
+              image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop',
+              author: 'NewsHub Africa',
+              publishedAt: new Date().toISOString()
+            };
+            const tagClass = `nh-tag-${cat}`;
+            return `
+              <a href="/${cat}.html" class="nh-card" tabindex="0" style="text-decoration:none; color:inherit; display:flex; flex-direction:column;">
+                <div style="position:relative; overflow:hidden; height:180px; width:100%;">
+                  <img src="${catArt.image}" alt="${catArt.title}" loading="lazy" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop';">
+                </div>
+                <div class="nh-card-body" style="flex:1; display:flex; flex-direction:column;">
+                  <span class="nh-card-tag ${tagClass}">${catArt.categoryLabel || catArt.category}</span>
+                  <h3 style="margin-top:6px; margin-bottom:8px; font-size:16px; font-weight:600; line-height:1.35; color:var(--nh-text-primary);">${catArt.title}</h3>
+                  <p style="font-size:13px; color:var(--nh-text-secondary); line-height:1.5; margin-bottom:14px; flex:1;">${catArt.summary || ''}</p>
+                  <div class="nh-card-author" style="margin-top:auto;">
+                    <img src="${catArt.authorImage || '/Ashley Jordan Chihiya.jpg'}" alt="${catArt.author || 'Author'}" style="width:24px; height:24px; border-radius:50%; object-fit:cover;" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&h=120&fit=crop';">
+                    <span style="font-size:12px; font-weight:500; color:var(--nh-text-primary);">${catArt.author || 'NewsHub'}</span>
+                    <span style="font-size:11px; color:var(--nh-text-muted); margin-left:auto;">${formatTimeAgo(catArt.publishedAt)}</span>
+                  </div>
+                </div>
+              </a>
+            `;
+          }).join('');
+          homeCatGrid.innerHTML = catCardsHtml;
+        }
       }
 
-      // 5. Hydrate Category Pages (business.html, technology.html, agriculture.html, mining.html, energy.html, markets.html)
+      // Hydrate Category Pages
       const categoryMap = {
         'business.html': 'business',
         'technology.html': 'technology',
@@ -1035,59 +1055,159 @@
           const featuredStack = document.querySelector('.nh-featured-stack');
           const categoryGrid = document.querySelector('.nh-grid');
 
-          // Update main featured if top article matches
           if (featuredLarge && catArticles[0]) {
             const top = catArticles[0];
             featuredLarge.href = `/article.html?id=${encodeURIComponent(top.id)}`;
-            const img = featuredLarge.querySelector('img');
-            if (img && top.image) img.src = top.image;
-            const h2 = featuredLarge.querySelector('h2');
-            if (h2) h2.textContent = top.title;
-            const p = featuredLarge.querySelector('p');
-            if (p) p.textContent = top.summary || (top.content ? top.content.slice(0, 150) + '...' : '');
-            const authorSpan = featuredLarge.querySelector('.overlay div span:nth-of-type(1)');
-            if (authorSpan) authorSpan.textContent = top.author || 'NewsHub';
-            const timeSpan = featuredLarge.querySelector('.overlay div span:nth-of-type(2)');
-            if (timeSpan) timeSpan.textContent = '• ' + formatTimeAgo(top.publishedAt);
+            featuredLarge.innerHTML = `
+              <img src="${top.image || 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&h=600&fit=crop'}" alt="${top.title}" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;z-index:0;" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=800&h=600&fit=crop';">
+              <div class="overlay" style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent, rgba(0,0,0,0.9));padding:32px;z-index:1;color:white;">
+                <span style="display:inline-block;padding:4px 12px;border-radius:4px;font-size:11px;font-weight:700;text-transform:uppercase;background:var(--nh-blue);margin-bottom:12px;">Top Story</span>
+                <h2 style="font-size:28px;font-weight:500;margin-bottom:12px;line-height:1.3;">${top.title}</h2>
+                <p style="font-size:14px;color:rgba(255,255,255,0.7);margin-bottom:16px;">${top.summary || (top.content ? top.content.slice(0, 150) + '...' : '')}</p>
+                <div style="display:flex;gap:12px;font-size:12px;color:rgba(255,255,255,0.5);">
+                  <span>${top.author || 'NewsHub'}</span>
+                  <span>• ${formatTimeAgo(top.publishedAt)}</span>
+                </div>
+              </div>
+            `;
           }
 
-          // Prepend newly published articles to the featured stack or grid
-          if (featuredStack && catArticles.length > 1) {
+          if (featuredStack) {
             const stackArticles = catArticles.slice(1, 4);
-            featuredStack.innerHTML = stackArticles.map(art => `
-              <a href="/article.html?id=${encodeURIComponent(art.id)}" class="nh-card" style="display:flex; gap:16px; padding:16px; align-items:center; flex:1; text-decoration:none; color:inherit;">
-                <img src="${art.image || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop'}" alt="${art.title}" style="width:120px; height:90px; object-fit:cover; border-radius:var(--nh-radius-sm); flex-shrink:0;" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop';">
-                <div>
-                  <span class="nh-card-tag nh-tag-${catKey}" style="margin-bottom:6px;">${art.categoryLabel || art.category}</span>
-                  <h3 style="font-size:15px; font-weight:500; line-height:1.3; color:var(--nh-text-primary); margin-bottom:6px;">${art.title}</h3>
-                  <span style="font-size:11px; color:var(--nh-text-muted);">${art.author || 'NewsHub'} • ${formatTimeAgo(art.publishedAt)}</span>
-                </div>
-              </a>
-            `).join('');
+            if (stackArticles.length > 0) {
+              featuredStack.innerHTML = stackArticles.map(art => `
+                <a href="/article.html?id=${encodeURIComponent(art.id)}" class="nh-card" style="display:flex; gap:16px; padding:16px; align-items:center; flex:1; text-decoration:none; color:inherit;">
+                  <img src="${art.image || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop'}" alt="${art.title}" style="width:120px; height:90px; object-fit:cover; border-radius:var(--nh-radius-sm); flex-shrink:0;" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop';">
+                  <div>
+                    <span class="nh-card-tag nh-tag-${catKey}" style="margin-bottom:6px;">${art.categoryLabel || art.category}</span>
+                    <h3 style="font-size:15px; font-weight:500; line-height:1.3; color:var(--nh-text-primary); margin-bottom:6px;">${art.title}</h3>
+                    <span style="font-size:11px; color:var(--nh-text-muted);">${art.author || 'NewsHub'} • ${formatTimeAgo(art.publishedAt)}</span>
+                  </div>
+                </a>
+              `).join('');
+            } else {
+              featuredStack.innerHTML = '';
+            }
           }
 
-          if (categoryGrid && catArticles.length > 3) {
-            const moreArticles = catArticles.slice(3);
-            categoryGrid.innerHTML = moreArticles.map(art => `
-              <a href="/article.html?id=${encodeURIComponent(art.id)}" class="nh-card" tabindex="0" style="text-decoration:none; color:inherit;">
-                <img src="${art.image || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop'}" alt="${art.title}" loading="lazy" style="width:100%; height:180px; object-fit:cover;" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop';">
-                <div class="nh-card-body">
-                  <span class="nh-card-tag nh-tag-${catKey}">${art.categoryLabel || art.category}</span>
-                  <h3 style="font-size:15px; font-weight:500; line-height:1.3; margin-top:6px; margin-bottom:6px; color:var(--nh-text-primary);">${art.title}</h3>
-                  <p style="font-size:13px; color:var(--nh-text-secondary); line-height:1.5;">${art.summary || (art.content ? art.content.slice(0, 110) + '...' : '')}</p>
-                  <div class="nh-card-author">
-                    <img src="${art.authorImage || '/ashley-jordan-chihiya.jpg'}" alt="${art.author || 'Author'}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&h=120&fit=crop';">
-                    <span>${art.author || 'NewsHub'}</span>
-                    <span>${formatTimeAgo(art.publishedAt)}</span>
+          if (categoryGrid) {
+            const moreArticles = catArticles.slice(4);
+            if (moreArticles.length > 0) {
+              categoryGrid.innerHTML = moreArticles.map(art => `
+                <a href="/article.html?id=${encodeURIComponent(art.id)}" class="nh-card" tabindex="0" style="text-decoration:none; color:inherit;">
+                  <img src="${art.image || 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop'}" alt="${art.title}" loading="lazy" style="width:100%; height:180px; object-fit:cover;" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop';">
+                  <div class="nh-card-body">
+                    <span class="nh-card-tag nh-tag-${catKey}">${art.categoryLabel || art.category}</span>
+                    <h3 style="font-size:15px; font-weight:500; line-height:1.3; margin-top:6px; margin-bottom:6px; color:var(--nh-text-primary);">${art.title}</h3>
+                    <p style="font-size:13px; color:var(--nh-text-secondary); line-height:1.5;">${art.summary || (art.content ? art.content.slice(0, 110) + '...' : '')}</p>
+                    <div class="nh-card-author">
+                      <img src="${art.authorImage || '/Ashley Jordan Chihiya.jpg'}" alt="${art.author || 'Author'}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&h=120&fit=crop';">
+                      <span>${art.author || 'NewsHub'}</span>
+                      <span>${formatTimeAgo(art.publishedAt)}</span>
+                    </div>
                   </div>
-                </div>
-              </a>
-            `).join('');
+                </a>
+              `).join('');
+            } else {
+              categoryGrid.innerHTML = '';
+            }
           }
         }
       }
     } catch (err) {
+      console.warn('Apply articles non-critical error:', err);
+    }
+  }
+
+  function applyVideos(videos) {
+    if (!Array.isArray(videos) || videos.length === 0) return;
+    const videoGrids = document.querySelectorAll('.nh-video-grid');
+    if (!videoGrids.length) return;
+    try {
+      const mainVid = videos.find(v => v.isMain) || videos[0];
+      const sideVids = videos.filter(v => v.id !== mainVid.id).slice(0, 4);
+
+      videoGrids.forEach(grid => {
+        const mainOnClick = mainVid.videoUrl.includes('facebook.com')
+          ? `window.open('${mainVid.videoUrl}', '_blank')`
+          : `openVideoModal('${mainVid.title.replace(/'/g, "\\'")}', '${mainVid.videoUrl}', '${mainVid.duration}')`;
+
+        let sideHtml = '';
+        sideVids.forEach(v => {
+          const isFb = v.videoUrl.includes('facebook.com');
+          const sideOnClick = isFb
+            ? `window.open('${v.videoUrl}', '_blank')" title="Watch on Facebook`
+            : `openVideoModal('${v.title.replace(/'/g, "\\'")}', '${v.videoUrl}', '${v.duration}')`;
+          
+          sideHtml += `
+            <div class="nh-card" onclick="${sideOnClick}" style="display:flex;gap:12px;padding:12px;cursor:pointer">
+              <div style="position:relative;flex-shrink:0">
+                <img src="${v.thumbnail}" alt="${v.title}" style="width:120px;height:72px;object-fit:cover;border-radius:var(--nh-radius-sm)">
+                <div style="position:absolute;bottom:4px;right:4px;padding:2px 6px;background:rgba(0,0,0,0.7);border-radius:3px;font-size:10px;color:white;font-weight:500">${v.duration}</div>
+              </div>
+              <div>
+                <h4 style="font-size:13px;font-weight:500;line-height:1.3;color:var(--nh-text-primary);margin-bottom:4px">${v.title}${isFb ? ' ↗' : ''}</h4>
+                <span style="font-size:11px;color:var(--nh-text-muted)">${v.category} • ${v.author}</span>
+              </div>
+            </div>
+          `;
+        });
+
+        grid.innerHTML = `
+          <div onclick="${mainOnClick}" class="nh-card nh-video-main" style="position:relative;overflow:hidden;display:block;cursor:pointer">
+            <img src="${mainVid.thumbnail}" alt="${mainVid.title}" style="width:100%;height:320px;object-fit:cover;display:block">
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.3)">
+              <div style="width:64px;height:64px;background:var(--nh-blue);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,51,204,0.4)">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><polygon points="8,5 19,12 8,19"/></svg>
+              </div>
+            </div>
+            <div style="position:absolute;bottom:16px;left:16px;right:16px">
+              <span style="display:inline-block;padding:3px 10px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;background:rgba(0,0,0,0.7);color:white;margin-bottom:8px">${mainVid.duration}</span>
+              <h3 style="font-size:18px;font-weight:500;color:white;text-shadow:0 2px 4px rgba(0,0,0,0.5)">${mainVid.title}</h3>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            ${sideHtml}
+          </div>
+        `;
+      });
+    } catch (err) {
+      console.warn('Apply videos non-critical error:', err);
+    }
+  }
+
+  // Instant hydration from cache removed to prevent flashing old/stale content on refresh
+  try {
+    // We now wait for the network request to fetch the latest data directly.
+  } catch (e) {}
+
+  async function initDynamicArticles() {
+    try {
+      // 1. Sync localStorage published articles with server in background
+      try {
+        const localArticles = JSON.parse(localStorage.getItem('newshub_published_articles') || '[]');
+        if (Array.isArray(localArticles) && localArticles.length > 0) {
+          fetch('/api/articles/sync', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ articles: localArticles })
+          }).catch(() => {});
+        }
+      } catch (e) {}
+
+      // 2. Fetch latest live articles from server
+      const res = await fetch('/api/articles?limit=50');
+      const data = await res.json();
+      if (!data.success || !data.articles || data.articles.length === 0) return;
+
+      const articles = data.articles;
+      localStorage.setItem('nh_cached_articles_v2', JSON.stringify(articles));
+      applyArticles(articles);
+    } catch (err) {
       console.warn('Dynamic article hydration non-critical error:', err);
+    } finally {
+      document.documentElement.classList.remove('js-loading');
+      if (document.body) document.body.classList.remove('js-loading');
     }
   }
 
@@ -1621,7 +1741,7 @@
                 <button class="nh-react-btn" onclick="reactToLiveItem('${item.id}', 'insight', this)">
                   💡 <span>${reactions.insight || 0}</span>
                 </button>
-                <button class="nh-react-btn" onclick="shareLiveDispatch('${item.title}', '${item.id}')" title="Share Dispatch">
+                <button class="nh-react-btn" onclick="shareLiveDispatch('${(item.title || '').replace(/'/g, "\\'")}', '${item.id}')" title="Share Dispatch">
                   🔗 Share
                 </button>
               </div>
@@ -1903,6 +2023,8 @@
       initSubmitEvent();
       initBrandLogo();
       initDynamicVideos();
+      initThisWeekInAfrica();
+      initEconomicCalendarSection();
     });
   } else {
     initLiveMarketTicker();
@@ -1914,65 +2036,72 @@
     initSubmitEvent();
     initBrandLogo();
     initDynamicVideos();
+    initThisWeekInAfrica();
+    initEconomicCalendarSection();
   }
 
+  async function initThisWeekInAfrica() {
+    const grid = document.getElementById('thisWeekInAfricaGrid');
+    if (!grid) return;
+
+    const dateBadge = document.getElementById('thisWeekDateLabel');
+
+    try {
+      const res = await fetch('/api/weekly-recap');
+      const data = await res.json();
+      if (!data || !data.success) return;
+
+      if (dateBadge && data.weekInfo && data.weekInfo.weekRangeLabel) {
+        dateBadge.textContent = `${data.weekInfo.weekRangeLabel} · Live RSS Sync`;
+      }
+
+      if (data.sections && data.sections.length > 0) {
+        grid.innerHTML = '';
+        data.sections.slice(0, 3).forEach(sec => {
+          const card = document.createElement('a');
+          card.href = `weekly-recap.html#${sec.id || 'recap-' + (sec.sectionKey || 'story')}`;
+          card.className = 'nh-card';
+          card.style.cssText = 'padding:24px;text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:space-between;transition:var(--nh-transition);border:1px solid var(--nh-border);border-radius:var(--nh-radius-md);background:var(--nh-surface);';
+          
+          const dotColor = sec.badgeColor || 'var(--nh-blue)';
+          
+          card.innerHTML = `
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+                <div style="display:flex;align-items:center;gap:8px">
+                  <span style="width:8px;height:8px;border-radius:50%;background:${dotColor};display:inline-block"></span>
+                  <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:${dotColor}">${sec.tag || 'Intelligence'}</span>
+                </div>
+                <span style="font-size:11px;color:var(--nh-text-muted);display:flex;align-items:center;gap:4px">
+                  <span style="width:5px;height:5px;background:#16a34a;border-radius:50%;display:inline-block"></span>
+                  ${sec.country || 'Live Feed'}
+                </span>
+              </div>
+              <h3 style="font-size:16px;font-weight:600;color:var(--nh-text-primary);line-height:1.35;margin-bottom:10px">${sec.title}</h3>
+              <p style="font-size:13px;color:var(--nh-text-secondary);line-height:1.55;margin-bottom:14px">${sec.summary ? sec.summary.slice(0, 150) + '...' : ''}</p>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid var(--nh-border)">
+              <span style="font-size:12px;color:var(--nh-blue);font-weight:600">Read Intelligence Recap &rarr;</span>
+              <span style="font-size:11px;color:var(--nh-text-muted)">${sec.readTime || '3 min read'}</span>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      }
+    } catch (err) {
+      console.warn('Could not hydrate dynamic This Week in Africa grid:', err.message);
+    }
+  }
+  window.initThisWeekInAfrica = initThisWeekInAfrica;
+
   async function initDynamicVideos() {
-    const videoGrids = document.querySelectorAll('.nh-video-grid');
-    if (!videoGrids.length) return;
     try {
       const res = await fetch('/api/videos');
       const data = await res.json();
       if (!data.success || !data.videos || !data.videos.length) return;
-      
       const videos = data.videos;
-      const mainVid = videos.find(v => v.isMain) || videos[0];
-      const sideVids = videos.filter(v => v.id !== mainVid.id).slice(0, 4);
-
-      videoGrids.forEach(grid => {
-        const isEmbed = mainVid.videoUrl.includes('embed/') || mainVid.videoUrl.includes('youtube.com') || mainVid.videoUrl.includes('facebook.com');
-        const mainOnClick = mainVid.videoUrl.includes('facebook.com')
-          ? `window.open('${mainVid.videoUrl}', '_blank')`
-          : `openVideoModal('${mainVid.title.replace(/'/g, "\\'")}', '${mainVid.videoUrl}', '${mainVid.duration}')`;
-
-        let sideHtml = '';
-        sideVids.forEach(v => {
-          const isFb = v.videoUrl.includes('facebook.com');
-          const sideOnClick = isFb
-            ? `window.open('${v.videoUrl}', '_blank')" title="Watch on Facebook`
-            : `openVideoModal('${v.title.replace(/'/g, "\\'")}', '${v.videoUrl}', '${v.duration}')`;
-          
-          sideHtml += `
-            <div class="nh-card" onclick="${sideOnClick}" style="display:flex;gap:12px;padding:12px;cursor:pointer">
-              <div style="position:relative;flex-shrink:0">
-                <img src="${v.thumbnail}" alt="${v.title}" style="width:120px;height:72px;object-fit:cover;border-radius:var(--nh-radius-sm)">
-                <div style="position:absolute;bottom:4px;right:4px;padding:2px 6px;background:rgba(0,0,0,0.7);border-radius:3px;font-size:10px;color:white;font-weight:500">${v.duration}</div>
-              </div>
-              <div>
-                <h4 style="font-size:13px;font-weight:500;line-height:1.3;color:var(--nh-text-primary);margin-bottom:4px">${v.title}${isFb ? ' ↗' : ''}</h4>
-                <span style="font-size:11px;color:var(--nh-text-muted)">${v.category} • ${v.author}</span>
-              </div>
-            </div>
-          `;
-        });
-
-        grid.innerHTML = `
-          <div onclick="${mainOnClick}" class="nh-card nh-video-main" style="position:relative;overflow:hidden;display:block;cursor:pointer">
-            <img src="${mainVid.thumbnail}" alt="${mainVid.title}" style="width:100%;height:320px;object-fit:cover;display:block">
-            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.3)">
-              <div style="width:64px;height:64px;background:var(--nh-blue);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,51,204,0.4)">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><polygon points="8,5 19,12 8,19"/></svg>
-              </div>
-            </div>
-            <div style="position:absolute;bottom:16px;left:16px;right:16px">
-              <span style="display:inline-block;padding:3px 10px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;background:rgba(0,0,0,0.7);color:white;margin-bottom:8px">${mainVid.duration}</span>
-              <h3 style="font-size:18px;font-weight:500;color:white;text-shadow:0 2px 4px rgba(0,0,0,0.5)">${mainVid.title}</h3>
-            </div>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:14px">
-            ${sideHtml}
-          </div>
-        `;
-      });
+      localStorage.setItem('nh_cached_videos', JSON.stringify(videos));
+      applyVideos(videos);
     } catch (err) {
       console.error('Error loading dynamic videos:', err);
     }
@@ -2001,4 +2130,282 @@
       `;
     });
   }
+
+  // ==========================================================
+  // DYNAMIC ECONOMIC CALENDAR, MORNING CALL & CURRENCY CORNER
+  // ==========================================================
+  let activeCalendarFilter = 'all';
+  let cachedCalendarEvents = [];
+  let cachedCurrencyPairs = [];
+  let activeCurrencyPairKey = 'USD/NGN';
+
+  async function initEconomicCalendarSection() {
+    const calendarGrids = document.querySelectorAll('.nh-calendar-grid, #calendarGrid');
+    const morningCallBoxes = document.querySelectorAll('.nh-morning-call');
+    const currencyBoxes = document.querySelectorAll('.nh-currency-corner');
+
+    if (!calendarGrids.length && !morningCallBoxes.length && !currencyBoxes.length) {
+      return;
+    }
+
+    // Initial fetch of dynamic data
+    await fetchCalendarAndDeskData();
+
+    // Auto-update periodically every 20 seconds
+    setInterval(fetchCalendarAndDeskData, 20000);
+  }
+
+  async function fetchCalendarAndDeskData() {
+    try {
+      const res = await fetch('/api/calendar');
+      if (!res.ok) return;
+      const data = await res.json();
+      if (!data || !data.success) return;
+
+      if (data.events && Array.isArray(data.events)) {
+        cachedCalendarEvents = data.events;
+        localStorage.setItem('nh_cached_calendar', JSON.stringify(data.events));
+        renderCalendarCards();
+      }
+
+      if (data.stats) {
+        updateCalendarStats(data.stats);
+      }
+
+      if (data.morningCall) {
+        renderMorningCall(data.morningCall);
+      }
+
+      if (data.currencyCorner) {
+        if (data.currencyCorner.pairs) {
+          cachedCurrencyPairs = data.currencyCorner.pairs;
+        }
+        renderCurrencyCorner(data.currencyCorner);
+      }
+    } catch (err) {
+      console.warn('Could not sync live Economic Calendar:', err.message);
+    }
+  }
+
+  function renderCalendarCards() {
+    const calendarGrids = document.querySelectorAll('.nh-calendar-grid, #calendarGrid');
+    if (!calendarGrids.length || !cachedCalendarEvents.length) return;
+
+    const reminders = JSON.parse(localStorage.getItem('nh_calendar_reminders') || '{}');
+
+    // Filter events
+    let filtered = cachedCalendarEvents;
+    if (activeCalendarFilter === 'high') {
+      filtered = cachedCalendarEvents.filter(e => e.impact === 'high');
+    } else if (activeCalendarFilter === 'medium') {
+      filtered = cachedCalendarEvents.filter(e => e.impact === 'medium');
+    } else if (activeCalendarFilter === 'earnings') {
+      filtered = cachedCalendarEvents.filter(e => e.type === 'earnings');
+    }
+
+    calendarGrids.forEach(grid => {
+      // Determine max cards (6 for markets page, all for calendar page)
+      const isFullPage = window.location.pathname.includes('calendar') || grid.id === 'calendarGrid';
+      const displayEvents = isFullPage ? filtered : filtered.slice(0, 6);
+
+      grid.innerHTML = displayEvents.map(evt => {
+        const isNotified = !!reminders[evt.id || evt.rawId || evt.eventTitle];
+        const impactClass = evt.impact === 'high' ? 'high-impact' : (evt.impact === 'medium' ? 'medium-impact' : 'low-impact');
+        const dotsClass = evt.impact === 'medium' ? 'medium' : (evt.impact === 'low' ? 'low' : '');
+        
+        let dots = '';
+        if (evt.impact === 'high') {
+          dots = '<span class="active"></span><span class="active"></span><span class="active"></span>';
+        } else if (evt.impact === 'medium') {
+          dots = '<span class="active"></span><span class="active"></span><span></span>';
+        } else {
+          dots = '<span class="active"></span><span></span><span></span>';
+        }
+
+        const safeTitle = (evt.eventTitle || '').replace(/'/g, "\\'");
+        const safeId = (evt.id || evt.rawId || 'evt-' + Math.random()).replace(/'/g, "\\'");
+
+        return `
+          <div class="nh-calendar-card ${impactClass}" data-impact="${evt.impact}" data-type="${evt.type}" data-event-id="${safeId}">
+            <div class="nh-cal-date">
+              <div class="nh-cal-date-box">
+                <div class="day">${evt.day}</div>
+                <div class="month">${evt.month}</div>
+              </div>
+              <div class="nh-cal-date-info">
+                <div class="time">${evt.time || evt.formattedDate}</div>
+                <div class="country">${evt.flag || ''} ${evt.country}</div>
+              </div>
+            </div>
+            <div class="nh-cal-event">${evt.eventTitle}</div>
+            <div class="nh-cal-type ${evt.type || 'interest'}">${evt.typeLabel || 'Macro Catalyst'}</div>
+            <div class="nh-cal-impact">
+              <span class="nh-cal-impact-label">Impact:</span>
+              <div class="nh-cal-impact-dots ${dotsClass}">
+                ${dots}
+              </div>
+            </div>
+            <div class="nh-cal-prev">Previous: <strong>${evt.previous}</strong> | Forecast: <strong>${evt.forecast}</strong></div>
+            <button class="nh-cal-notify ${isNotified ? 'active' : ''}" onclick="window.toggleCalendarNotify(this, '${safeId}', '${safeTitle}')">
+              ${isNotified 
+                ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Reminder Set' 
+                : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg> Notify Me'}
+            </button>
+          </div>
+        `;
+      }).join('');
+    });
+  }
+
+  function renderMorningCall(callData) {
+    const boxes = document.querySelectorAll('.nh-morning-call');
+    boxes.forEach(box => {
+      const p = box.querySelector('p');
+      const author = box.querySelector('.author');
+      if (p && callData.text) p.textContent = callData.text;
+      if (author && callData.author) author.textContent = callData.author;
+    });
+  }
+
+  function renderCurrencyCorner(currencyData) {
+    const boxes = document.querySelectorAll('.nh-currency-corner:not([data-stats="true"])');
+    if (!boxes.length) return;
+
+    let active = currencyData.activePair;
+    if (cachedCurrencyPairs.length > 0) {
+      const matched = cachedCurrencyPairs.find(p => p.pair === activeCurrencyPairKey);
+      if (matched) active = matched;
+    }
+    if (!active && currencyData.pairs && currencyData.pairs.length > 0) {
+      active = currencyData.pairs[0];
+    }
+    if (!active) return;
+
+    const isUp = active.changePercent >= 0 || active.change_pct >= 0;
+    const changeColor = isUp ? 'var(--nh-green, #16a34a)' : 'var(--nh-red, #dc2626)';
+    const sign = isUp ? '+' : '';
+    const chgVal = active.changePercent !== undefined ? active.changePercent : (active.change_pct || 0);
+
+    boxes.forEach(box => {
+      // Check if this box is the Quick Stats box or actual Currency Corner
+      const h3 = box.querySelector('h3');
+      if (h3 && h3.textContent.includes('This Week')) {
+        box.setAttribute('data-stats', 'true');
+        return;
+      }
+
+      const pairEl = box.querySelector('.currency-pair');
+      const rateEl = box.querySelector('.currency-rate');
+      const takeEl = box.querySelector('.currency-take');
+
+      if (pairEl) {
+        const pairsList = cachedCurrencyPairs.length ? cachedCurrencyPairs : (currencyData.pairs || [active]);
+        pairEl.innerHTML = `
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+            <span>${active.pair}</span>
+            <select id="nhCurrencySelect" style="font-size:12px;font-weight:600;padding:4px 8px;border-radius:6px;border:1px solid var(--nh-border);background:var(--nh-surface-raised, #f8f9fa);color:var(--nh-text-primary);cursor:pointer;outline:none" onchange="window.switchCurrencyCornerPair(this.value)">
+              ${pairsList.map(p => `<option value="${p.pair}" ${p.pair === active.pair ? 'selected' : ''}>${p.pair}</option>`).join('')}
+            </select>
+          </div>
+        `;
+      }
+
+      if (rateEl) {
+        rateEl.innerHTML = `${active.formattedRate || active.rate} <span style="color:${changeColor};font-weight:600">${sign}${Number(chgVal).toFixed(2)}%</span>`;
+      }
+
+      if (takeEl) {
+        takeEl.innerHTML = `<strong>Expert Take:</strong> ${active.expertTake || active.take || ''}`;
+      }
+    });
+  }
+
+  function updateCalendarStats(stats) {
+    const statsBox = document.querySelector('.nh-currency-corner[data-stats="true"], .nh-calendar-sidebar .nh-currency-corner:last-child');
+    if (!statsBox) return;
+
+    const h3 = statsBox.querySelector('h3');
+    if (!h3 || !h3.textContent.includes('This Week')) return;
+
+    const container = statsBox.querySelector('div[style*="flex-direction:column"]') || statsBox.querySelector('div:not(h3)');
+    if (container) {
+      container.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--nh-border);">
+          <span style="font-size:12px;color:var(--nh-text-secondary);">High Impact</span>
+          <span style="font-size:13px;font-weight:600;color:var(--nh-red);">${stats.highImpactCount} events</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--nh-border);">
+          <span style="font-size:12px;color:var(--nh-text-secondary);">Rate Decisions</span>
+          <span style="font-size:13px;font-weight:600;color:var(--nh-text-primary);">${stats.rateDecisionsCount} events</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--nh-border);">
+          <span style="font-size:12px;color:var(--nh-text-secondary);">Earnings</span>
+          <span style="font-size:13px;font-weight:600;color:var(--nh-text-primary);">${stats.earningsCount} events</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;">
+          <span style="font-size:12px;color:var(--nh-text-secondary);">Countries</span>
+          <span style="font-size:13px;font-weight:600;color:var(--nh-text-primary);">${stats.countriesCount} markets</span>
+        </div>
+      `;
+    }
+  }
+
+  // Global Calendar Filter
+  window.filterCalendar = function(type, btn) {
+    activeCalendarFilter = type;
+    if (btn && btn.parentElement) {
+      const toggles = btn.parentElement.querySelectorAll('button');
+      toggles.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+    renderCalendarCards();
+  };
+
+  // Global Currency Switcher
+  window.switchCurrencyCornerPair = function(pairKey) {
+    activeCurrencyPairKey = pairKey;
+    const match = cachedCurrencyPairs.find(p => p.pair === pairKey);
+    if (match) {
+      renderCurrencyCorner({ activePair: match, pairs: cachedCurrencyPairs });
+      if (window.showNewsHubToast) {
+        window.showNewsHubToast(`Switched to ${pairKey} live analysis`, '💱');
+      }
+    }
+  };
+
+  // Global Reminder Toggle
+  window.toggleCalendarNotify = function(btn, eventId, eventTitle) {
+    const reminders = JSON.parse(localStorage.getItem('nh_calendar_reminders') || '{}');
+    const key = eventId || eventTitle || 'unknown-event';
+    const isCurrentlyActive = !!reminders[key];
+
+    if (isCurrentlyActive) {
+      delete reminders[key];
+      localStorage.setItem('nh_calendar_reminders', JSON.stringify(reminders));
+      btn.classList.remove('active');
+      btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg> Notify Me';
+      if (window.showNewsHubToast) {
+        window.showNewsHubToast(`Reminder cancelled for ${eventTitle || 'event'}`, '🔔');
+      }
+    } else {
+      reminders[key] = {
+        title: eventTitle,
+        setAt: new Date().toISOString()
+      };
+      localStorage.setItem('nh_calendar_reminders', JSON.stringify(reminders));
+      btn.classList.add('active');
+      btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Reminder Set';
+      if (window.showNewsHubToast) {
+        window.showNewsHubToast(`Reminder set for ${eventTitle || 'event'}!`, '⏰');
+      }
+    }
+  };
+
+  // Alias for legacy markup
+  window.toggleNotify = function(btn) {
+    const card = btn.closest('.nh-calendar-card');
+    const id = card ? (card.dataset.eventId || card.querySelector('.nh-cal-event')?.textContent) : 'event';
+    const title = card ? card.querySelector('.nh-cal-event')?.textContent : 'Calendar Event';
+    window.toggleCalendarNotify(btn, id, title);
+  };
 })();

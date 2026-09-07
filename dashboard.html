@@ -682,6 +682,30 @@
       border: 1px dashed rgba(233, 69, 96, 0.3);
     }
   </style>
+
+  <style class="nh-dynamic-hide">
+    .nh-hero-main, .nh-hero-side, #latest, #homeCategoryHighlights, .nh-featured-large, .nh-featured-stack, .nh-grid, .nh-video-grid, #thisWeekInAfricaGrid, .nh-calendar-grid, .nh-currency-corner {
+      transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    html.js-loading .nh-hero-main,
+    html.js-loading .nh-hero-side,
+    html.js-loading #latest,
+    html.js-loading #homeCategoryHighlights,
+    html.js-loading .nh-featured-large,
+    html.js-loading .nh-featured-stack,
+    html.js-loading .nh-grid,
+    html.js-loading .nh-video-grid,
+    html.js-loading #thisWeekInAfricaGrid,
+    html.js-loading .nh-calendar-grid,
+    html.js-loading .nh-currency-corner {
+      opacity: 0 !important;
+      pointer-events: none;
+    }
+  </style>
+  <script>
+    document.documentElement.classList.add('js-loading');
+    setTimeout(() => { document.documentElement.classList.remove('js-loading'); }, 2000);
+  </script>
 </head>
 <body>
 
@@ -958,20 +982,60 @@
               <label class="nh-label">Country / Region</label>
               <select id="artCountry" class="nh-select">
                 <option value="Pan-African">Pan-African (Continent-Wide)</option>
-                <option value="Nigeria">Nigeria</option>
-                <option value="South Africa">South Africa</option>
-                <option value="Kenya">Kenya</option>
-                <option value="Egypt">Egypt</option>
-                <option value="Ghana">Ghana</option>
-                <option value="Rwanda">Rwanda</option>
-                <option value="Zimbabwe">Zimbabwe</option>
-                <option value="Ethiopia">Ethiopia</option>
-                <option value="Morocco">Morocco</option>
-                <option value="DR Congo">DR Congo</option>
-                <option value="Tanzania">Tanzania</option>
+                <option value="Algeria">Algeria</option>
                 <option value="Angola">Angola</option>
+                <option value="Benin">Benin</option>
+                <option value="Botswana">Botswana</option>
+                <option value="Burkina Faso">Burkina Faso</option>
+                <option value="Burundi">Burundi</option>
+                <option value="Cabo Verde">Cabo Verde</option>
+                <option value="Cameroon">Cameroon</option>
+                <option value="Central African Republic">Central African Republic</option>
+                <option value="Chad">Chad</option>
+                <option value="Comoros">Comoros</option>
+                <option value="DR Congo">DR Congo</option>
+                <option value="Republic of the Congo">Republic of the Congo</option>
+                <option value="Cote d'Ivoire">Cote d'Ivoire</option>
+                <option value="Djibouti">Djibouti</option>
+                <option value="Egypt">Egypt</option>
+                <option value="Equatorial Guinea">Equatorial Guinea</option>
+                <option value="Eritrea">Eritrea</option>
+                <option value="Eswatini">Eswatini</option>
+                <option value="Ethiopia">Ethiopia</option>
+                <option value="Gabon">Gabon</option>
+                <option value="Gambia">Gambia</option>
+                <option value="Ghana">Ghana</option>
+                <option value="Guinea">Guinea</option>
+                <option value="Guinea-Bissau">Guinea-Bissau</option>
+                <option value="Kenya">Kenya</option>
+                <option value="Lesotho">Lesotho</option>
+                <option value="Liberia">Liberia</option>
+                <option value="Libya">Libya</option>
+                <option value="Madagascar">Madagascar</option>
+                <option value="Malawi">Malawi</option>
+                <option value="Mali">Mali</option>
+                <option value="Mauritania">Mauritania</option>
+                <option value="Mauritius">Mauritius</option>
+                <option value="Morocco">Morocco</option>
+                <option value="Mozambique">Mozambique</option>
+                <option value="Namibia">Namibia</option>
+                <option value="Niger">Niger</option>
+                <option value="Nigeria">Nigeria</option>
+                <option value="Rwanda">Rwanda</option>
+                <option value="Sao Tome and Principe">Sao Tome and Principe</option>
+                <option value="Senegal">Senegal</option>
+                <option value="Seychelles">Seychelles</option>
+                <option value="Sierra Leone">Sierra Leone</option>
+                <option value="Somalia">Somalia</option>
+                <option value="South Africa">South Africa</option>
+                <option value="South Sudan">South Sudan</option>
+                <option value="Sudan">Sudan</option>
+                <option value="Tanzania">Tanzania</option>
+                <option value="Togo">Togo</option>
+                <option value="Tunisia">Tunisia</option>
                 <option value="Uganda">Uganda</option>
                 <option value="Zambia">Zambia</option>
+                <option value="Zimbabwe">Zimbabwe</option>
               </select>
             </div>
           </div>
@@ -1116,12 +1180,12 @@
           <input type="text" id="articleSearchInput" class="nh-input" placeholder="Search articles by title or tag..." style="width: 260px; padding: 6px 12px; font-size: 13px;" oninput="filterDashboardArticles()" />
           <select id="articleCategoryFilter" class="nh-select" style="width: 160px; padding: 6px 12px; font-size: 13px;" onchange="filterDashboardArticles()">
             <option value="all">All Categories</option>
-            <option value="business">Business</option>
-            <option value="technology">Technology</option>
-            <option value="agriculture">Agriculture</option>
-            <option value="mining">Mining</option>
-            <option value="energy">Energy</option>
-            <option value="markets">Markets</option>
+            <option value="business">Business & AfCFTA Trade</option>
+            <option value="technology">Technology & Startups</option>
+            <option value="agriculture">Agriculture & Agribusiness</option>
+            <option value="mining">Mining & Critical Minerals</option>
+            <option value="energy">Energy & Infrastructure</option>
+            <option value="markets">Financial Markets & Bourses</option>
           </select>
         </div>
       </div>
@@ -1415,12 +1479,12 @@
         <div class="nh-form-group">
           <label class="nh-label">Category</label>
           <select id="editArtCategory" class="nh-select">
-            <option value="business">Business</option>
-            <option value="technology">Technology</option>
-            <option value="agriculture">Agriculture</option>
-            <option value="mining">Mining</option>
-            <option value="energy">Energy</option>
-            <option value="markets">Markets</option>
+            <option value="business">Business & AfCFTA Trade</option>
+            <option value="technology">Technology & Startups</option>
+            <option value="agriculture">Agriculture & Agribusiness</option>
+            <option value="mining">Mining & Critical Minerals</option>
+            <option value="energy">Energy & Infrastructure</option>
+            <option value="markets">Financial Markets & Bourses</option>
           </select>
         </div>
         <div class="nh-form-group">
